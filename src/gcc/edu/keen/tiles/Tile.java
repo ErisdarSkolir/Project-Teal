@@ -1,7 +1,8 @@
 package gcc.edu.keen.tiles;
 
 import org.joml.Vector2f;
-import org.lwjgl.openvr.Texture;
+
+import edu.gcc.keen.util.GameObject;
 
 /**
  * The tile class. A tile is a non-moving collisionable or non-collisionable
@@ -10,14 +11,16 @@ import org.lwjgl.openvr.Texture;
  * @author DONMOYERLR17
  *
  */
-public class Tile
+public class Tile extends GameObject
 {
-	private Vector2f position = new Vector2f();
-
-	private Texture texture;
-
-	public Tile(Texture texture)
+	public Tile(Vector2f position)
 	{
-		this.texture = texture;
+		super(position);
+	}
+
+	@Override
+	public void tick()
+	{
+
 	}
 }

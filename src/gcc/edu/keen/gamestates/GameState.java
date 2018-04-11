@@ -1,5 +1,7 @@
 package gcc.edu.keen.gamestates;
 
+import gcc.edu.keen.graphics.MasterRenderer;
+
 /**
  * A game state. Used to differentiate levels, the main menu, and the world map
  * from each other
@@ -28,7 +30,7 @@ public class GameState
 	/**
 	 * Render every object inside this state
 	 */
-	public void render()
+	public void render(MasterRenderer renderer)
 	{
 
 	}

@@ -1,11 +1,12 @@
 package gcc.edu.keen.tiles;
 
-public class BluePole extends Tile {
-	
+public class BluePole extends Tile
+{
+
 	private int id = 26;
 
 	@Override
-	public void tic()
+	public void tick()
 	{
 
 	}

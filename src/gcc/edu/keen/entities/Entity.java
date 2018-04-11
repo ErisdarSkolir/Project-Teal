@@ -2,6 +2,7 @@ package gcc.edu.keen.entities;
 
 import org.joml.Vector2f;
 
+import edu.gcc.keen.util.GameObject;
 import gcc.edu.keen.graphics.Texture;
 
 /**
@@ -10,22 +11,19 @@ import gcc.edu.keen.graphics.Texture;
  * @author DONMOYERLR17
  *
  */
-public class Entity
+public class Entity extends GameObject
 {
-	private Vector2f position = new Vector2f();
 	private Texture texture;
 
-	/**
-	 * Default constructor.
-	 */
-	public Entity(Texture texture)
+	public Entity(Vector2f position)
 	{
-		this.texture = texture;
+		super(position);
 	}
 
 	/**
 	 * Default update method.
 	 */
+	@Override
 	public void tick()
 	{
 
@@ -34,13 +32,8 @@ public class Entity
 	/**
 	 * Default method to move this entity.
 	 */
-	public void move(float x, float y)
+	public void move()
 	{
-		position.add(x, y);
-	}
 
-	public Vector2f getPosition()
-	{
-		return position;
 	}
 }
