@@ -16,4 +16,10 @@ public class Item extends GameObject
 	{
 
 	}
+
+	@Override
+	public void onCollide(GameObject object)
+	{
+
+	}
 }

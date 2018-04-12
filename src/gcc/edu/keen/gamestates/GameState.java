@@ -1,5 +1,7 @@
 package gcc.edu.keen.gamestates;
 
+import edu.gcc.keen.util.GameObject;
+import gcc.edu.keen.graphics.Camera;
 import gcc.edu.keen.graphics.MasterRenderer;
 
 /**
@@ -9,14 +11,18 @@ import gcc.edu.keen.graphics.MasterRenderer;
  * @author DONMOYERLR17
  *
  */
-public class GameState
+public abstract class GameState
 {
-	/**
-	 * Empty superclass constructor
-	 */
+	protected Camera camera;
+
 	public GameState()
 	{
+		this.camera = new Camera();
+	}
 
+	public GameState(GameObject cameraObject)
+	{
+		this.camera = new Camera(cameraObject);
 	}
 
 	/**
@@ -24,14 +30,11 @@ public class GameState
 	 */
 	public void tick()
 	{
-
+		camera.tick();
 	}
 
 	/**
 	 * Render every object inside this state
 	 */
-	public void render(MasterRenderer renderer)
-	{
-
-	}
+	public abstract void render(MasterRenderer renderer);
 }

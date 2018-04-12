@@ -3,7 +3,6 @@ package gcc.edu.keen.entities;
 import org.joml.Vector2f;
 
 import edu.gcc.keen.util.GameObject;
-import gcc.edu.keen.graphics.Texture;
 
 /**
  * An entity is any game object that moves or has more complex logic.
@@ -13,7 +12,7 @@ import gcc.edu.keen.graphics.Texture;
  */
 public class Entity extends GameObject
 {
-	private Texture texture;
+	boolean canCollide = false;
 
 	public Entity(Vector2f position)
 	{
@@ -33,6 +32,12 @@ public class Entity extends GameObject
 	 * Default method to move this entity.
 	 */
 	public void move()
+	{
+
+	}
+
+	@Override
+	public void onCollide(GameObject object)
 	{
 
 	}

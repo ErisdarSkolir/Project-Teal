@@ -14,20 +14,50 @@ import gcc.edu.keen.graphics.Texture;
 public class Keen
 {
 	private MasterRenderer renderer = new MasterRenderer();
-	private GameState currentState;
+	private static GameState currentState;
 
-	private boolean running = true;
+	private static boolean running = true;
 
 	/**
 	 * Main game loop. Calls the tick and render methods for the current game state
 	 */
-	public void main()
+	public void run()
 	{
+		if (!renderer.init())
+			terminate();
+
 		currentState = new MainMenu();
 
-		while (running)
-		{
+		long lastTime = System.nanoTime();
+		long updateCounter = System.currentTimeMillis();
+		double tps = 1000000000 / 60;
+		double delta = 0;
+		int frames = 0;
+		int updates = 0;
 
+		while (Keen.running)
+		{
+			long now = System.nanoTime();
+			delta += (now - lastTime) / tps;
+			lastTime = now;
+
+			if (delta >= 1.0)
+			{
+				Keen.currentState.tick();
+				updates++;
+				delta--;
+			}
+
+			Keen.currentState.render(renderer);
+			frames++;
+
+			if (System.currentTimeMillis() - updateCounter >= 1000)
+			{
+				System.out.println("Updates " + updates + " \tFrames " + frames);
+				updateCounter = System.currentTimeMillis();
+				updates = 0;
+				frames = 0;
+			}
 		}
 
 		cleanup();
@@ -41,13 +71,18 @@ public class Keen
 		Texture.cleanup();
 	}
 
-	/**
-	 * Entrypoint.
-	 * 
-	 * @param args
-	 */
+	public static void setState(GameState state)
+	{
+		Keen.currentState = state;
+	}
+
+	public static void terminate()
+	{
+		Keen.running = false;
+	}
+
 	public static void main(String[] args)
 	{
-		new Keen().main();
+		new Keen().run();
 	}
 }

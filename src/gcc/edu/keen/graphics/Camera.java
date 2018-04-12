@@ -6,8 +6,18 @@ import edu.gcc.keen.util.GameObject;
 
 public class Camera
 {
-	private Vector2f position;
+	private Vector2f position = new Vector2f();
 	private GameObject boundObject;
+
+	public Camera()
+	{
+		// Default constructor
+	}
+
+	public void tick()
+	{
+		// TODO calculate camera position
+	}
 
 	public Camera(GameObject bindObject)
 	{

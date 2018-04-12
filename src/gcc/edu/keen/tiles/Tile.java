@@ -23,4 +23,10 @@ public class Tile extends GameObject
 	{
 
 	}
+
+	@Override
+	public void onCollide(GameObject object)
+	{
+
+	}
 }
