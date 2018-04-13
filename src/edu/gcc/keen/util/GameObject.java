@@ -2,7 +2,7 @@ package edu.gcc.keen.util;
 
 import org.joml.Vector2f;
 
-import gcc.edu.keen.graphics.Texture;
+import edu.gcc.keen.graphics.Texture;
 
 public abstract class GameObject
 {

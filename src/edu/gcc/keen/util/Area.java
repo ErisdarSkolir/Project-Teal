@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.joml.Vector4f;
 
+import edu.gcc.keen.entities.Entity;
 import edu.gcc.keen.item.Item;
-import gcc.edu.keen.entities.Entity;
-import gcc.edu.keen.tiles.Tile;
+import edu.gcc.keen.tiles.Tile;
 
 public class Area
 {
