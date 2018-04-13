@@ -3,10 +3,13 @@ package gcc.edu.keen.gamestates;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joml.Vector2f;
+
 import edu.gcc.keen.item.Item;
 import edu.gcc.keen.util.Area;
 import gcc.edu.keen.entities.Entity;
 import gcc.edu.keen.graphics.MasterRenderer;
+import gcc.edu.keen.tiles.ChevronFloorFlat;
 import gcc.edu.keen.tiles.Tile;
 
 public class Level extends GameState
@@ -20,7 +23,9 @@ public class Level extends GameState
 	public Level(String filename)
 	{
 		super();
-		loadFromFile(filename);
+		// loadFromFile(filename);
+
+		tiles.add(new ChevronFloorFlat(new Vector2f(10.0f, 10.0f)));
 	}
 
 	@Override

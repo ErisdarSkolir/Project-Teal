@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import gcc.edu.keen.Keen;
+import gcc.edu.keen.KeenMain;
 import gcc.edu.keen.graphics.Button;
 import gcc.edu.keen.graphics.ButtonListener;
 import gcc.edu.keen.graphics.MasterRenderer;
@@ -14,7 +14,7 @@ public class MainMenu extends GameState
 	private List<Button> buttons = new ArrayList<>();
 
 	private Random random = new Random();
-	private Level level = new Level("level" + (random.nextInt(5) + 1));
+	// private Level level = new Level("level" + (random.nextInt(5) + 1));
 
 	public MainMenu()
 	{
@@ -26,7 +26,7 @@ public class MainMenu extends GameState
 			@Override
 			public void onClick()
 			{
-				Keen.setState(new Level("level1"));
+				KeenMain.setState(new Level("level1"));
 			}
 		};
 	}
@@ -36,7 +36,7 @@ public class MainMenu extends GameState
 	{
 		super.tick();
 
-		level.tick();
+		// level.tick();
 
 		for (Button button : buttons)
 		{
@@ -49,7 +49,7 @@ public class MainMenu extends GameState
 	@Override
 	public void render(MasterRenderer renderer)
 	{
-		level.render(renderer);
+		// level.render(renderer);
 		// TODO Auto-generated method stub
 	}
 }

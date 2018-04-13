@@ -1,7 +1,7 @@
 package gcc.edu.keen;
 
 import gcc.edu.keen.gamestates.GameState;
-import gcc.edu.keen.gamestates.MainMenu;
+import gcc.edu.keen.gamestates.Level;
 import gcc.edu.keen.graphics.MasterRenderer;
 import gcc.edu.keen.graphics.Texture;
 
@@ -11,7 +11,7 @@ import gcc.edu.keen.graphics.Texture;
  * @author DONMOYERLR17
  *
  */
-public class Keen
+public class KeenMain
 {
 	private MasterRenderer renderer = new MasterRenderer();
 	private static GameState currentState;
@@ -26,7 +26,7 @@ public class Keen
 		if (!renderer.init())
 			terminate();
 
-		currentState = new MainMenu();
+		currentState = new Level("test");
 
 		long lastTime = System.nanoTime();
 		long updateCounter = System.currentTimeMillis();
@@ -35,7 +35,7 @@ public class Keen
 		int frames = 0;
 		int updates = 0;
 
-		while (Keen.running)
+		while (KeenMain.running)
 		{
 			long now = System.nanoTime();
 			delta += (now - lastTime) / tps;
@@ -43,12 +43,12 @@ public class Keen
 
 			if (delta >= 1.0)
 			{
-				Keen.currentState.tick();
+				KeenMain.currentState.tick();
 				updates++;
 				delta--;
 			}
 
-			Keen.currentState.render(renderer);
+			KeenMain.currentState.render(renderer);
 			frames++;
 
 			if (System.currentTimeMillis() - updateCounter >= 1000)
@@ -73,16 +73,16 @@ public class Keen
 
 	public static void setState(GameState state)
 	{
-		Keen.currentState = state;
+		KeenMain.currentState = state;
 	}
 
 	public static void terminate()
 	{
-		Keen.running = false;
+		KeenMain.running = false;
 	}
 
 	public static void main(String[] args)
 	{
-		new Keen().run();
+		new KeenMain().run();
 	}
 }

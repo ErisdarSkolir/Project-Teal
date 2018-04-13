@@ -100,6 +100,11 @@ public abstract class Shader
 		GL20.glUniformMatrix4fv(uniforms.get(location), false, matrix.get(buffer));
 	}
 
+	protected void loadFloat(String location, float value)
+	{
+		GL20.glUniform1f(uniforms.get(location), value);
+	}
+
 	/**
 	 * Enable this shader
 	 */

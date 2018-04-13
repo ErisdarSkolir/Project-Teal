@@ -10,8 +10,9 @@ public abstract class GameObject
 	private Texture texture;
 	private Area area;
 
-	public GameObject(Vector2f position)
+	public GameObject(Texture texture, Vector2f position)
 	{
+		this.texture = texture;
 		this.position = new Vector2f(position);
 	}
 

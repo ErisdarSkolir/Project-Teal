@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import org.joml.Vector2f;
 import org.lwjgl.opengl.GL11;
 
 import edu.gcc.keen.util.BufferUtils;
@@ -24,22 +25,19 @@ public class Texture
 {
 	private static Map<String, Integer> textures = new HashMap<>();
 
+	private Vector2f texturePosition = new Vector2f();
+
 	private int id;
-	private int numberOfRows;
-	private int numberOfColumns;
 
 	public Texture(String path)
 	{
 		this.id = loadTextureFromString(path);
-		this.numberOfRows = 1;
-		this.numberOfColumns = 1;
 	}
 
-	public Texture(String path, int numberOfRows, int numberOfColumns)
+	public Texture(String path, Vector2f texturePosition)
 	{
 		this.id = loadTextureFromString(path);
-		this.numberOfRows = numberOfRows;
-		this.numberOfColumns = numberOfColumns;
+		this.texturePosition = texturePosition;
 	}
 
 	/**
@@ -115,13 +113,8 @@ public class Texture
 		return id;
 	}
 
-	public int getNumberOfRows()
+	public Vector2f getTexturePosition()
 	{
-		return numberOfRows;
-	}
-
-	public int getNumberOfColumns()
-	{
-		return numberOfColumns;
+		return new Vector2f(texturePosition);
 	}
 }

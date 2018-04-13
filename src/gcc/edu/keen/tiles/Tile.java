@@ -3,6 +3,7 @@ package gcc.edu.keen.tiles;
 import org.joml.Vector2f;
 
 import edu.gcc.keen.util.GameObject;
+import gcc.edu.keen.graphics.Texture;
 
 /**
  * The tile class. A tile is a non-moving collisionable or non-collisionable
@@ -13,9 +14,9 @@ import edu.gcc.keen.util.GameObject;
  */
 public class Tile extends GameObject
 {
-	public Tile(Vector2f position)
+	public Tile(Texture texture, Vector2f position)
 	{
-		super(position);
+		super(texture, position);
 	}
 
 	@Override

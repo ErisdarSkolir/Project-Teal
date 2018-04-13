@@ -19,7 +19,7 @@ import org.lwjgl.system.MemoryUtil;
 
 import edu.gcc.keen.item.Item;
 import edu.gcc.keen.util.BufferUtils;
-import gcc.edu.keen.Keen;
+import gcc.edu.keen.KeenMain;
 import gcc.edu.keen.entities.Entity;
 import gcc.edu.keen.input.Input;
 import gcc.edu.keen.tiles.Tile;
@@ -50,27 +50,31 @@ public class MasterRenderer
 	 */
 	public void render(List<Entity> entities, List<Tile> tiles, List<Item> items, Camera camera)
 	{
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
 		shader.enable();
-		GL11.glEnable(GL11.GL_BLEND);
+		GL30.glBindVertexArray(quad.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getID());
-		shader.loadTransformationMatrix(createTransformationMatrix(new Vector2f(0.0f, 0.0f), new Vector2f(10.0f, 10.0f)));
-		GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 
+		for (Tile tile : tiles)
+		{
+			shader.loadTransformationMatrix(createTransformationMatrix(tile.getPosition(), new Vector2f(1.0f, 1.0f)));
+			// shader.loadMatrix("orthographicMatrix", getOrthographicMatrix(1920, 1080));
+
+			GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
+		}
+
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 		GL20.glDisableVertexAttribArray(0);
-		GL11.glDisable(GL11.GL_BLEND);
 		shader.disable();
 
 		// TODO write rendering
 
 		if (GLFW.glfwWindowShouldClose(window))
-			Keen.terminate();
+			KeenMain.terminate();
 
 		GLFW.glfwSwapBuffers(window);
 		GLFW.glfwPollEvents();
