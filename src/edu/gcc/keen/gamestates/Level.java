@@ -9,6 +9,7 @@ import edu.gcc.keen.entities.Entity;
 import edu.gcc.keen.graphics.MasterRenderer;
 import edu.gcc.keen.item.Item;
 import edu.gcc.keen.tiles.ChevronFloorFlat;
+import edu.gcc.keen.tiles.ChevronFloorFlatTop;
 import edu.gcc.keen.tiles.Tile;
 import edu.gcc.keen.util.Area;
 
@@ -35,7 +36,10 @@ public class Level extends GameState
 		super();
 		// loadFromFile(filename);
 
-		tiles.add(new ChevronFloorFlat(new Vector2f(10.0f, 10.0f)));
+		tiles.add(new ChevronFloorFlat(new Vector2f(0.0f, 0.0f)));
+		tiles.add(new ChevronFloorFlat(new Vector2f(2.0f, 0.0f)));
+		tiles.add(new ChevronFloorFlatTop(new Vector2f(2.0f, 2.0f)));
+		tiles.add(new ChevronFloorFlatTop(new Vector2f(0.0f, 2.0f)));
 	}
 
 	/**

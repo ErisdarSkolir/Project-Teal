@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.joml.Matrix4f;
+import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
@@ -133,6 +134,17 @@ public abstract class Shader
 	protected void loadFloat(String location, float value)
 	{
 		GL20.glUniform1f(uniforms.get(location), value);
+	}
+
+	/**
+	 * Load a Vector2f to the given uniform location
+	 * 
+	 * @param location
+	 * @param vector
+	 */
+	protected void loadVector2f(String location, Vector2f vector)
+	{
+		GL20.glUniform2f(uniforms.get(location), vector.x, vector.y);
 	}
 
 	/**

@@ -49,4 +49,9 @@ public abstract class GameObject
 	{
 		this.area = area;
 	}
+
+	public Texture getTexture()
+	{
+		return texture;
+	}
 }

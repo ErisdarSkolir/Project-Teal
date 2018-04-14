@@ -2,15 +2,16 @@
 
 in vec2 position;
 
-out vec2 textureCoords;
+out vec2 pass_textureCoords;
 
-//uniform vec2 coordinateOffset;
+uniform vec2 textureRowsAndColumns;
+uniform vec2 textureOffset;
 
 uniform mat4 orthographicMatrix;
 uniform mat4 transformationMatrix;
 
 void main(void)
 {
-	gl_Position = transformationMatrix * vec4(position, 0.0, 1.0);//orthographicMatrix * transformationMatrix * vec4(position, 0.0, 1.0);
-	textureCoords = vec2((position.x+1.0)/2.0, 1 - (position.y+1.0)/2.0);
+	gl_Position = orthographicMatrix * transformationMatrix * vec4(position, 0.0, 1.0);
+	pass_textureCoords = (vec2((position.x+1.0)/2.0, 1 - (position.y+1.0)/2.0) / textureRowsAndColumns) + textureOffset;
 }

@@ -61,8 +61,9 @@ public class MasterRenderer
 
 		for (Tile tile : tiles)
 		{
+			shader.loadMatrix("orthographicMatrix", getOrthographicMatrix(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
 			shader.loadTransformationMatrix(createTransformationMatrix(tile.getPosition(), new Vector2f(1.0f, 1.0f)));
-			// shader.loadMatrix("orthographicMatrix", getOrthographicMatrix(1920, 1080));
+			shader.loadTextureAtlasInformation(tile.getTexture().getTextureRowsAndColumns(), tile.getTexture().getTextureOffset());
 
 			GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
 		}
@@ -153,7 +154,7 @@ public class MasterRenderer
 		int vboID = GL15.glGenBuffers();
 		vbos.add(vboID);
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboID);
-		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, floatCount * 4, GL15.GL_STREAM_DRAW);
+		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, floatCount * 4L, GL15.GL_STREAM_DRAW);
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 		return vboID;
 	}
@@ -202,9 +203,18 @@ public class MasterRenderer
 	 * @param height
 	 * @return the matrix4f orthographic matrix
 	 */
-	private Matrix4f getOrthographicMatrix(int width, int height)
+	private Matrix4f getOrthographicMatrix(float left, float right, float bottom, float top, float near, float far)
 	{
-		return new Matrix4f().ortho(0, width, 0, height, -1, 1);
+		Matrix4f matrix = new Matrix4f().identity();
+
+		matrix._m00(2.0f / (right - left));
+		matrix._m11(2.0f / (top - bottom));
+		matrix._m22(2.0f / (near - far));
+		matrix._m03((left + right) / (left - right));
+		matrix._m13((bottom + top) / (bottom - top));
+		matrix._m23((far + near) / (far - near));
+
+		return matrix;
 	}
 
 	/**
@@ -217,8 +227,7 @@ public class MasterRenderer
 	 */
 	public Matrix4f createTransformationMatrix(Vector2f translation, Vector2f scale)
 	{
-		Matrix4f matrix = new Matrix4f();
-		matrix.identity();
+		Matrix4f matrix = new Matrix4f().identity();
 		matrix.translate(new Vector3f(translation, 0));
 		matrix.scale(new Vector3f(scale.x, scale.y, 1f));
 		return matrix;
