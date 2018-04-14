@@ -5,8 +5,20 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
+/**
+ * This class provides utility functions to create arrays into buffers needed
+ * for OpenGL
+ * 
+ * @author DONMOYERLR17
+ *
+ */
 public class BufferUtils
 {
+	private BufferUtils()
+	{
+
+	}
+
 	public static ByteBuffer createByteBuffer(byte[] array)
 	{
 		ByteBuffer result = ByteBuffer.allocateDirect(array.length).order(ByteOrder.nativeOrder());

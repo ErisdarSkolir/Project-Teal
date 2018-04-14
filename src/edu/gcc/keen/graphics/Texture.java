@@ -29,11 +29,26 @@ public class Texture
 
 	private int id;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param path
+	 *            the file name of the texture file without extension
+	 */
 	public Texture(String path)
 	{
 		this.id = loadTextureFromString(path);
 	}
 
+	/**
+	 * Constructor
+	 * 
+	 * @param path
+	 *            the file name of the texture file without extension
+	 * @param texturePosition
+	 *            the position of the require texture if this file is a texture
+	 *            atlas
+	 */
 	public Texture(String path, Vector2f texturePosition)
 	{
 		this.id = loadTextureFromString(path);

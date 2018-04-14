@@ -9,6 +9,13 @@ import edu.gcc.keen.graphics.Button;
 import edu.gcc.keen.graphics.ButtonListener;
 import edu.gcc.keen.graphics.MasterRenderer;
 
+/**
+ * Main menu. Has a series of buttons and menus to start the game or change game
+ * options
+ * 
+ * @author DONMOYERLR17
+ *
+ */
 public class MainMenu extends GameState
 {
 	private List<Button> buttons = new ArrayList<>();
@@ -16,6 +23,9 @@ public class MainMenu extends GameState
 	private Random random = new Random();
 	// private Level level = new Level("level" + (random.nextInt(5) + 1));
 
+	/**
+	 * Constructor
+	 */
 	public MainMenu()
 	{
 		super();
@@ -31,6 +41,9 @@ public class MainMenu extends GameState
 		};
 	}
 
+	/**
+	 * Update
+	 */
 	@Override
 	public void tick()
 	{
@@ -46,6 +59,9 @@ public class MainMenu extends GameState
 		// TODO Auto-generated method stub
 	}
 
+	/**
+	 * Render
+	 */
 	@Override
 	public void render(MasterRenderer renderer)
 	{

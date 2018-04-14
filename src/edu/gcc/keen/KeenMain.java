@@ -71,16 +71,31 @@ public class KeenMain
 		Texture.cleanup();
 	}
 
+	/**
+	 * Sets the current game state to be rendered and updated. Can be called
+	 * from anywhere
+	 * 
+	 * @param state
+	 */
 	public static void setState(GameState state)
 	{
 		KeenMain.currentState = state;
 	}
 
+	/**
+	 * Sets running to false to tell the main game loop to exit next cycle. Can be
+	 * called from anywhere
+	 */
 	public static void terminate()
 	{
 		KeenMain.running = false;
 	}
 
+	/**
+	 * Entrypoint
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args)
 	{
 		new KeenMain().run();

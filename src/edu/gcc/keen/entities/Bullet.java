@@ -2,14 +2,22 @@ package edu.gcc.keen.entities;
 
 import org.joml.Vector2f;
 
+import edu.gcc.keen.graphics.Texture;
+
+/**
+ * Represents a bullet fired by keen's blaster
+ * 
+ * @author DONMOYERLR17
+ *
+ */
 public class Bullet extends Entity
 {
+	private final float velocity = 100;
+
 	public Bullet(Vector2f position)
 	{
-		super(position);
+		super(new Texture(""), position);
 	}
-
-	private int id = 05;
 
 	@Override
 	public void move()
@@ -22,5 +30,4 @@ public class Bullet extends Entity
 	{
 
 	}
-
 }

@@ -2,13 +2,16 @@ package edu.gcc.keen.entities;
 
 import org.joml.Vector2f;
 
+import edu.gcc.keen.graphics.Texture;
+
+/**
+ * Little Ampton enemy
+ */
 public class LittleAmpton extends Entity
 {
-	private int id = 02;
-
 	public LittleAmpton(Vector2f position)
 	{
-		super(position);
+		super(new Texture(""), position);
 	}
 
 	@Override
@@ -22,5 +25,4 @@ public class LittleAmpton extends Entity
 	{
 
 	}
-
 }

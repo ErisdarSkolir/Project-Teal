@@ -4,6 +4,12 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * This class provides utility functions for file IO
+ * 
+ * @author DONMOYERLR17
+ *
+ */
 public class FileUtils
 {
 	private FileUtils()
@@ -11,6 +17,12 @@ public class FileUtils
 		// Private constructor
 	}
 
+	/**
+	 * Take in a filename and return that file as a string
+	 * 
+	 * @param file
+	 * @return
+	 */
 	public static String loadAsString(String file)
 	{
 		StringBuilder stringBuilder = new StringBuilder();

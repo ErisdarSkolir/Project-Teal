@@ -15,11 +15,19 @@ public abstract class GameState
 {
 	protected Camera camera;
 
+	/**
+	 * Default constructor
+	 */
 	public GameState()
 	{
 		this.camera = new Camera();
 	}
 
+	/**
+	 * Constructor
+	 * 
+	 * @param cameraObject
+	 */
 	public GameState(GameObject cameraObject)
 	{
 		this.camera = new Camera(cameraObject);

@@ -15,6 +15,9 @@ public class Entity extends GameObject
 {
 	boolean canCollide = false;
 
+	/**
+	 * Constructor
+	 */
 	public Entity(Texture texture, Vector2f position)
 	{
 		super(texture, position);

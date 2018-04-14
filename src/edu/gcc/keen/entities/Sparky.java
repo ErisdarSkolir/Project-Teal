@@ -2,13 +2,19 @@ package edu.gcc.keen.entities;
 
 import org.joml.Vector2f;
 
+import edu.gcc.keen.graphics.Texture;
+
+/**
+ * Sparky enemy
+ * 
+ * @author DONMOYERLR17
+ *
+ */
 public class Sparky extends Entity
 {
-	private int id = 04;
-
 	public Sparky(Vector2f position)
 	{
-		super(position);
+		super(new Texture(""), position);
 	}
 
 	@Override

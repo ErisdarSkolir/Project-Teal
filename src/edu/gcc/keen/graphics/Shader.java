@@ -11,6 +11,13 @@ import org.lwjgl.opengl.GL20;
 
 import edu.gcc.keen.util.FileUtils;
 
+/**
+ * A class representing an OpenGL shader. Some details will have to be provided
+ * by implementation since this object is abstract
+ * 
+ * @author DONMOYERLR17
+ *
+ */
 public abstract class Shader
 {
 	private FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
@@ -20,6 +27,14 @@ public abstract class Shader
 
 	private boolean enabled = false;
 
+	/**
+	 * Constructor. Generates a vertex and fragment shader from the given file names
+	 * and stores the shader uniforms in a HashMap
+	 * 
+	 * @param vertexPath
+	 * @param fragementPath
+	 * @param uniformNames
+	 */
 	protected Shader(String vertexPath, String fragementPath, String... uniformNames)
 	{
 		id = createShader(vertexPath, fragementPath);
@@ -30,6 +45,9 @@ public abstract class Shader
 		getUniformLocations(uniformNames);
 	}
 
+	/**
+	 * Bind attribute arrays
+	 */
 	protected abstract void bindAttributes();
 
 	/**
@@ -95,11 +113,23 @@ public abstract class Shader
 		return program;
 	}
 
+	/**
+	 * Load a Matrix4f to the given uniform
+	 * 
+	 * @param location
+	 * @param matrix
+	 */
 	protected void loadMatrix(String location, Matrix4f matrix)
 	{
 		GL20.glUniformMatrix4fv(uniforms.get(location), false, matrix.get(buffer));
 	}
 
+	/**
+	 * Load a single float value to the given uniform
+	 * 
+	 * @param location
+	 * @param value
+	 */
 	protected void loadFloat(String location, float value)
 	{
 		GL20.glUniform1f(uniforms.get(location), value);

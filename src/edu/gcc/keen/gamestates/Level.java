@@ -12,6 +12,13 @@ import edu.gcc.keen.tiles.ChevronFloorFlat;
 import edu.gcc.keen.tiles.Tile;
 import edu.gcc.keen.util.Area;
 
+/**
+ * A level contains a list of all entites, tiles, and items. Also contains the
+ * collision detect grid system
+ * 
+ * @author DONMOYERLR17
+ *
+ */
 public class Level extends GameState
 {
 	private List<Area> areas = new ArrayList<>();
@@ -20,6 +27,9 @@ public class Level extends GameState
 	private List<Tile> tiles = new ArrayList<>();
 	private List<Item> items = new ArrayList<>();
 
+	/**
+	 * Constructor
+	 */
 	public Level(String filename)
 	{
 		super();
@@ -28,6 +38,9 @@ public class Level extends GameState
 		tiles.add(new ChevronFloorFlat(new Vector2f(10.0f, 10.0f)));
 	}
 
+	/**
+	 * Update game objects in this level
+	 */
 	@Override
 	public void tick()
 	{
@@ -41,12 +54,20 @@ public class Level extends GameState
 		// TODO check for collisions
 	}
 
+	/**
+	 * Render this level
+	 */
 	@Override
 	public void render(MasterRenderer renderer)
 	{
 		renderer.render(entities, tiles, items, camera);
 	}
 
+	/**
+	 * Load a level from a file
+	 * 
+	 * @param filename
+	 */
 	private void loadFromFile(String filename)
 	{
 		// TODO load entities, tiles, and items from file into lists

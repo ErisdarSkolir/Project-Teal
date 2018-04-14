@@ -2,13 +2,19 @@ package edu.gcc.keen.entities;
 
 import org.joml.Vector2f;
 
+import edu.gcc.keen.graphics.Texture;
+
+/**
+ * Shikadi enemy
+ * 
+ * @author DONMOYERLR17
+ *
+ */
 public class Shikadi extends Entity
 {
-	private int id = 03;
-
 	public Shikadi(Vector2f position)
 	{
-		super(position);
+		super(new Texture(""), position);
 	}
 
 	@Override
@@ -22,5 +28,4 @@ public class Shikadi extends Entity
 	{
 
 	}
-
 }

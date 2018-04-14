@@ -207,6 +207,14 @@ public class MasterRenderer
 		return new Matrix4f().ortho(0, width, 0, height, -1, 1);
 	}
 
+	/**
+	 * Create a transformation matrix depending on the given objects position,
+	 * scale, and the camera's position
+	 * 
+	 * @param translation
+	 * @param scale
+	 * @return
+	 */
 	public Matrix4f createTransformationMatrix(Vector2f translation, Vector2f scale)
 	{
 		Matrix4f matrix = new Matrix4f();
