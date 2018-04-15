@@ -30,7 +30,7 @@ public class Camera
 	 */
 	public void tick()
 	{
-		// TODO calculate camera position
+
 	}
 
 	/**
@@ -47,5 +47,10 @@ public class Camera
 	public void bindObject(GameObject object)
 	{
 		this.boundObject = object;
+	}
+
+	public Vector2f getPosition()
+	{
+		return position;
 	}
 }

@@ -57,16 +57,30 @@ public class MasterRenderer
 		GL20.glEnableVertexAttribArray(0);
 
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getID());
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, tiles.get(0).getTexture().getID());
+
+		shader.loadMatrix("viewMatrix", createViewMatrix(camera));
 
 		for (Tile tile : tiles)
 		{
-			shader.loadMatrix("orthographicMatrix", getOrthographicMatrix(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
 			shader.loadTransformationMatrix(createTransformationMatrix(tile.getPosition(), new Vector2f(1.0f, 1.0f)));
 			shader.loadTextureAtlasInformation(tile.getTexture().getTextureRowsAndColumns(), tile.getTexture().getTextureOffset());
 
 			GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
 		}
+
+		/*
+		 * GL11.glBindTexture(GL11.GL_TEXTURE_2D, entities.get(0).getTexture().getID());
+		 * for (Entity entity : entities)
+		 * {
+		 * GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
+		 * }
+		 * GL11.glBindTexture(GL11.GL_TEXTURE_2D, items.get(0).getTexture().getID());
+		 * for (Item item : items)
+		 * {
+		 * GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
+		 * }
+		 */
 
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 		GL20.glDisableVertexAttribArray(0);
@@ -103,6 +117,11 @@ public class MasterRenderer
 		GL11.glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
 
 		shader = new TwoDimensionalShader();
+
+		shader.enable();
+		shader.loadMatrix("orthographicMatrix", getOrthographicMatrix(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
+		shader.disable();
+
 		texture = new Texture("tilesheet");
 
 		float[] positions = { -1, 1, -1, -1, 1, 1, 1, -1 };
@@ -230,6 +249,19 @@ public class MasterRenderer
 		Matrix4f matrix = new Matrix4f().identity();
 		matrix.translate(new Vector3f(translation, 0));
 		matrix.scale(new Vector3f(scale.x, scale.y, 1f));
+		return matrix;
+	}
+
+	/**
+	 * Create view matrix from camera position
+	 * 
+	 * @param camera
+	 * @return the camera view matrix
+	 */
+	public Matrix4f createViewMatrix(Camera camera)
+	{
+		Matrix4f matrix = new Matrix4f().identity();
+		matrix.translate(camera.getPosition().x, camera.getPosition().y, 0.0f);
 		return matrix;
 	}
 

@@ -13,7 +13,7 @@ public class TwoDimensionalShader extends Shader
 	 */
 	public TwoDimensionalShader()
 	{
-		super("2DShader", "2DShader", "orthographicMatrix", "transformationMatrix", "textureRowsAndColumns", "textureOffset");
+		super("2DShader", "2DShader", "orthographicMatrix", "transformationMatrix", "textureRowsAndColumns", "textureOffset", "viewMatrix");
 	}
 
 	/**
