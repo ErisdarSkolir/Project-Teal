@@ -147,4 +147,9 @@ public class Texture
 	{
 		return textureRowsAndColumns;
 	}
+
+	public void setTextureIndex(int index)
+	{
+		this.textureIndex = index;
+	}
 }

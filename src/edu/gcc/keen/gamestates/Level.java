@@ -6,6 +6,7 @@ import java.util.List;
 import org.joml.Vector2f;
 
 import edu.gcc.keen.entities.Entity;
+import edu.gcc.keen.entities.Keen;
 import edu.gcc.keen.graphics.MasterRenderer;
 import edu.gcc.keen.item.Item;
 import edu.gcc.keen.tiles.ChevronFloorFlat;
@@ -28,6 +29,8 @@ public class Level extends GameState
 	private List<Tile> tiles = new ArrayList<>();
 	private List<Item> items = new ArrayList<>();
 
+	private Keen keen;
+
 	/**
 	 * Constructor
 	 */
@@ -40,6 +43,10 @@ public class Level extends GameState
 		tiles.add(new ChevronFloorFlat(new Vector2f(2.0f, 0.0f)));
 		tiles.add(new ChevronFloorFlatTop(new Vector2f(2.0f, 2.0f)));
 		tiles.add(new ChevronFloorFlatTop(new Vector2f(0.0f, 2.0f)));
+
+		keen = new Keen(new Vector2f(0.0f, 0.0f));
+
+		camera.bindObject(keen);
 	}
 
 	/**
@@ -48,7 +55,7 @@ public class Level extends GameState
 	@Override
 	public void tick()
 	{
-		super.tick();
+		keen.tick();
 
 		for (Entity entity : entities)
 		{
@@ -56,6 +63,7 @@ public class Level extends GameState
 		}
 
 		// TODO check for collisions
+		super.tick();
 	}
 
 	/**
@@ -64,7 +72,7 @@ public class Level extends GameState
 	@Override
 	public void render(MasterRenderer renderer)
 	{
-		renderer.render(entities, tiles, items, camera);
+		renderer.render(keen, entities, tiles, items, camera);
 	}
 
 	/**

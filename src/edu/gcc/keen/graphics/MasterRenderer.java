@@ -1,8 +1,10 @@
 package edu.gcc.keen.graphics;
 
 import java.nio.FloatBuffer;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.joml.Matrix4f;
@@ -19,6 +21,7 @@ import org.lwjgl.system.MemoryUtil;
 
 import edu.gcc.keen.KeenMain;
 import edu.gcc.keen.entities.Entity;
+import edu.gcc.keen.entities.Keen;
 import edu.gcc.keen.input.Input;
 import edu.gcc.keen.item.Item;
 import edu.gcc.keen.tiles.Tile;
@@ -35,9 +38,10 @@ public class MasterRenderer
 	private Set<Integer> vaos = new HashSet<>();
 	private Set<Integer> vbos = new HashSet<>();
 
+	private Map<String, Texture> textures = new HashMap<>();
+
 	private TwoDimensionalShader shader;
 	private Mesh quad;
-	private Texture texture;
 
 	private long window;
 
@@ -48,7 +52,7 @@ public class MasterRenderer
 	 * @param tiles
 	 * @param items
 	 */
-	public void render(List<Entity> entities, List<Tile> tiles, List<Item> items, Camera camera)
+	public void render(Keen keen, List<Entity> entities, List<Tile> tiles, List<Item> items, Camera camera)
 	{
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
@@ -57,10 +61,10 @@ public class MasterRenderer
 		GL20.glEnableVertexAttribArray(0);
 
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, tiles.get(0).getTexture().getID());
 
 		shader.loadMatrix("viewMatrix", createViewMatrix(camera));
 
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textures.get("tiles").getID());
 		for (Tile tile : tiles)
 		{
 			shader.loadTransformationMatrix(createTransformationMatrix(tile.getPosition(), new Vector2f(1.0f, 1.0f)));
@@ -69,18 +73,29 @@ public class MasterRenderer
 			GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
 		}
 
-		/*
-		 * GL11.glBindTexture(GL11.GL_TEXTURE_2D, entities.get(0).getTexture().getID());
-		 * for (Entity entity : entities)
-		 * {
-		 * GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
-		 * }
-		 * GL11.glBindTexture(GL11.GL_TEXTURE_2D, items.get(0).getTexture().getID());
-		 * for (Item item : items)
-		 * {
-		 * GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
-		 * }
-		 */
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textures.get("keen").getID());
+		for (Entity entity : entities)
+		{
+			shader.loadTransformationMatrix(createTransformationMatrix(entity.getPosition(), new Vector2f(1.0f, 1.0f)));
+			shader.loadTextureAtlasInformation(entity.getTexture().getTextureRowsAndColumns(), entity.getTexture().getTextureOffset());
+
+			GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
+		}
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textures.get("keen").getID());
+		for (Item item : items)
+		{
+			shader.loadTransformationMatrix(createTransformationMatrix(item.getPosition(), new Vector2f(1.0f, 1.0f)));
+			shader.loadTextureAtlasInformation(item.getTexture().getTextureRowsAndColumns(), item.getTexture().getTextureOffset());
+
+			GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
+		}
+
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textures.get("keen").getID());
+
+		shader.loadTransformationMatrix(createTransformationMatrix(keen.getPosition(), keen.getScale()));
+		shader.loadTextureAtlasInformation(keen.getTexture().getTextureRowsAndColumns(), keen.getTexture().getTextureOffset());
+
+		GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
 
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 		GL20.glDisableVertexAttribArray(0);
@@ -122,7 +137,10 @@ public class MasterRenderer
 		shader.loadMatrix("orthographicMatrix", getOrthographicMatrix(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
 		shader.disable();
 
-		texture = new Texture("tilesheet");
+		textures.put("tiles", new Texture("tilesheet"));
+		textures.put("keen", new Texture("keen_spritesheet"));
+		// textures.put("enemies", new Texture("tilesheet"));
+		// textures.put("background", new Texture("tilesheet"));
 
 		float[] positions = { -1, 1, -1, -1, 1, 1, 1, -1 };
 		quad = loadToVAO(positions);
@@ -261,7 +279,7 @@ public class MasterRenderer
 	public Matrix4f createViewMatrix(Camera camera)
 	{
 		Matrix4f matrix = new Matrix4f().identity();
-		matrix.translate(camera.getPosition().x, camera.getPosition().y, 0.0f);
+		matrix.translate(-camera.getPosition().x, -camera.getPosition().y, 0.0f);
 		return matrix;
 	}
 

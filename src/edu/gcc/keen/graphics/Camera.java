@@ -30,7 +30,7 @@ public class Camera
 	 */
 	public void tick()
 	{
-
+		this.position = boundObject.getPosition();
 	}
 
 	/**

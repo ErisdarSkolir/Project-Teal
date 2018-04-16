@@ -12,7 +12,8 @@ import edu.gcc.keen.graphics.Texture;
  */
 public abstract class GameObject
 {
-	private Vector2f position;
+	protected Vector2f position;
+	protected Vector2f scale;
 	private Texture texture;
 	private Area area;
 
@@ -26,6 +27,7 @@ public abstract class GameObject
 	{
 		this.texture = texture;
 		this.position = new Vector2f(position);
+		this.scale = new Vector2f(1.0f, 1.0f);
 	}
 
 	/**
@@ -53,5 +55,10 @@ public abstract class GameObject
 	public Texture getTexture()
 	{
 		return texture;
+	}
+
+	public Vector2f getScale()
+	{
+		return new Vector2f(scale);
 	}
 }
