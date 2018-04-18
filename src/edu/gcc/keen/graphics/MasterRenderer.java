@@ -67,7 +67,7 @@ public class MasterRenderer
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textures.get("tiles").getID());
 		for (Tile tile : tiles)
 		{
-			shader.loadTransformationMatrix(createTransformationMatrix(tile.getPosition(), new Vector2f(1.0f, 1.0f)));
+			shader.loadTransformationMatrix(createTransformationMatrix(tile.getPosition(), tile.getScale()));
 			shader.loadTextureAtlasInformation(tile.getTexture().getTextureRowsAndColumns(), tile.getTexture().getTextureOffset());
 
 			GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());

@@ -3,8 +3,10 @@ package edu.gcc.keen.entities;
 import org.joml.Vector2f;
 import org.lwjgl.glfw.GLFW;
 
+import edu.gcc.keen.animations.KeenAnimation;
 import edu.gcc.keen.graphics.Texture;
 import edu.gcc.keen.input.Input;
+import edu.gcc.keen.util.GameObject;
 
 /**
  * This class represents the character that the player controls
@@ -17,9 +19,12 @@ public class Keen extends Entity
 	private boolean jumping = false;
 	private boolean hanging = false;
 
-	private int[] animation = { 2, 3, 4, 5 };
-	private int animationIndex = 0;
-	private int tick = 0;
+	private int animationIndex;
+	private int tick = 10;
+	private int jumpTick;
+
+	private float verticalVelocity;
+	private float horizontalVelocity;
 
 	public Keen(Vector2f position)
 	{
@@ -35,11 +40,31 @@ public class Keen extends Entity
 		else if (Input.isKeyDown(GLFW.GLFW_KEY_RIGHT))
 			position.add(0.5f, 0.0f);
 
-		if (Input.isKeyDown(GLFW.GLFW_KEY_SPACE))
+		if (Input.isKeyDown(GLFW.GLFW_KEY_SPACE) && position.y <= 0)
 		{
-
+			jumping = true;
+			verticalVelocity = 0.5f;
+			jumpTick = 0;
+		}
+		else if (jumping && jumpTick > 5)
+		{
+			jumping = false;
 		}
 
+		if (position.y > 0 && verticalVelocity > -1.5f && !jumping)
+		{
+			verticalVelocity -= 1.5f;
+		}
+		else if (position.y < 0)
+		{
+			this.position.y = 0;
+			verticalVelocity = 0;
+		}
+
+		this.position.add(horizontalVelocity, verticalVelocity);
+
+		if (jumping)
+			jumpTick++;
 	}
 
 	@Override
@@ -47,16 +72,22 @@ public class Keen extends Entity
 	{
 		move();
 
-		if (tick > 1)
+		if (tick > 10)
 		{
-			getTexture().setTextureIndex(animation[animationIndex]);
+			getTexture().setTextureIndex(KeenAnimation.WALK_LEFT.getAnimation()[animationIndex]);
 			animationIndex++;
 			tick = 0;
 
-			if (animationIndex >= animation.length)
+			if (animationIndex >= KeenAnimation.WALK_LEFT.getAnimation().length)
 				animationIndex = 0;
 		}
 
 		tick++;
+	}
+
+	@Override
+	public void onCollide(GameObject gameObject)
+	{
+
 	}
 }
