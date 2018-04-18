@@ -13,7 +13,7 @@ import edu.gcc.keen.graphics.Texture;
 public abstract class GameObject
 {
 	protected Vector2f position;
-	protected Vector2f scale;
+	protected Vector2f scale = new Vector2f(1.0f, 1.0f);
 	private Texture texture;
 	private Area area;
 
@@ -23,11 +23,11 @@ public abstract class GameObject
 	 * @param texture
 	 * @param position
 	 */
-	public GameObject(Texture texture, Vector2f position)
+	public GameObject(Texture texture, Vector2f position, Vector2f scale)
 	{
 		this.texture = texture;
 		this.position = new Vector2f(position);
-		this.scale = new Vector2f(1.0f, 1.0f);
+		this.scale = scale;
 	}
 
 	/**

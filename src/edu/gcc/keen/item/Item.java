@@ -15,9 +15,9 @@ public class Item extends GameObject
 	 * @param position
 	 * @param texture
 	 */
-	public Item(Vector2f position, Texture texture)
+	public Item(Texture texture, Vector2f position, Vector2f scale)
 	{
-		super(texture, position);
+		super(texture, position, scale);
 	}
 
 	/**

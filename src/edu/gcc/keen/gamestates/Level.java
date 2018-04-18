@@ -13,6 +13,7 @@ import edu.gcc.keen.tiles.ChevronFloorFlat;
 import edu.gcc.keen.tiles.ChevronFloorFlatTop;
 import edu.gcc.keen.tiles.Tile;
 import edu.gcc.keen.util.Area;
+import edu.gcc.keen.util.BoundingBox;
 
 /**
  * A level contains a list of all entites, tiles, and items. Also contains the
@@ -44,7 +45,7 @@ public class Level extends GameState
 		tiles.add(new ChevronFloorFlatTop(new Vector2f(2.0f, 2.0f)));
 		tiles.add(new ChevronFloorFlatTop(new Vector2f(0.0f, 2.0f)));
 
-		keen = new Keen(new Vector2f(0.0f, 0.0f));
+		keen = new Keen(new Vector2f(0.0f, 5.5f));
 
 		camera.bindObject(keen);
 	}
@@ -60,6 +61,12 @@ public class Level extends GameState
 		for (Entity entity : entities)
 		{
 			entity.tick();
+		}
+
+		for (Tile tile : tiles)
+		{
+			if (tile.canCollide() && BoundingBox.isIntersecting(keen.getPosition(), keen.getScale(), tile.getPosition(), tile.getScale()))
+				keen.onCollide(tile);
 		}
 
 		// TODO check for collisions

@@ -18,9 +18,9 @@ public class Entity extends GameObject
 	/**
 	 * Constructor
 	 */
-	public Entity(Texture texture, Vector2f position)
+	public Entity(Texture texture, Vector2f position, Vector2f scale)
 	{
-		super(texture, position);
+		super(texture, position, scale);
 	}
 
 	/**

@@ -1,7 +1,11 @@
 package edu.gcc.keen.gamestates;
 
+import org.lwjgl.glfw.GLFW;
+
+import edu.gcc.keen.KeenMain;
 import edu.gcc.keen.graphics.Camera;
 import edu.gcc.keen.graphics.MasterRenderer;
+import edu.gcc.keen.input.Input;
 import edu.gcc.keen.util.GameObject;
 
 /**
@@ -39,6 +43,9 @@ public abstract class GameState
 	public void tick()
 	{
 		camera.tick();
+
+		if (Input.isKeyDown(GLFW.GLFW_KEY_ESCAPE))
+			KeenMain.terminate();
 	}
 
 	/**

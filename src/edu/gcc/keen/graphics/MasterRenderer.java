@@ -73,10 +73,10 @@ public class MasterRenderer
 			GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
 		}
 
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textures.get("keen").getID());
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textures.get("enemies").getID());
 		for (Entity entity : entities)
 		{
-			shader.loadTransformationMatrix(createTransformationMatrix(entity.getPosition(), new Vector2f(1.0f, 1.0f)));
+			shader.loadTransformationMatrix(createTransformationMatrix(entity.getPosition(), entity.getScale()));
 			shader.loadTextureAtlasInformation(entity.getTexture().getTextureRowsAndColumns(), entity.getTexture().getTextureOffset());
 
 			GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
@@ -139,7 +139,7 @@ public class MasterRenderer
 
 		textures.put("tiles", new Texture("tilesheet"));
 		textures.put("keen", new Texture("keen_spritesheet"));
-		// textures.put("enemies", new Texture("tilesheet"));
+		textures.put("enemies", new Texture("enemy"));
 		// textures.put("background", new Texture("tilesheet"));
 
 		float[] positions = { -1, 1, -1, -1, 1, 1, 1, -1 };
@@ -266,7 +266,7 @@ public class MasterRenderer
 	{
 		Matrix4f matrix = new Matrix4f().identity();
 		matrix.translate(new Vector3f(translation, 0));
-		matrix.scale(new Vector3f(scale.x, scale.y, 1f));
+		matrix.scale(new Vector3f(scale, 0));
 		return matrix;
 	}
 

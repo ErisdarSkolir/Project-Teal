@@ -28,13 +28,14 @@ public class Keen extends Entity
 
 	public Keen(Vector2f position)
 	{
-		super(new Texture("keen_spritesheet", new Vector2f(11.0f, 7.0f), 0), position);
-		scale = new Vector2f(1.0f, 1.25f);
+		super(new Texture("keen_spritesheet", new Vector2f(11.0f, 7.0f), 0), position, new Vector2f(2.0f, 2.5f));
 	}
 
 	@Override
 	public void move()
 	{
+		this.position.add(horizontalVelocity, verticalVelocity);
+
 		if (Input.isKeyDown(GLFW.GLFW_KEY_LEFT))
 			position.add(-0.5f, 0.0f);
 		else if (Input.isKeyDown(GLFW.GLFW_KEY_RIGHT))
@@ -51,17 +52,15 @@ public class Keen extends Entity
 			jumping = false;
 		}
 
-		if (position.y > 0 && verticalVelocity > -1.5f && !jumping)
+		if (position.y > 0 && !jumping)
 		{
-			verticalVelocity -= 1.5f;
+			verticalVelocity = -0.01f;
 		}
 		else if (position.y < 0)
 		{
 			this.position.y = 0;
 			verticalVelocity = 0;
 		}
-
-		this.position.add(horizontalVelocity, verticalVelocity);
 
 		if (jumping)
 			jumpTick++;
@@ -88,6 +87,9 @@ public class Keen extends Entity
 	@Override
 	public void onCollide(GameObject gameObject)
 	{
+		System.out.println("collision");
 
+		verticalVelocity = 0.0f;
+		jumping = false;
 	}
 }
