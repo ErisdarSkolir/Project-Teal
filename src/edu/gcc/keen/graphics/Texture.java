@@ -27,8 +27,8 @@ public class Texture
 
 	private int id;
 	private int textureIndex = 1;
-	private int columns;
-	private int rows;
+	private int columns = 1;
+	private int rows = 1;
 
 	/**
 	 * Constructor
@@ -149,5 +149,10 @@ public class Texture
 	public void setTextureIndex(int index)
 	{
 		this.textureIndex = index;
+	}
+
+	public int getTextureIndex()
+	{
+		return textureIndex;
 	}
 }
