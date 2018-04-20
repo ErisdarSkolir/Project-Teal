@@ -16,12 +16,14 @@ import edu.gcc.keen.util.GameObject;
  */
 public class Keen extends Entity
 {
+	private KeenAnimation currentAnimation = KeenAnimation.STATIONARY_LEFT;
+
 	private boolean jumping = false;
 	private boolean hanging = false;
+	private boolean onGround = false;
 
 	private int animationIndex;
 	private int tick = 10;
-	private int jumpTick;
 
 	private float verticalVelocity;
 	private float horizontalVelocity;
@@ -34,36 +36,27 @@ public class Keen extends Entity
 	@Override
 	public void move()
 	{
-		this.position.add(horizontalVelocity, verticalVelocity);
+		if (horizontalVelocity != 0.0f || verticalVelocity != 0.0f)
+		{
+			position.add(horizontalVelocity, verticalVelocity);
+			area.setShouldUpdate(true);
+
+			horizontalVelocity = 0.0f;
+			verticalVelocity = 0.0f;
+		}
 
 		if (Input.isKeyDown(GLFW.GLFW_KEY_LEFT))
-			position.add(-0.5f, 0.0f);
+		{
+			horizontalVelocity = -0.5f;
+			setAnimation(KeenAnimation.WALK_LEFT);
+		}
 		else if (Input.isKeyDown(GLFW.GLFW_KEY_RIGHT))
-			position.add(0.5f, 0.0f);
-
-		if (Input.isKeyDown(GLFW.GLFW_KEY_SPACE) && position.y <= 0)
 		{
-			jumping = true;
-			verticalVelocity = 0.5f;
-			jumpTick = 0;
+			horizontalVelocity = 0.5f;
+			setAnimation(KeenAnimation.WALK_RIGHT);
 		}
-		else if (jumping && jumpTick > 5)
-		{
-			jumping = false;
-		}
-
-		if (position.y > 0 && !jumping)
-		{
-			verticalVelocity = -0.01f;
-		}
-		else if (position.y < 0)
-		{
-			this.position.y = 0;
-			verticalVelocity = 0;
-		}
-
-		if (jumping)
-			jumpTick++;
+		else
+			setAnimation(KeenAnimation.STATIONARY_RIGHT);
 	}
 
 	@Override
@@ -73,23 +66,30 @@ public class Keen extends Entity
 
 		if (tick > 10)
 		{
-			getTexture().setTextureIndex(KeenAnimation.WALK_LEFT.getAnimation()[animationIndex]);
+			texture.setTextureIndex(currentAnimation.getAnimation()[animationIndex]);
 			animationIndex++;
 			tick = 0;
 
-			if (animationIndex >= KeenAnimation.WALK_LEFT.getAnimation().length)
+			if (animationIndex >= currentAnimation.getLenth())
 				animationIndex = 0;
 		}
 
 		tick++;
 	}
 
+	public void setAnimation(KeenAnimation animation)
+	{
+		if (currentAnimation != animation)
+		{
+			currentAnimation = animation;
+			animationIndex = 0;
+			tick = 10;
+		}
+	}
+
 	@Override
 	public void onCollide(GameObject gameObject)
 	{
-		System.out.println("collision");
 
-		verticalVelocity = 0.0f;
-		jumping = false;
 	}
 }

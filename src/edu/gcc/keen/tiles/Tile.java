@@ -14,12 +14,10 @@ import edu.gcc.keen.util.GameObject;
  */
 public class Tile extends GameObject
 {
-	boolean canCollide = false;
-
 	public Tile(Texture texture, Vector2f position, Vector2f scale, boolean canCollide)
 	{
 		super(texture, position, scale);
-		this.canCollide = canCollide;
+		this.collidable = canCollide;
 	}
 
 	@Override
@@ -32,10 +30,5 @@ public class Tile extends GameObject
 	public void onCollide(GameObject object)
 	{
 
-	}
-
-	public boolean canCollide()
-	{
-		return canCollide;
 	}
 }

@@ -14,7 +14,7 @@ public class FileUtils
 {
 	private FileUtils()
 	{
-		// Private constructor
+		throw new IllegalStateException("Utility class");
 	}
 
 	/**

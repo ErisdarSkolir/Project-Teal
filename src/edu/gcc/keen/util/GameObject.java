@@ -14,8 +14,11 @@ public abstract class GameObject
 {
 	protected Vector2f position;
 	protected Vector2f scale = new Vector2f(1.0f, 1.0f);
-	private Texture texture;
-	private Area area;
+	protected Texture texture;
+	protected Area area;
+
+	protected boolean collidable;
+	protected boolean shouldDestroy;
 
 	/**
 	 * Constructor
@@ -60,5 +63,20 @@ public abstract class GameObject
 	public Vector2f getScale()
 	{
 		return new Vector2f(scale);
+	}
+
+	public boolean canCollide()
+	{
+		return collidable;
+	}
+
+	public boolean shouldDestroy()
+	{
+		return shouldDestroy;
+	}
+
+	public void destroy()
+	{
+		shouldDestroy = true;
 	}
 }

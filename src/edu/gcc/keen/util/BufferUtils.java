@@ -16,7 +16,7 @@ public class BufferUtils
 {
 	private BufferUtils()
 	{
-
+		throw new IllegalStateException("Utility class");
 	}
 
 	public static ByteBuffer createByteBuffer(byte[] array)

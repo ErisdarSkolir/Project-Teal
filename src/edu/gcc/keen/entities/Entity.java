@@ -11,7 +11,7 @@ import edu.gcc.keen.util.GameObject;
  * @author DONMOYERLR17
  *
  */
-public class Entity extends GameObject
+public abstract class Entity extends GameObject
 {
 	boolean canCollide = false;
 
@@ -24,25 +24,7 @@ public class Entity extends GameObject
 	}
 
 	/**
-	 * Default update method.
-	 */
-	@Override
-	public void tick()
-	{
-
-	}
-
-	/**
 	 * Default method to move this entity.
 	 */
-	public void move()
-	{
-
-	}
-
-	@Override
-	public void onCollide(GameObject object)
-	{
-
-	}
+	public abstract void move();
 }

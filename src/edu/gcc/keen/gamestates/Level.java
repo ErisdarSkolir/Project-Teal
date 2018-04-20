@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.joml.Vector2f;
+import org.joml.Vector4f;
 
 import edu.gcc.keen.entities.Entity;
 import edu.gcc.keen.entities.Keen;
@@ -13,7 +14,7 @@ import edu.gcc.keen.tiles.ChevronFloorFlat;
 import edu.gcc.keen.tiles.ChevronFloorFlatTop;
 import edu.gcc.keen.tiles.Tile;
 import edu.gcc.keen.util.Area;
-import edu.gcc.keen.util.BoundingBox;
+import edu.gcc.keen.util.GameObject;
 
 /**
  * A level contains a list of all entites, tiles, and items. Also contains the
@@ -30,6 +31,8 @@ public class Level extends GameState
 	private List<Tile> tiles = new ArrayList<>();
 	private List<Item> items = new ArrayList<>();
 
+	private List<GameObject> gameObjects = new ArrayList<>();
+
 	private Keen keen;
 
 	/**
@@ -42,12 +45,25 @@ public class Level extends GameState
 
 		tiles.add(new ChevronFloorFlat(new Vector2f(0.0f, 0.0f)));
 		tiles.add(new ChevronFloorFlat(new Vector2f(2.0f, 0.0f)));
+		tiles.add(new ChevronFloorFlat(new Vector2f(4.0f, 0.0f)));
+		tiles.add(new ChevronFloorFlat(new Vector2f(6.0f, 0.0f)));
+		tiles.add(new ChevronFloorFlat(new Vector2f(8.0f, 0.0f)));
+		tiles.add(new ChevronFloorFlat(new Vector2f(10.0f, 0.0f)));
 		tiles.add(new ChevronFloorFlatTop(new Vector2f(2.0f, 2.0f)));
 		tiles.add(new ChevronFloorFlatTop(new Vector2f(0.0f, 2.0f)));
 
-		keen = new Keen(new Vector2f(0.0f, 5.5f));
+		keen = new Keen(new Vector2f(0.0f, 6f));
 
 		camera.bindObject(keen);
+
+		areas.add(new Area(new Vector4f(0.0f, 2.0f, 10.0f, 2.0f)));
+
+		for (Tile tile : tiles)
+		{
+			areas.get(0).addObject(tile);
+		}
+
+		areas.get(0).addObject(keen);
 	}
 
 	/**
@@ -58,15 +74,17 @@ public class Level extends GameState
 	{
 		keen.tick();
 
-		for (Entity entity : entities)
+		for (GameObject object : gameObjects)
 		{
-			entity.tick();
+			object.tick();
+
+			if (object.shouldDestroy())
+				gameObjects.remove(object);
 		}
 
-		for (Tile tile : tiles)
+		for (Area area : areas)
 		{
-			if (tile.canCollide() && BoundingBox.isIntersecting(keen.getPosition(), keen.getScale(), tile.getPosition(), tile.getScale()))
-				keen.onCollide(tile);
+			area.tick();
 		}
 
 		// TODO check for collisions

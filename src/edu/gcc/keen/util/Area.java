@@ -5,10 +5,6 @@ import java.util.List;
 
 import org.joml.Vector4f;
 
-import edu.gcc.keen.entities.Entity;
-import edu.gcc.keen.item.Item;
-import edu.gcc.keen.tiles.Tile;
-
 /**
  * This class will help with collision detection. It will contain a list of
  * tiles and entities within it, so those entities only have to check collision
@@ -19,11 +15,11 @@ import edu.gcc.keen.tiles.Tile;
  */
 public class Area
 {
-	private List<Entity> entities = new ArrayList<>();
-	private List<Tile> tiles = new ArrayList<>();
-	private List<Item> items = new ArrayList<>();
+	private List<GameObject> objects = new ArrayList<>();
 
 	private Vector4f positionAndSize;
+
+	private boolean shouldUpdate;
 
 	/**
 	 * Constructor
@@ -40,15 +36,42 @@ public class Area
 	 */
 	public void tick()
 	{
+		if (shouldUpdate)
+		{
+			shouldUpdate = false;
 
+			for (GameObject object : objects)
+			{
+				for (GameObject object2 : objects)
+				{
+					if (object != object2 && object.canCollide() && BoundingBox.isIntersecting(object2.getPosition(), object2.getScale(), object.getPosition(), object.getScale()))
+					{
+						object2.onCollide(object);
+						object.onCollide(object2);
+					}
+				}
+			}
+		}
 	}
 
-	/**
-	 * Check for collisions between entites and other objects and call their
-	 * collision methods
-	 */
-	public void checkCollision()
+	public void addObject(GameObject object)
 	{
-		// TODO check for collision between the entities in this area
+		object.setArea(this);
+		objects.add(object);
+	}
+
+	public void removeObject(GameObject object)
+	{
+		objects.remove(object);
+	}
+
+	public void setShouldUpdate(boolean update)
+	{
+		this.shouldUpdate = update;
+	}
+
+	public boolean shouldUpdate()
+	{
+		return shouldUpdate;
 	}
 }

@@ -4,6 +4,11 @@ import org.joml.Vector2f;
 
 public class BoundingBox
 {
+	private BoundingBox()
+	{
+		throw new IllegalStateException("Utility class");
+	}
+
 	public static boolean isIntersecting(Vector2f position1, Vector2f scale1, Vector2f position2, Vector2f scale2)
 	{
 		float left1X = position1.x - (scale1.x / 2);
@@ -14,7 +19,7 @@ public class BoundingBox
 		return !(left1X + scale1.x < left2X || left1X > left2X + scale2.x || left1Y - scale1.y > left2Y || left1Y < left2Y - scale2.y);
 	}
 
-	public Vector2f getIntersectingAmount(BoundingBox boundingBox)
+	public static Vector2f getIntersectingAmount(BoundingBox boundingBox)
 	{
 		return null;
 	}

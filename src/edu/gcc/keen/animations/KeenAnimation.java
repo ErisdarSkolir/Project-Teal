@@ -19,4 +19,9 @@ public enum KeenAnimation
 	{
 		return animation;
 	}
+
+	public int getLenth()
+	{
+		return animation.length;
+	}
 }
