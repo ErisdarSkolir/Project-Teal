@@ -25,10 +25,10 @@ public class Texture
 {
 	private static Map<String, Integer> textures = new HashMap<>();
 
-	private Vector2f textureRowsAndColumns = new Vector2f(1, 1);
-
 	private int id;
 	private int textureIndex = 1;
+	private int columns;
+	private int rows;
 
 	/**
 	 * Constructor
@@ -50,11 +50,12 @@ public class Texture
 	 *            the position of the require texture if this file is a texture
 	 *            atlas
 	 */
-	public Texture(String path, Vector2f textureRowsAndColumns, int textureIndex)
+	public Texture(String path, int columns, int rows, int index)
 	{
 		this.id = loadTextureFromString(path);
-		this.textureRowsAndColumns = textureRowsAndColumns;
-		this.textureIndex = textureIndex;
+		this.columns = columns;
+		this.rows = rows;
+		this.textureIndex = index;
 	}
 
 	/**
@@ -137,15 +138,12 @@ public class Texture
 	 */
 	public Vector2f getTextureOffset()
 	{
-		float x = (textureIndex % textureRowsAndColumns.x) / textureRowsAndColumns.x;
-		float y = Math.floorDiv(textureIndex, (int) textureRowsAndColumns.x) / textureRowsAndColumns.y;
-
-		return new Vector2f(x, y);
+		return new Vector2f((textureIndex % columns) / columns, (textureIndex / rows) / rows);
 	}
 
 	public Vector2f getTextureRowsAndColumns()
 	{
-		return textureRowsAndColumns;
+		return new Vector2f(columns, rows);
 	}
 
 	public void setTextureIndex(int index)

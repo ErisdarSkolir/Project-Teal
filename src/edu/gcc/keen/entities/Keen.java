@@ -30,7 +30,7 @@ public class Keen extends Entity
 
 	public Keen(Vector2f position)
 	{
-		super(new Texture("keen_spritesheet", new Vector2f(11.0f, 7.0f), 0), position, new Vector2f(2.0f, 2.5f));
+		super(new Texture("keen_spritesheet", 11, 7, 0), position, new Vector2f(2.0f, 2.5f));
 	}
 
 	@Override

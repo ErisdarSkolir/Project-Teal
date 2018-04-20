@@ -14,9 +14,12 @@ import edu.gcc.keen.util.GameObject;
  */
 public class Tile extends GameObject
 {
-	public Tile(Texture texture, Vector2f position, Vector2f scale, boolean canCollide)
+	private int id;
+
+	public Tile(int id, Vector2f position, Vector2f scale, boolean canCollide)
 	{
-		super(texture, position, scale);
+		super(new Texture("tilesheet", 18, 165, id), position, scale);
+		this.id = id;
 		this.collidable = canCollide;
 	}
 
