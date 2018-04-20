@@ -138,7 +138,7 @@ public class Texture
 	 */
 	public Vector2f getTextureOffset()
 	{
-		return new Vector2f((textureIndex % columns) / columns, (textureIndex / rows) / rows);
+		return new Vector2f((textureIndex % columns) / columns, (textureIndex / columns) / rows);
 	}
 
 	public Vector2f getTextureRowsAndColumns()
