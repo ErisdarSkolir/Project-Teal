@@ -13,7 +13,7 @@ import edu.gcc.keen.graphics.Texture;
  */
 public class KeenMain
 {
-	private MasterRenderer renderer = new MasterRenderer();
+	private static MasterRenderer renderer = new MasterRenderer();
 	private static GameState currentState;
 
 	private static boolean running = true;
@@ -21,7 +21,7 @@ public class KeenMain
 	/**
 	 * Main game loop. Calls the tick and render methods for the current game state
 	 */
-	public void run()
+	public static void run()
 	{
 		if (!renderer.init())
 			terminate();
@@ -30,7 +30,7 @@ public class KeenMain
 
 		long lastTime = System.nanoTime();
 		long updateCounter = System.currentTimeMillis();
-		double tps = 1000000000 / 60;
+		double tps = 1000000000.0 / 60.0;
 		double delta = 0;
 		int frames = 0;
 		int updates = 0;
@@ -66,7 +66,7 @@ public class KeenMain
 	/**
 	 * Runs when game is about to close to cleanup all created resources
 	 */
-	public void cleanup()
+	public static void cleanup()
 	{
 		Texture.cleanup();
 	}
@@ -98,6 +98,6 @@ public class KeenMain
 	 */
 	public static void main(String[] args)
 	{
-		new KeenMain().run();
+		KeenMain.run();
 	}
 }

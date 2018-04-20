@@ -126,7 +126,7 @@ public class MasterRenderer
 
 		GLFW.glfwMakeContextCurrent(window);
 		GLFW.glfwShowWindow(window);
-		GLFW.glfwSwapInterval(1);
+		GLFW.glfwSwapInterval(0);
 
 		GL.createCapabilities();
 		GL11.glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
