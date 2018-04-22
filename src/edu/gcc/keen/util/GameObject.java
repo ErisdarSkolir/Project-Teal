@@ -1,5 +1,7 @@
 package edu.gcc.keen.util;
 
+import java.util.List;
+
 import org.joml.Vector2f;
 
 import edu.gcc.keen.graphics.Texture;
@@ -43,7 +45,7 @@ public abstract class GameObject
 	 * 
 	 * @param object
 	 */
-	public abstract void onCollide(GameObject object);
+	public abstract void onCollide(List<GameObject> collidingObjects);
 
 	public Vector2f getPosition()
 	{

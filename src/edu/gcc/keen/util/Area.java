@@ -3,6 +3,7 @@ package edu.gcc.keen.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joml.Vector2f;
 import org.joml.Vector4f;
 
 /**
@@ -40,18 +41,53 @@ public class Area
 		{
 			shouldUpdate = false;
 
-			for (GameObject object : objects)
+			/*
+			 * for (GameObject object : objects)
+			 * {
+			 * for (GameObject object2 : objects)
+			 * {
+			 * if (object != object2 && object.canCollide() &&
+			 * BoundingBox.isIntersecting(object2.getPosition(), object2.getScale(),
+			 * object.getPosition(), object.getScale()))
+			 * {
+			 * object2.onCollide(object);
+			 * object.onCollide(object2);
+			 * }
+			 * }
+			 * }
+			 */
+		}
+	}
+
+	public void checkCollision(GameObject object)
+	{
+		List<GameObject> collidingObjects = new ArrayList<>();
+
+		for (GameObject object2 : objects)
+		{
+			if (object != object2 && BoundingBox.isIntersecting(object.getPosition(), new Vector2f(2.0f, 6.0f), object2.getPosition(), object2.getScale()))
 			{
-				for (GameObject object2 : objects)
-				{
-					if (object != object2 && object.canCollide() && BoundingBox.isIntersecting(object2.getPosition(), object2.getScale(), object.getPosition(), object.getScale()))
-					{
-						object2.onCollide(object);
-						object.onCollide(object2);
-					}
-				}
+				collidingObjects.add(object2);
 			}
 		}
+
+		if (!collidingObjects.isEmpty())
+			object.onCollide(collidingObjects);
+	}
+
+	public List<GameObject> stillColliding(GameObject object)
+	{
+		List<GameObject> collidingObjects = new ArrayList<>();
+
+		for (GameObject object2 : objects)
+		{
+			if (object != object2 && BoundingBox.isIntersecting(object.getPosition(), new Vector2f(2.0f, 6.0f), object2.getPosition(), object2.getScale()))
+			{
+				collidingObjects.add(object2);
+			}
+		}
+
+		return collidingObjects;
 	}
 
 	public void addObject(GameObject object)

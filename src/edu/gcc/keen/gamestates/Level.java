@@ -1,7 +1,10 @@
 package edu.gcc.keen.gamestates;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import org.joml.Vector2f;
 import org.joml.Vector4f;
@@ -10,9 +13,8 @@ import edu.gcc.keen.entities.Entity;
 import edu.gcc.keen.entities.Keen;
 import edu.gcc.keen.graphics.MasterRenderer;
 import edu.gcc.keen.item.Item;
-import edu.gcc.keen.tiles.ChevronFloorFlat;
-import edu.gcc.keen.tiles.ChevronFloorFlatTop;
 import edu.gcc.keen.tiles.Tile;
+import edu.gcc.keen.tiles.TileCreator;
 import edu.gcc.keen.util.Area;
 import edu.gcc.keen.util.GameObject;
 
@@ -38,19 +40,10 @@ public class Level extends GameState
 	/**
 	 * Constructor
 	 */
-	public Level(String filename)
+	public Level(String levelName)
 	{
 		super();
-		// loadFromFile(filename);
-
-		tiles.add(new ChevronFloorFlat(new Vector2f(0.0f, 0.0f)));
-		tiles.add(new ChevronFloorFlat(new Vector2f(2.0f, 0.0f)));
-		tiles.add(new ChevronFloorFlat(new Vector2f(4.0f, 0.0f)));
-		tiles.add(new ChevronFloorFlat(new Vector2f(6.0f, 0.0f)));
-		tiles.add(new ChevronFloorFlat(new Vector2f(8.0f, 0.0f)));
-		tiles.add(new ChevronFloorFlat(new Vector2f(10.0f, 0.0f)));
-		tiles.add(new ChevronFloorFlatTop(new Vector2f(2.0f, 2.0f)));
-		tiles.add(new ChevronFloorFlatTop(new Vector2f(0.0f, 2.0f)));
+		tiles.addAll(loadFromFile(levelName));
 
 		keen = new Keen(new Vector2f(0.0f, 6f));
 
@@ -105,8 +98,32 @@ public class Level extends GameState
 	 * 
 	 * @param filename
 	 */
-	private void loadFromFile(String filename)
+	private List<Tile> loadFromFile(String levelName)
 	{
-		// TODO load entities, tiles, and items from file into lists
+		List<Tile> tmpList = new ArrayList<>();
+
+		try (Scanner scanner = new Scanner(new File("res/levels/" + levelName + "_foreground.csv")))
+		{
+			scanner.useDelimiter(",|\n");
+
+			for (int row = 0; scanner.hasNextLine(); row++)
+			{
+				for (int column = 0; scanner.hasNextInt(); column++)
+				{
+					int id = scanner.nextInt();
+
+					if (id != -1)
+						tmpList.add(TileCreator.createTile(id, new Vector2f(2.0f * column, -(2.0f * row))));
+				}
+
+				scanner.nextLine();
+			}
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+
+		return tmpList;
 	}
 }
