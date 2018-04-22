@@ -1,5 +1,6 @@
 package edu.gcc.keen.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.joml.Vector2f;
@@ -120,7 +121,11 @@ public class Keen extends Entity
 	@Override
 	public void onCollide(List<GameObject> collidingObjects)
 	{
-		float smallestY = Float.MIN_VALUE;
+		float sumY = 0f;
+		float sumX = 0f;
+
+		List<Float> correctionsY = new ArrayList<>();
+		List<Float> correctionsX = new ArrayList<>();
 
 		for (GameObject gameObject : collidingObjects)
 		{
@@ -130,39 +135,71 @@ public class Keen extends Entity
 
 				if (tile.isCollidable())
 				{
-					if (smallestY < BoundingBox.minY(position, new Vector2f(2.0f, 6.0f), tile.getPosition(), tile.getScale()))
-						smallestY = BoundingBox.minY(position, new Vector2f(2.0f, 6.0f), tile.getPosition(), tile.getScale());
+					float correctionY = BoundingBox.minY(this, tile);
+					float correctionX = BoundingBox.minX(this, tile);
 
-					onGround = true;
-					jumpTick = 0;
+					correctionsY.add(correctionY);
+					correctionsX.add(correctionX);
+
+					sumY += correctionY;
+					sumX += correctionX;
 
 				}
 			}
 		}
 
-		this.position.add(0.0f, smallestY);
+		float smallestY = getSmallest(correctionsY);
+		float smallestX = getSmallestX(correctionsX);
 
-		List<GameObject> xColliding = area.stillColliding(this);
-
-		if (!xColliding.isEmpty())
+		if (Math.abs(sumY) > Math.abs(sumX))
 		{
-			float smallestX = Float.MIN_VALUE;
+			// System.out.println("CorrectionY");
+			this.position.add(0.0f, smallestY);
+			System.out.println(smallestY);
 
-			for (GameObject gameObject : collidingObjects)
-			{
-				if (gameObject instanceof Tile)
-				{
-					Tile tile = (Tile) gameObject;
+			verticalVelocity = 0.0f;
 
-					if (tile.isCollidable())
-					{
-						if (smallestX < BoundingBox.minX(position, new Vector2f(2.0f, 6.0f), tile.getPosition(), tile.getScale()))
-							smallestX = BoundingBox.minX(position, new Vector2f(2.0f, 6.0f), tile.getPosition(), tile.getScale());
-					}
-				}
-			}
-
-			this.position.add(smallestX, 0.0f);
+			onGround = true;
+			jumpTick = 0;
 		}
+		else if (Math.abs(sumX) > Math.abs(sumY))
+		{
+			System.out.println("CorrectionX");
+			this.position.add(smallestX, 0.0f);
+
+			horizontalVelocity = 0.0f;
+		}
+	}
+
+	public float getSmallest(List<Float> numbers)
+	{
+		if (numbers.isEmpty())
+			return 0f;
+
+		float smallest = Math.abs(numbers.get(0));
+
+		for (Float number : numbers)
+		{
+			if (Math.abs(number) < smallest)
+				smallest = Math.abs(number);
+		}
+
+		return smallest;
+	}
+
+	public float getSmallestX(List<Float> numbers)
+	{
+		if (numbers.isEmpty())
+			return 0f;
+
+		float smallest = numbers.get(0);
+
+		for (Float number : numbers)
+		{
+			if (number < smallest)
+				smallest = number;
+		}
+
+		return smallest;
 	}
 }

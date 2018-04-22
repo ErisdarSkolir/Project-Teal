@@ -3,7 +3,6 @@ package edu.gcc.keen.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.joml.Vector2f;
 import org.joml.Vector4f;
 
 /**
@@ -65,7 +64,8 @@ public class Area
 
 		for (GameObject object2 : objects)
 		{
-			if (object != object2 && BoundingBox.isIntersecting(object.getPosition(), new Vector2f(2.0f, 6.0f), object2.getPosition(), object2.getScale()))
+			if (object != object2 && BoundingBox.doIntersect(object, object2))// BoundingBox.isIntersecting(object.getPosition(), new Vector2f(2.0f, 6.0f),
+																				// object2.getPosition(), object2.getScale()))
 			{
 				collidingObjects.add(object2);
 			}
@@ -75,19 +75,17 @@ public class Area
 			object.onCollide(collidingObjects);
 	}
 
-	public List<GameObject> stillColliding(GameObject object)
+	public boolean stillColliding(GameObject object)
 	{
-		List<GameObject> collidingObjects = new ArrayList<>();
-
 		for (GameObject object2 : objects)
 		{
-			if (object != object2 && BoundingBox.isIntersecting(object.getPosition(), new Vector2f(2.0f, 6.0f), object2.getPosition(), object2.getScale()))
+			if (object != object2 && BoundingBox.doIntersect(object, object2))
 			{
-				collidingObjects.add(object2);
+				return true;
 			}
 		}
 
-		return collidingObjects;
+		return false;
 	}
 
 	public void addObject(GameObject object)

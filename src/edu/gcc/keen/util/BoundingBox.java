@@ -16,17 +16,16 @@ public class BoundingBox
 		float left2X = position2.x - (scale2.x / 2f);
 		float top2Y = position2.y + (scale2.y / 2f);
 
-		System.out.println(scale1);
-
 		// System.out.println(position1 + " " + position2 + " " + (left1Y - scale1.y) +
 		// " " + left2Y);
 
 		return !(left1X + scale1.x < left2X || left1X > left2X + scale2.x || top1Y - scale1.y > top2Y || top1Y < top2Y - scale2.y);
 	}
 
-	public static boolean doIntersect(Vector2f position1, Vector2f scale1, Vector2f position2, Vector2f scale2)
+	public static boolean doIntersect(GameObject object1, GameObject object2)
 	{
-		return (Math.abs(position1.x - position2.x) * 2 < (scale1.x + scale2.x) && Math.abs(position1.y - position2.y) * 2 < (scale1.y + scale2.y));
+		return (Math.abs(object1.getPosition().x - object2.getPosition().x) * 2 < (object1.getScale().mul(2.0f).x + object2.getScale().mul(2.0f).x)
+				&& Math.abs(object1.getPosition().y - object2.getPosition().y) * 2 < (object1.getScale().mul(2.0f).y + object2.getScale().mul(2.0f).y));
 	}
 
 	public static Vector2f getMinimumTranslationiVector(Vector2f position1, Vector2f scale1, Vector2f position2, Vector2f scale2)
@@ -44,18 +43,23 @@ public class BoundingBox
 		return new Vector2f(amountX, amountY);
 	}
 
-	public static float minX(Vector2f position1, Vector2f scale1, Vector2f position2, Vector2f scale2)
+	public static float minX(GameObject object1, GameObject object2)
 	{
+		Vector2f position1 = object1.getPosition();
+		Vector2f scale1 = object1.getScale().mul(2.0f);
+		Vector2f position2 = object2.getPosition();
+		Vector2f scale2 = object2.getScale().mul(2.0f);
 		float amountX = Math.min(Math.abs((position1.x - scale1.x / 2) - (position2.x + scale2.x / 2)), Math.abs((position1.x + scale1.x / 2) - (position2.x - scale2.x / 2)));
 
-		if (BoundingBox.doIntersect(position1, scale1, position2, scale2))
-			return position1.x - position2.x <= 0 ? -amountX : amountX;
-		else
-			return 0.0f;
+		return position1.x - position2.x <= 0 ? -amountX : amountX;
 	}
 
-	public static float minY(Vector2f position1, Vector2f scale1, Vector2f position2, Vector2f scale2)
+	public static float minY(GameObject object1, GameObject object2)
 	{
+		Vector2f position1 = object1.getPosition();
+		Vector2f scale1 = object1.getScale().mul(2.0f);
+		Vector2f position2 = object2.getPosition();
+		Vector2f scale2 = object2.getScale().mul(2.0f);
 		float amountY = Math.min(Math.abs((position1.y + scale1.y / 2f) - (position2.y - scale2.y / 2f)), Math.abs((position1.y - scale1.y / 2f) - (position2.y + scale2.y / 2f)));
 
 		return position1.y - position2.y <= 0 ? -amountY : amountY;
