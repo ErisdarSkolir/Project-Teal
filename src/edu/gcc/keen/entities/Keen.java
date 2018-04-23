@@ -40,6 +40,7 @@ public class Keen extends Entity
 		super(new Texture("keen_spritesheet", 11, 7, 0), position, new Vector2f(2.0f, 2.5f));
 
 		this.aabbOffset = new Vector2f(-2.0f, 0.0f);
+
 	}
 
 	@Override
