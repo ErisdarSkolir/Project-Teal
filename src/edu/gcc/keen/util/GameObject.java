@@ -48,6 +48,10 @@ public abstract class GameObject
 	 */
 	public abstract void onCollide(List<GameObject> collidingObjects);
 
+	public abstract void onCollideX(List<GameObject> collidingObjects);
+
+	public abstract void onCollideY(List<GameObject> collidingObjects);
+
 	public Vector2f getPosition()
 	{
 		return new Vector2f(position);

@@ -21,6 +21,7 @@ public class Tile extends GameObject
 	private boolean pole;
 	private boolean oneWay;
 	private boolean hangable;
+	private boolean renderOrder;
 
 	public Tile(int id, Vector2f position, Vector2f scale)
 	{
@@ -28,15 +29,15 @@ public class Tile extends GameObject
 		this.id = id;
 	}
 
-	public Tile(int id, boolean pole, boolean oneWay, boolean collidable, boolean hangable, Vector2f position)
+	public Tile(int id, boolean pole, boolean oneWay, boolean collidable, boolean hangable, boolean renderOrder, Vector2f position)
 	{
 		super(new Texture("tilesheet", 18, 165, id), position, new Vector2f(1.0f, 1.0f));
-		this.aabbOffset = new Vector2f(0.001f, 0.0f);
 		this.id = id;
 		this.pole = pole;
 		this.oneWay = oneWay;
 		this.collidable = collidable;
 		this.hangable = hangable;
+		this.renderOrder = renderOrder;
 	}
 
 	@Override
@@ -54,5 +55,24 @@ public class Tile extends GameObject
 	public boolean isCollidable()
 	{
 		return collidable;
+	}
+
+	public boolean getRenderOrder()
+	{
+		return renderOrder;
+	}
+
+	@Override
+	public void onCollideX(List<GameObject> collidingObjects)
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onCollideY(List<GameObject> collidingObjects)
+	{
+		// TODO Auto-generated method stub
+
 	}
 }

@@ -19,7 +19,7 @@ public class TileCreator
 		if (data == null)
 			System.out.println("No data for " + id);
 
-		return new Tile(id, data[0], data[1], data[2], data[3], position);
+		return new Tile(id, data[0], data[1], data[2], data[3], data[4], position);
 	}
 
 	public static void loadData(String path)
@@ -28,7 +28,7 @@ public class TileCreator
 		{
 			while (scanner.hasNext())
 			{
-				boolean[] data = new boolean[4];
+				boolean[] data = new boolean[5];
 				int id = scanner.nextInt();
 
 				for (int i = 0; i < data.length; i++)

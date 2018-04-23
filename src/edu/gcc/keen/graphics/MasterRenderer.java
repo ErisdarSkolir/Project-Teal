@@ -68,7 +68,7 @@ public class MasterRenderer
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textures.get("tiles").getID());
 		for (Tile tile : tiles)
 		{
-			shader.loadTransformationMatrix(createTransformationMatrix(tile.getPosition(), tile.getScale()));
+			shader.loadTransformationMatrix(createTransformationMatrix(new Vector3f(tile.getPosition(), tile.getRenderOrder() ? 0.5f : -0.5f), tile.getScale()));
 			shader.loadTextureAtlasInformation(tile.getTexture().getTextureRowsAndColumns(), tile.getTexture().getTextureOffset());
 
 			GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
@@ -131,11 +131,12 @@ public class MasterRenderer
 
 		GL.createCapabilities();
 		GL11.glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
 
 		shader = new TwoDimensionalShader();
 
 		shader.enable();
-		shader.loadMatrix("orthographicMatrix", getOrthographicMatrix(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
+		shader.loadMatrix("orthographicMatrix", getOrthographicMatrix(-16.0f, 16.0f, -9.0f, 9.0f, -10.0f, 10.0f));
 		shader.disable();
 
 		textures.put("tiles", new Texture("tilesheet"));
@@ -249,9 +250,9 @@ public class MasterRenderer
 
 		matrix._m00(2.0f / (right - left));
 		matrix._m11(2.0f / (top - bottom));
-		matrix._m22(2.0f / (near - far));
-		matrix._m03((left + right) / (left - right));
-		matrix._m13((bottom + top) / (bottom - top));
+		matrix._m22(-2.0f / (far - near));
+		matrix._m03((right + left) / (right - left));
+		matrix._m13((top + bottom) / (top - bottom));
 		matrix._m23((far + near) / (far - near));
 
 		return matrix;
@@ -268,7 +269,15 @@ public class MasterRenderer
 	public Matrix4f createTransformationMatrix(Vector2f translation, Vector2f scale)
 	{
 		Matrix4f matrix = new Matrix4f().identity();
-		matrix.translate(new Vector3f(translation, 0));
+		matrix.translate(new Vector3f(translation, 0.1f));
+		matrix.scale(new Vector3f(scale, 0));
+		return matrix;
+	}
+
+	public Matrix4f createTransformationMatrix(Vector3f translation, Vector2f scale)
+	{
+		Matrix4f matrix = new Matrix4f().identity();
+		matrix.translate(translation);
 		matrix.scale(new Vector3f(scale, 0));
 		return matrix;
 	}

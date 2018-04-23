@@ -58,20 +58,36 @@ public class Area
 		}
 	}
 
-	public void checkCollision(GameObject object)
+	public void checkCollisionX(GameObject object)
 	{
 		List<GameObject> collidingObjects = new ArrayList<>();
 
 		for (GameObject object2 : objects)
 		{
-			if (object != object2 && BoundingBox.doIntersect(object, object2))
+			if (object != object2 && object2.canCollide() && BoundingBox.doIntersect(object, object2))
 			{
 				collidingObjects.add(object2);
 			}
 		}
 
 		if (!collidingObjects.isEmpty())
-			object.onCollide(collidingObjects);
+			object.onCollideX(collidingObjects);
+	}
+
+	public void checkCollisionY(GameObject object)
+	{
+		List<GameObject> collidingObjects = new ArrayList<>();
+
+		for (GameObject object2 : objects)
+		{
+			if (object != object2 && object2.canCollide() && BoundingBox.doIntersect(object, object2))
+			{
+				collidingObjects.add(object2);
+			}
+		}
+
+		if (!collidingObjects.isEmpty())
+			object.onCollideY(collidingObjects);
 	}
 
 	public boolean stillColliding(GameObject object, List<GameObject> collidingObjects)

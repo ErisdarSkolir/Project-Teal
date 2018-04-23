@@ -1,6 +1,5 @@
 package edu.gcc.keen.entities;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.joml.Vector2f;
@@ -48,8 +47,12 @@ public class Keen extends Entity
 	{
 		if (horizontalVelocity != 0.0f || verticalVelocity != 0.0f)
 		{
-			position.add(horizontalVelocity, verticalVelocity);
-			area.checkCollision(this);
+			position.add(0.0f, verticalVelocity);
+			area.checkCollisionY(this);
+
+			position.add(horizontalVelocity, 0.0f);
+			area.checkCollisionX(this);
+
 			area.setShouldUpdate(true);
 		}
 
@@ -97,7 +100,7 @@ public class Keen extends Entity
 		else
 			jumping = false;
 
-		if (!onGround && !jumping && verticalVelocity > -1.0f)
+		if (!jumping && verticalVelocity > -1.0f)
 			verticalVelocity += -0.2f;
 	}
 
@@ -130,82 +133,53 @@ public class Keen extends Entity
 	}
 
 	@Override
-	public void onCollide(List<GameObject> collidingObjects)
+	public void onCollideX(List<GameObject> collidingObjects)
 	{
-		float sumY = 0f;
-		float sumX = 0f;
+		if (collidingObjects.isEmpty())
+			return;
 
-		List<Float> correctionsY = new ArrayList<>();
-		List<Float> correctionsX = new ArrayList<>();
+		float smallest = BoundingBox.minX(this, collidingObjects.get(0));
 
-		for (GameObject gameObject : collidingObjects)
+		for (GameObject object : collidingObjects)
 		{
-			if (gameObject.canCollide())
-			{
-				float correctionY = BoundingBox.minY(this, gameObject);
-				float correctionX = BoundingBox.minX(this, gameObject);
+			float tmp = BoundingBox.minX(this, object);
 
-				correctionsY.add(correctionY);
-				correctionsX.add(correctionX);
-
-				if (correctionY < 0)
-					sumY += -1;
-				else if (correctionY > 0)
-					sumY += 1;
-
-				if (correctionX < 0)
-					sumX += -1;
-				else if (correctionX > 0)
-					sumX += 1;
-			}
+			if (tmp < smallest)
+				smallest = tmp;
 		}
 
-		float smallestY = getSmallest(correctionsY);
-		float smallestX = getSmallest(correctionsX);
+		this.position.add(smallest, 0.0f);
 
-		// System.out.println(sumX + " " + sumY);
-
-		if (Math.abs(sumY) > Math.abs(sumX))
-		{
-			this.position.add(0.0f, smallestY);
-
-			if (area.stillColliding(this, collidingObjects))
-				this.position.add(smallestX, 0.0f);
-
-			verticalVelocity = 0.0f;
-
-			onGround = true;
-			jumpTick = 0;
-		}
-		else if (Math.abs(sumX) > Math.abs(sumY))
-		{
-			this.position.add(smallestX, 0.0f);
-
-			if (smallestX > 0)
-				wallLeft = true;
-			else if (smallestX < 0)
-				wallRight = true;
-
-			if (area.stillColliding(this, collidingObjects))
-				this.position.add(0.0f, smallestY);
-
-			horizontalVelocity = 0.0f;
-		}
+		horizontalVelocity = 0.0f;
 	}
 
-	public float getSmallest(List<Float> numbers)
+	@Override
+	public void onCollideY(List<GameObject> collidingObjects)
 	{
-		if (numbers.isEmpty())
-			return 0f;
+		if (collidingObjects.isEmpty())
+			return;
 
-		float smallest = numbers.get(0);
+		float smallest = BoundingBox.minY(this, collidingObjects.get(0));
 
-		for (Float number : numbers)
+		for (GameObject object : collidingObjects)
 		{
-			if (number < smallest)
-				smallest = number;
+			float tmp = BoundingBox.minY(this, object);
+
+			if (tmp < smallest)
+				smallest = tmp;
 		}
 
-		return smallest;
+		this.position.add(0.0f, smallest);
+
+		verticalVelocity = 0.0f;
+		jumpTick = 0;
+		onGround = true;
+	}
+
+	@Override
+	public void onCollide(List<GameObject> collidingObjects)
+	{
+		// TODO Auto-generated method stub
+
 	}
 }
