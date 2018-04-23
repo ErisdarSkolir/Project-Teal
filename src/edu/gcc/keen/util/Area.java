@@ -64,8 +64,7 @@ public class Area
 
 		for (GameObject object2 : objects)
 		{
-			if (object != object2 && BoundingBox.doIntersect(object, object2))// BoundingBox.isIntersecting(object.getPosition(), new Vector2f(2.0f, 6.0f),
-																				// object2.getPosition(), object2.getScale()))
+			if (object != object2 && BoundingBox.doIntersect(object, object2))
 			{
 				collidingObjects.add(object2);
 			}
@@ -75,9 +74,9 @@ public class Area
 			object.onCollide(collidingObjects);
 	}
 
-	public boolean stillColliding(GameObject object)
+	public boolean stillColliding(GameObject object, List<GameObject> collidingObjects)
 	{
-		for (GameObject object2 : objects)
+		for (GameObject object2 : collidingObjects)
 		{
 			if (object != object2 && BoundingBox.doIntersect(object, object2))
 			{

@@ -9,7 +9,6 @@ import org.lwjgl.glfw.GLFW;
 import edu.gcc.keen.animations.KeenAnimation;
 import edu.gcc.keen.graphics.Texture;
 import edu.gcc.keen.input.Input;
-import edu.gcc.keen.tiles.Tile;
 import edu.gcc.keen.util.BoundingBox;
 import edu.gcc.keen.util.GameObject;
 
@@ -48,6 +47,9 @@ public class Keen extends Entity
 			area.checkCollision(this);
 			area.setShouldUpdate(true);
 		}
+
+		if (Input.isKeyDown(GLFW.GLFW_KEY_R))
+			position = new Vector2f(0.0f, 6f);
 
 		if (Input.isKeyDown(GLFW.GLFW_KEY_LEFT))
 		{
@@ -129,33 +131,37 @@ public class Keen extends Entity
 
 		for (GameObject gameObject : collidingObjects)
 		{
-			if (gameObject instanceof Tile)
+			if (gameObject.canCollide())
 			{
-				Tile tile = (Tile) gameObject;
+				float correctionY = BoundingBox.minY(this, gameObject);
+				float correctionX = BoundingBox.minX(this, gameObject);
 
-				if (tile.isCollidable())
-				{
-					float correctionY = BoundingBox.minY(this, tile);
-					float correctionX = BoundingBox.minX(this, tile);
+				correctionsY.add(correctionY);
+				correctionsX.add(correctionX);
 
-					correctionsY.add(correctionY);
-					correctionsX.add(correctionX);
+				if (correctionY < 0)
+					sumY += -1;
+				else if (correctionY > 0)
+					sumY += 1;
 
-					sumY += correctionY;
-					sumX += correctionX;
-
-				}
+				if (correctionX < 0)
+					sumX += -1;
+				else if (correctionX > 0)
+					sumX += 1;
 			}
 		}
 
 		float smallestY = getSmallest(correctionsY);
-		float smallestX = getSmallestX(correctionsX);
+		float smallestX = getSmallest(correctionsX);
+
+		// System.out.println(sumX + " " + sumY);
 
 		if (Math.abs(sumY) > Math.abs(sumX))
 		{
-			// System.out.println("CorrectionY");
 			this.position.add(0.0f, smallestY);
-			System.out.println(smallestY);
+
+			if (area.stillColliding(this, collidingObjects))
+				this.position.add(smallestX, 0.0f);
 
 			verticalVelocity = 0.0f;
 
@@ -164,8 +170,10 @@ public class Keen extends Entity
 		}
 		else if (Math.abs(sumX) > Math.abs(sumY))
 		{
-			System.out.println("CorrectionX");
 			this.position.add(smallestX, 0.0f);
+
+			if (area.stillColliding(this, collidingObjects))
+				this.position.add(0.0f, smallestY);
 
 			horizontalVelocity = 0.0f;
 		}
@@ -181,22 +189,6 @@ public class Keen extends Entity
 		for (Float number : numbers)
 		{
 			if (Math.abs(number) < smallest)
-				smallest = Math.abs(number);
-		}
-
-		return smallest;
-	}
-
-	public float getSmallestX(List<Float> numbers)
-	{
-		if (numbers.isEmpty())
-			return 0f;
-
-		float smallest = numbers.get(0);
-
-		for (Float number : numbers)
-		{
-			if (number < smallest)
 				smallest = number;
 		}
 
