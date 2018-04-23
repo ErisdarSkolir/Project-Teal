@@ -136,7 +136,7 @@ public class MasterRenderer
 		shader = new TwoDimensionalShader();
 
 		shader.enable();
-		shader.loadMatrix("orthographicMatrix", getOrthographicMatrix(-16.0f, 16.0f, -9.0f, 9.0f, -10.0f, 10.0f));
+		shader.loadMatrix("orthographicMatrix", getOrthographicMatrix(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
 		shader.disable();
 
 		textures.put("tiles", new Texture("tilesheet"));

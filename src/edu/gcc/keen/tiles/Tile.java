@@ -47,7 +47,13 @@ public class Tile extends GameObject
 	}
 
 	@Override
-	public void onCollide(List<GameObject> object)
+	public void onCollideX(List<GameObject> collidingObjects)
+	{
+
+	}
+
+	@Override
+	public void onCollideY(List<GameObject> collidingObjects)
 	{
 
 	}
@@ -60,19 +66,5 @@ public class Tile extends GameObject
 	public boolean getRenderOrder()
 	{
 		return renderOrder;
-	}
-
-	@Override
-	public void onCollideX(List<GameObject> collidingObjects)
-	{
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onCollideY(List<GameObject> collidingObjects)
-	{
-		// TODO Auto-generated method stub
-
 	}
 }

@@ -38,7 +38,7 @@ public class Keen extends Entity
 	{
 		super(new Texture("keen_spritesheet", 11, 7, 0), position, new Vector2f(2.0f, 2.5f));
 
-		this.aabbOffset = new Vector2f(-2.0f, 0.0f);
+		this.aabbOffset = new Vector2f(-2.5f, 0.0f);
 
 	}
 
@@ -87,12 +87,12 @@ public class Keen extends Entity
 				onGround = false;
 				verticalVelocity = 1.0f;
 			}
-			else if (jumping)
+			else if (jumping && verticalVelocity < 1.0f)
 			{
-				verticalVelocity = 1.0f;
+				verticalVelocity += 0.2f;
 			}
 
-			if (jumpTick > 5)
+			if (jumpTick > 10)
 				jumping = false;
 
 			jumpTick++;
@@ -101,7 +101,7 @@ public class Keen extends Entity
 			jumping = false;
 
 		if (!jumping && verticalVelocity > -1.0f)
-			verticalVelocity += -0.2f;
+			verticalVelocity += -0.4f;
 	}
 
 	@Override
@@ -174,12 +174,5 @@ public class Keen extends Entity
 		verticalVelocity = 0.0f;
 		jumpTick = 0;
 		onGround = true;
-	}
-
-	@Override
-	public void onCollide(List<GameObject> collidingObjects)
-	{
-		// TODO Auto-generated method stub
-
 	}
 }

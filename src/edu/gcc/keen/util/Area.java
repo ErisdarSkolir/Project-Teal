@@ -90,19 +90,6 @@ public class Area
 			object.onCollideY(collidingObjects);
 	}
 
-	public boolean stillColliding(GameObject object, List<GameObject> collidingObjects)
-	{
-		for (GameObject object2 : collidingObjects)
-		{
-			if (BoundingBox.doIntersect(object, object2))
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
-
 	public void addObject(GameObject object)
 	{
 		object.setArea(this);
