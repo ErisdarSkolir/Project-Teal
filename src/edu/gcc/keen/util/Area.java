@@ -64,7 +64,7 @@ public class Area
 
 		for (GameObject object2 : objects)
 		{
-			if (object != object2 && object2.canCollide() && BoundingBox.doIntersect(object, object2))
+			if (object != object2 && BoundingBox.isIntersecting(object, object2))
 			{
 				collidingObjects.add(object2);
 			}
@@ -80,7 +80,7 @@ public class Area
 
 		for (GameObject object2 : objects)
 		{
-			if (object != object2 && object2.canCollide() && BoundingBox.doIntersect(object, object2))
+			if (object != object2 && BoundingBox.isIntersecting(object, object2))
 			{
 				collidingObjects.add(object2);
 			}

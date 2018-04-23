@@ -32,6 +32,7 @@ public class Level extends GameState
 
 	private List<Entity> entities = new ArrayList<>();
 	private List<Tile> tiles = new ArrayList<>();
+	private List<Tile> background = new ArrayList<>();
 	private List<Item> items = new ArrayList<>();
 
 	private List<GameObject> gameObjects = new ArrayList<>();
@@ -44,7 +45,7 @@ public class Level extends GameState
 	public Level(String levelName)
 	{
 		super();
-		tiles.addAll(loadFromFile(levelName));
+		loadFromFile(levelName);
 
 		keen = new Keen(new Vector3f(0.0f, 6f, 0.0f));
 
@@ -91,7 +92,7 @@ public class Level extends GameState
 	@Override
 	public void render(MasterRenderer renderer)
 	{
-		renderer.render(keen, entities, tiles, items, camera);
+		renderer.render(keen, entities, tiles, background, items, camera);
 	}
 
 	/**
@@ -99,10 +100,8 @@ public class Level extends GameState
 	 * 
 	 * @param filename
 	 */
-	private List<Tile> loadFromFile(String levelName)
+	private void loadFromFile(String levelName)
 	{
-		List<Tile> tmpList = new ArrayList<>();
-
 		try (Scanner scanner = new Scanner(new File("res/levels/" + levelName + "_foreground.csv")))
 		{
 			scanner.useDelimiter(",|\n");
@@ -114,7 +113,12 @@ public class Level extends GameState
 					int id = scanner.nextInt();
 
 					if (id != -1)
-						tmpList.add(TileCreator.createTile(id, new Vector2f(2.0f * column, -(2.0f * row))));
+					{
+						Tile tile = TileCreator.createTileWithData(id, new Vector2f(2.0f * column, -(2.0f * row)));
+
+						if (tile != null)
+							tiles.add(tile);
+					}
 				}
 
 				scanner.nextLine();
@@ -125,6 +129,26 @@ public class Level extends GameState
 			e.printStackTrace();
 		}
 
-		return tmpList;
+		try (Scanner scanner = new Scanner(new File("res/levels/" + levelName + "_background.csv")))
+		{
+			scanner.useDelimiter(",|\n");
+
+			for (int row = 0; scanner.hasNextLine(); row++)
+			{
+				for (int column = 0; scanner.hasNextInt(); column++)
+				{
+					int id = scanner.nextInt();
+
+					if (id != -1)
+						background.add(new Tile(id, 18, 84, new Vector3f(2.0f * column, -(2.0f * row), -0.99f)));
+				}
+
+				scanner.nextLine();
+			}
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }

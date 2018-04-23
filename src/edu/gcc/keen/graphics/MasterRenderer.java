@@ -54,7 +54,7 @@ public class MasterRenderer
 	 * @param tiles
 	 * @param items
 	 */
-	public void render(Keen keen, List<Entity> entities, List<Tile> tiles, List<Item> items, Camera camera)
+	public void render(Keen keen, List<Entity> entities, List<Tile> tiles, List<Tile> background, List<Item> items, Camera camera)
 	{
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
@@ -64,9 +64,11 @@ public class MasterRenderer
 		GL30.glBindVertexArray(quad.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
 
-		drawObjects(textures.get("tiles").getID(), tiles);
-		drawObjects(textures.get("enemies").getID(), entities);
 		drawObject(textures.get("keen").getID(), keen);
+		// TODO draw items
+		drawObjects(textures.get("enemies").getID(), entities);
+		drawObjects(textures.get("tiles").getID(), tiles);
+		drawObjects(textures.get("background").getID(), background);
 
 		GL20.glDisableVertexAttribArray(0);
 

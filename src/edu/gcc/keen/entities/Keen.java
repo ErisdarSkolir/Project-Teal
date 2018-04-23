@@ -9,6 +9,7 @@ import org.lwjgl.glfw.GLFW;
 import edu.gcc.keen.animations.KeenAnimation;
 import edu.gcc.keen.graphics.Texture;
 import edu.gcc.keen.input.Input;
+import edu.gcc.keen.tiles.Tile;
 import edu.gcc.keen.util.BoundingBox;
 import edu.gcc.keen.util.GameObject;
 
@@ -25,6 +26,7 @@ public class Keen extends Entity
 	private boolean jumping = false;
 	private boolean hanging = false;
 	private boolean onGround = false;
+	private boolean onPole = false;
 	private boolean wallLeft = false;
 	private boolean wallRight = false;
 
@@ -60,17 +62,13 @@ public class Keen extends Entity
 		if (Input.isKeyDown(GLFW.GLFW_KEY_R))
 			position = new Vector3f(0.0f, 6f, 0.0f);
 
-		if (Input.isKeyDown(GLFW.GLFW_KEY_LEFT) && !wallLeft)
+		if (Input.isKeyDown(GLFW.GLFW_KEY_LEFT) && !onPole)
 		{
-			wallRight = false;
-
 			horizontalVelocity = -0.5f;
 			setAnimation(KeenAnimation.WALK_LEFT);
 		}
-		else if (Input.isKeyDown(GLFW.GLFW_KEY_RIGHT) && !wallRight)
+		else if (Input.isKeyDown(GLFW.GLFW_KEY_RIGHT) && !onPole)
 		{
-			wallLeft = false;
-
 			horizontalVelocity = 0.5f;
 			setAnimation(KeenAnimation.WALK_RIGHT);
 		}
@@ -82,9 +80,10 @@ public class Keen extends Entity
 
 		if (Input.isKeyDown(GLFW.GLFW_KEY_LEFT_CONTROL))
 		{
-			if (onGround)
+			if (onGround || onPole)
 			{
 				jumping = true;
+				onPole = false;
 				onGround = false;
 				verticalVelocity = 1.0f;
 			}
@@ -101,8 +100,14 @@ public class Keen extends Entity
 		else
 			jumping = false;
 
-		if (!jumping && verticalVelocity > -1.0f)
+		if (!jumping && verticalVelocity > -1.0f && !onPole)
 			verticalVelocity += -0.4f;
+		else if (onPole && Input.isKeyDown(GLFW.GLFW_KEY_UP))
+			verticalVelocity = 0.1f;
+		else if (onPole && Input.isKeyDown(GLFW.GLFW_KEY_DOWN))
+			verticalVelocity = -0.1f;
+		else if (onPole)
+			verticalVelocity = 0.0f;
 	}
 
 	@Override
@@ -136,20 +141,19 @@ public class Keen extends Entity
 	@Override
 	public void onCollideX(List<GameObject> collidingObjects)
 	{
-		if (collidingObjects.isEmpty())
-			return;
-
-		float smallest = BoundingBox.minX(this, collidingObjects.get(0));
-
 		for (GameObject object : collidingObjects)
 		{
-			float tmp = BoundingBox.minX(this, object);
+			if (object instanceof Tile)
+			{
+				Tile tile = (Tile) object;
 
-			if (tmp < smallest)
-				smallest = tmp;
+				if (tile.canCollide())
+				{
+					this.position.add(BoundingBox.minX(this, tile), 0.0f, 0.0f);
+					break;
+				}
+			}
 		}
-
-		this.position.add(smallest, 0.0f, 0.0f);
 
 		horizontalVelocity = 0.0f;
 	}
@@ -157,23 +161,37 @@ public class Keen extends Entity
 	@Override
 	public void onCollideY(List<GameObject> collidingObjects)
 	{
-		if (collidingObjects.isEmpty())
-			return;
-
-		float smallest = BoundingBox.minY(this, collidingObjects.get(0));
-
 		for (GameObject object : collidingObjects)
 		{
-			float tmp = BoundingBox.minY(this, object);
+			if (object instanceof Tile)
+			{
+				Tile tile = (Tile) object;
 
-			if (tmp < smallest)
-				smallest = tmp;
+				if (!tile.isOneWay() && tile.canCollide())
+				{
+					this.position.add(0.0f, BoundingBox.minY(this, tile), 0.0f);
+
+					verticalVelocity = 0.0f;
+					jumpTick = 0;
+					onGround = true;
+
+					break;
+				}
+				else if (tile.isPole() && (Input.isKeyDown(GLFW.GLFW_KEY_UP) || Input.isKeyDown(GLFW.GLFW_KEY_DOWN)))
+				{
+					onPole = true;
+				}
+				else if (!onPole && tile.isOneWay() && position.y > tile.getPosition().y && verticalVelocity < 0f)
+				{
+					this.position.add(0.0f, BoundingBox.minY(this, tile), 0.0f);
+
+					verticalVelocity = 0.0f;
+					jumpTick = 0;
+					onGround = true;
+
+					break;
+				}
+			}
 		}
-
-		this.position.add(0.0f, smallest, 0.0f);
-
-		verticalVelocity = 0.0f;
-		jumpTick = 0;
-		onGround = true;
 	}
 }

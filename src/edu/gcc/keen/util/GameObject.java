@@ -56,6 +56,11 @@ public abstract class GameObject
 		return new Vector3f(position);
 	}
 
+	public void setPosition(Vector3f position)
+	{
+		this.position = position;
+	}
+
 	public void setArea(Area area)
 	{
 		this.area = area;

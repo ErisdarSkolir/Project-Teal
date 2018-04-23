@@ -13,12 +13,15 @@ public class TileCreator
 {
 	private static Map<Integer, boolean[]> tileData = new HashMap<>();
 
-	public static Tile createTile(int id, Vector2f position)
+	public static Tile createTileWithData(int id, Vector2f position)
 	{
 		boolean[] data = tileData.get(id);
 
 		if (data == null)
+		{
 			System.out.println("No data for " + id);
+			return null;
+		}
 
 		return new Tile(id, data[0], data[1], data[2], data[3], new Vector3f(position, data[4] ? 0.9f : -0.9f));
 	}

@@ -23,9 +23,9 @@ public class Tile extends GameObject
 	private boolean oneWay;
 	private boolean hangable;
 
-	public Tile(int id, Vector3f position, Vector2f scale)
+	public Tile(int id, int textureColumns, int textureRows, Vector3f position)
 	{
-		super(new Texture("tilesheet", 18, 165, id), position, scale);
+		super(new Texture("tilesheet", textureColumns, textureRows, id), position, new Vector2f(1.0f, 1.0f));
 		this.id = id;
 	}
 
@@ -60,5 +60,15 @@ public class Tile extends GameObject
 	public boolean isCollidable()
 	{
 		return collidable;
+	}
+
+	public boolean isOneWay()
+	{
+		return oneWay;
+	}
+
+	public boolean isPole()
+	{
+		return pole;
 	}
 }
