@@ -68,7 +68,7 @@ public class MasterRenderer
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textures.get("tiles").getID());
 		for (Tile tile : tiles)
 		{
-			shader.loadTransformationMatrix(createTransformationMatrix(new Vector3f(tile.getPosition(), tile.getRenderOrder() ? 0.5f : -0.5f), tile.getScale()));
+			shader.loadTransformationMatrix(createTransformationMatrix(tile.getPosition(), tile.getScale()));
 			shader.loadTextureAtlasInformation(tile.getTexture().getTextureRowsAndColumns(), tile.getTexture().getTextureOffset());
 
 			GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
@@ -266,14 +266,6 @@ public class MasterRenderer
 	 * @param scale
 	 * @return
 	 */
-	public Matrix4f createTransformationMatrix(Vector2f translation, Vector2f scale)
-	{
-		Matrix4f matrix = new Matrix4f().identity();
-		matrix.translate(new Vector3f(translation, 0.1f));
-		matrix.scale(new Vector3f(scale, 0));
-		return matrix;
-	}
-
 	public Matrix4f createTransformationMatrix(Vector3f translation, Vector2f scale)
 	{
 		Matrix4f matrix = new Matrix4f().identity();

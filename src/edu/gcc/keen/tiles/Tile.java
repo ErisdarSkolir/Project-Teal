@@ -3,6 +3,7 @@ package edu.gcc.keen.tiles;
 import java.util.List;
 
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 import edu.gcc.keen.graphics.Texture;
 import edu.gcc.keen.util.GameObject;
@@ -21,15 +22,14 @@ public class Tile extends GameObject
 	private boolean pole;
 	private boolean oneWay;
 	private boolean hangable;
-	private boolean renderOrder;
 
-	public Tile(int id, Vector2f position, Vector2f scale)
+	public Tile(int id, Vector3f position, Vector2f scale)
 	{
 		super(new Texture("tilesheet", 18, 165, id), position, scale);
 		this.id = id;
 	}
 
-	public Tile(int id, boolean pole, boolean oneWay, boolean collidable, boolean hangable, boolean renderOrder, Vector2f position)
+	public Tile(int id, boolean pole, boolean oneWay, boolean collidable, boolean hangable, Vector3f position)
 	{
 		super(new Texture("tilesheet", 18, 165, id), position, new Vector2f(1.0f, 1.0f));
 		this.id = id;
@@ -37,7 +37,6 @@ public class Tile extends GameObject
 		this.oneWay = oneWay;
 		this.collidable = collidable;
 		this.hangable = hangable;
-		this.renderOrder = renderOrder;
 	}
 
 	@Override
@@ -61,10 +60,5 @@ public class Tile extends GameObject
 	public boolean isCollidable()
 	{
 		return collidable;
-	}
-
-	public boolean getRenderOrder()
-	{
-		return renderOrder;
 	}
 }

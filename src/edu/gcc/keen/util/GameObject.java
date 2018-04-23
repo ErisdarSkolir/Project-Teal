@@ -3,6 +3,7 @@ package edu.gcc.keen.util;
 import java.util.List;
 
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 import edu.gcc.keen.graphics.Texture;
 
@@ -14,7 +15,7 @@ import edu.gcc.keen.graphics.Texture;
  */
 public abstract class GameObject
 {
-	protected Vector2f position;
+	protected Vector3f position;
 	protected Vector2f scale = new Vector2f(1.0f, 1.0f);
 	protected Vector2f aabbOffset = new Vector2f(0.0f, 0.0f);
 	protected Texture texture;
@@ -29,10 +30,10 @@ public abstract class GameObject
 	 * @param texture
 	 * @param position
 	 */
-	public GameObject(Texture texture, Vector2f position, Vector2f scale)
+	public GameObject(Texture texture, Vector3f position, Vector2f scale)
 	{
 		this.texture = texture;
-		this.position = new Vector2f(position);
+		this.position = new Vector3f(position);
 		this.scale = scale;
 	}
 
@@ -50,9 +51,9 @@ public abstract class GameObject
 
 	public abstract void onCollideY(List<GameObject> collidingObjects);
 
-	public Vector2f getPosition()
+	public Vector3f getPosition()
 	{
-		return new Vector2f(position);
+		return new Vector3f(position);
 	}
 
 	public void setArea(Area area)

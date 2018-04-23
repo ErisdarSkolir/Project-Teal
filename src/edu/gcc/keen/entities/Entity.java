@@ -1,6 +1,7 @@
 package edu.gcc.keen.entities;
 
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 import edu.gcc.keen.graphics.Texture;
 import edu.gcc.keen.util.GameObject;
@@ -18,7 +19,7 @@ public abstract class Entity extends GameObject
 	/**
 	 * Constructor
 	 */
-	public Entity(Texture texture, Vector2f position, Vector2f scale)
+	public Entity(Texture texture, Vector3f position, Vector2f scale)
 	{
 		super(texture, position, scale);
 	}

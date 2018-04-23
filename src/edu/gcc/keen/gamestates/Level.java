@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import edu.gcc.keen.entities.Entity;
@@ -45,7 +46,7 @@ public class Level extends GameState
 		super();
 		tiles.addAll(loadFromFile(levelName));
 
-		keen = new Keen(new Vector2f(0.0f, 6f));
+		keen = new Keen(new Vector3f(0.0f, 6f, 0.0f));
 
 		camera.bindObject(keen);
 

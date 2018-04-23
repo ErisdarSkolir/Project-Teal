@@ -1,6 +1,6 @@
 package edu.gcc.keen.graphics;
 
-import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 import edu.gcc.keen.util.GameObject;
 
@@ -12,7 +12,7 @@ import edu.gcc.keen.util.GameObject;
  */
 public class Camera
 {
-	private Vector2f position = new Vector2f();
+	private Vector3f position = new Vector3f();
 	private GameObject boundObject;
 
 	/**
@@ -49,7 +49,7 @@ public class Camera
 		this.boundObject = object;
 	}
 
-	public Vector2f getPosition()
+	public Vector3f getPosition()
 	{
 		return position;
 	}

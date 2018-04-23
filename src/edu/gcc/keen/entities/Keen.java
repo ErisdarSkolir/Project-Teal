@@ -3,6 +3,7 @@ package edu.gcc.keen.entities;
 import java.util.List;
 
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
 import edu.gcc.keen.animations.KeenAnimation;
@@ -34,7 +35,7 @@ public class Keen extends Entity
 	private float verticalVelocity;
 	private float horizontalVelocity;
 
-	public Keen(Vector2f position)
+	public Keen(Vector3f position)
 	{
 		super(new Texture("keen_spritesheet", 11, 7, 0), position, new Vector2f(2.0f, 2.5f));
 
@@ -47,17 +48,17 @@ public class Keen extends Entity
 	{
 		if (horizontalVelocity != 0.0f || verticalVelocity != 0.0f)
 		{
-			position.add(0.0f, verticalVelocity);
+			position.add(0.0f, verticalVelocity, 0.0f);
 			area.checkCollisionY(this);
 
-			position.add(horizontalVelocity, 0.0f);
+			position.add(horizontalVelocity, 0.0f, 0.0f);
 			area.checkCollisionX(this);
 
 			area.setShouldUpdate(true);
 		}
 
 		if (Input.isKeyDown(GLFW.GLFW_KEY_R))
-			position = new Vector2f(0.0f, 6f);
+			position = new Vector3f(0.0f, 6f, 0.0f);
 
 		if (Input.isKeyDown(GLFW.GLFW_KEY_LEFT) && !wallLeft)
 		{
@@ -148,7 +149,7 @@ public class Keen extends Entity
 				smallest = tmp;
 		}
 
-		this.position.add(smallest, 0.0f);
+		this.position.add(smallest, 0.0f, 0.0f);
 
 		horizontalVelocity = 0.0f;
 	}
@@ -169,7 +170,7 @@ public class Keen extends Entity
 				smallest = tmp;
 		}
 
-		this.position.add(0.0f, smallest);
+		this.position.add(0.0f, smallest, 0.0f);
 
 		verticalVelocity = 0.0f;
 		jumpTick = 0;

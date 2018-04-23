@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 public class TileCreator
 {
@@ -19,7 +20,7 @@ public class TileCreator
 		if (data == null)
 			System.out.println("No data for " + id);
 
-		return new Tile(id, data[0], data[1], data[2], data[3], data[4], position);
+		return new Tile(id, data[0], data[1], data[2], data[3], new Vector3f(position, data[4] ? 0.9f : -0.9f));
 	}
 
 	public static void loadData(String path)

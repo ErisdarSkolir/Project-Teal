@@ -1,6 +1,7 @@
 package edu.gcc.keen.util;
 
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 public class BoundingBox
 {
@@ -11,9 +12,9 @@ public class BoundingBox
 
 	public static boolean doIntersect(GameObject object1, GameObject object2)
 	{
-		Vector2f position1 = object1.getPosition();
+		Vector3f position1 = object1.getPosition();
 		Vector2f scale1 = object1.getScale().mul(2.0f).add(object1.aabbOffset);
-		Vector2f position2 = object2.getPosition();
+		Vector3f position2 = object2.getPosition();
 		Vector2f scale2 = object2.getScale().mul(2.0f).add(object2.aabbOffset);
 
 		return (Math.abs(position1.x - position2.x) * 2 < (scale1.x + scale2.x) && Math.abs(position1.y - position2.y) * 2 < (scale1.y + scale2.y));
@@ -21,9 +22,9 @@ public class BoundingBox
 
 	public static float minX(GameObject object1, GameObject object2)
 	{
-		Vector2f position1 = object1.getPosition();
+		Vector3f position1 = object1.getPosition();
 		Vector2f scale1 = object1.getScale().mul(2.0f).add(object1.aabbOffset);
-		Vector2f position2 = object2.getPosition();
+		Vector3f position2 = object2.getPosition();
 		Vector2f scale2 = object2.getScale().mul(2.0f).add(object2.aabbOffset);
 
 		float amountX = Math.min(Math.abs((position1.x - scale1.x / 2) - (position2.x + scale2.x / 2)), Math.abs((position1.x + scale1.x / 2) - (position2.x - scale2.x / 2)));
@@ -33,9 +34,9 @@ public class BoundingBox
 
 	public static float minY(GameObject object1, GameObject object2)
 	{
-		Vector2f position1 = object1.getPosition();
+		Vector3f position1 = object1.getPosition();
 		Vector2f scale1 = object1.getScale().mul(2.0f).add(object1.aabbOffset);
-		Vector2f position2 = object2.getPosition();
+		Vector3f position2 = object2.getPosition();
 		Vector2f scale2 = object2.getScale().mul(2.0f).add(object2.aabbOffset);
 
 		float amountY = Math.min(Math.abs((position1.y + scale1.y / 2f) - (position2.y - scale2.y / 2f)), Math.abs((position1.y - scale1.y / 2f) - (position2.y + scale2.y / 2f)));
