@@ -41,7 +41,7 @@ public class Keen extends Entity
 	{
 		super(new Texture("keen_spritesheet", 11, 7, 0), position, new Vector2f(2.0f, 2.5f));
 
-		this.aabbOffset = new Vector2f(-2.5f, 0.0f);
+		this.aabbOffset = new Vector2f(-2.5f, -1.0f);
 
 	}
 
@@ -171,9 +171,12 @@ public class Keen extends Entity
 				{
 					this.position.add(0.0f, BoundingBox.minY(this, tile), 0.0f);
 
-					verticalVelocity = 0.0f;
-					jumpTick = 0;
-					onGround = true;
+					if (verticalVelocity < 0.0f)
+					{
+						verticalVelocity = 0.0f;
+						jumpTick = 0;
+						onGround = true;
+					}
 
 					break;
 				}
@@ -186,9 +189,12 @@ public class Keen extends Entity
 				{
 					this.position.add(0.0f, BoundingBox.minY(this, tile), 0.0f);
 
-					verticalVelocity = 0.0f;
-					jumpTick = 0;
-					onGround = true;
+					if (verticalVelocity < 0.0f)
+					{
+						verticalVelocity = 0.0f;
+						jumpTick = 0;
+						onGround = true;
+					}
 
 					break;
 				}

@@ -25,7 +25,7 @@ import edu.gcc.keen.entities.Keen;
 import edu.gcc.keen.input.Input;
 import edu.gcc.keen.item.Item;
 import edu.gcc.keen.tiles.Tile;
-import edu.gcc.keen.tiles.TileCreator;
+import edu.gcc.keen.tiles.GameObjectCreator;
 import edu.gcc.keen.util.BufferUtils;
 import edu.gcc.keen.util.GameObject;
 
@@ -143,7 +143,7 @@ public class MasterRenderer
 		float[] positions = { -1, 1, -1, -1, 1, 1, 1, -1 };
 		quad = loadToVAO(positions);
 
-		TileCreator.loadData("src/edu/gcc/keen/tiles/tiledata.dat");
+		GameObjectCreator.init();
 
 		return true;
 	}

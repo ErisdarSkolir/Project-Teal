@@ -14,8 +14,8 @@ import edu.gcc.keen.entities.Entity;
 import edu.gcc.keen.entities.Keen;
 import edu.gcc.keen.graphics.MasterRenderer;
 import edu.gcc.keen.item.Item;
+import edu.gcc.keen.tiles.GameObjectCreator;
 import edu.gcc.keen.tiles.Tile;
-import edu.gcc.keen.tiles.TileCreator;
 import edu.gcc.keen.util.Area;
 import edu.gcc.keen.util.GameObject;
 
@@ -104,9 +104,9 @@ public class Level extends GameState
 				Scanner background = new Scanner(new File("res/levels/" + levelName + "_background.csv"));
 				Scanner infoplane = new Scanner(new File("res/levels/" + levelName + "_infoplane.csv")))
 		{
-			foreground.useDelimiter(",|\n");
-			background.useDelimiter(",|\n");
-			infoplane.useDelimiter(",|\n");
+			foreground.useDelimiter(",");
+			background.useDelimiter(",");
+			infoplane.useDelimiter(",");
 
 			for (int row = 0; foreground.hasNextLine(); row++)
 			{
@@ -118,7 +118,7 @@ public class Level extends GameState
 
 					if (foregroundID != -1)
 					{
-						Tile tile = TileCreator.createTileWithData(foregroundID, new Vector2f(2.0f * column, -(2.0f * row)));
+						Tile tile = GameObjectCreator.createTileWithData(foregroundID, new Vector2f(2.0f * column, -(2.0f * row)));
 
 						if (tile != null)
 							tiles.add(tile);
@@ -127,7 +127,14 @@ public class Level extends GameState
 					if (backgroundID != -1)
 						backgroundTiles.add(new Tile(backgroundID, 18, 84, new Vector3f(2.0f * column, -(2.0f * row), -0.99f)));
 
-					if (infoplaneID != 2)
+					if (infoplaneID != -1 && infoplaneID != 2)
+					{
+						Entity entity = GameObjectCreator.createEnemy(infoplaneID, new Vector2f(column, -row + 2.0f));
+
+						if (entity != null)
+							entities.add(entity);
+					}
+					else if (infoplaneID == 2)
 					{
 						keen = new Keen(new Vector3f(column, -row + 2.0f, 0.0f));
 					}
