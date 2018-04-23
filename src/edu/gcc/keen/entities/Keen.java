@@ -25,6 +25,8 @@ public class Keen extends Entity
 	private boolean jumping = false;
 	private boolean hanging = false;
 	private boolean onGround = false;
+	private boolean wallLeft = false;
+	private boolean wallRight = false;
 
 	private int animationIndex;
 	private int tick = 10;
@@ -36,6 +38,8 @@ public class Keen extends Entity
 	public Keen(Vector2f position)
 	{
 		super(new Texture("keen_spritesheet", 11, 7, 0), position, new Vector2f(2.0f, 2.5f));
+
+		this.aabbOffset = new Vector2f(-2.0f, 0.0f);
 	}
 
 	@Override
@@ -51,13 +55,17 @@ public class Keen extends Entity
 		if (Input.isKeyDown(GLFW.GLFW_KEY_R))
 			position = new Vector2f(0.0f, 6f);
 
-		if (Input.isKeyDown(GLFW.GLFW_KEY_LEFT))
+		if (Input.isKeyDown(GLFW.GLFW_KEY_LEFT) && !wallLeft)
 		{
+			wallRight = false;
+
 			horizontalVelocity = -0.5f;
 			setAnimation(KeenAnimation.WALK_LEFT);
 		}
-		else if (Input.isKeyDown(GLFW.GLFW_KEY_RIGHT))
+		else if (Input.isKeyDown(GLFW.GLFW_KEY_RIGHT) && !wallRight)
 		{
+			wallLeft = false;
+
 			horizontalVelocity = 0.5f;
 			setAnimation(KeenAnimation.WALK_RIGHT);
 		}
@@ -172,6 +180,11 @@ public class Keen extends Entity
 		{
 			this.position.add(smallestX, 0.0f);
 
+			if (smallestX > 0)
+				wallLeft = true;
+			else if (smallestX < 0)
+				wallRight = true;
+
 			if (area.stillColliding(this, collidingObjects))
 				this.position.add(0.0f, smallestY);
 
@@ -184,11 +197,11 @@ public class Keen extends Entity
 		if (numbers.isEmpty())
 			return 0f;
 
-		float smallest = Math.abs(numbers.get(0));
+		float smallest = numbers.get(0);
 
 		for (Float number : numbers)
 		{
-			if (Math.abs(number) < smallest)
+			if (number < smallest)
 				smallest = number;
 		}
 

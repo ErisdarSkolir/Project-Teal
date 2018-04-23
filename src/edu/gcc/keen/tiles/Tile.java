@@ -31,6 +31,7 @@ public class Tile extends GameObject
 	public Tile(int id, boolean pole, boolean oneWay, boolean collidable, boolean hangable, Vector2f position)
 	{
 		super(new Texture("tilesheet", 18, 165, id), position, new Vector2f(1.0f, 1.0f));
+		this.aabbOffset = new Vector2f(0.001f, 0.0f);
 		this.id = id;
 		this.pole = pole;
 		this.oneWay = oneWay;

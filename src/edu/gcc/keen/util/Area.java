@@ -78,7 +78,7 @@ public class Area
 	{
 		for (GameObject object2 : collidingObjects)
 		{
-			if (object != object2 && BoundingBox.doIntersect(object, object2))
+			if (BoundingBox.doIntersect(object, object2))
 			{
 				return true;
 			}

@@ -16,6 +16,7 @@ public abstract class GameObject
 {
 	protected Vector2f position;
 	protected Vector2f scale = new Vector2f(1.0f, 1.0f);
+	protected Vector2f aabbOffset = new Vector2f(0.0f, 0.0f);
 	protected Texture texture;
 	protected Area area;
 
