@@ -27,6 +27,7 @@ import edu.gcc.keen.item.Item;
 import edu.gcc.keen.tiles.Tile;
 import edu.gcc.keen.tiles.TileCreator;
 import edu.gcc.keen.util.BufferUtils;
+import edu.gcc.keen.util.GameObject;
 
 /**
  * The master renderer handles window creation and listeners.
@@ -58,57 +59,49 @@ public class MasterRenderer
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
 		shader.enable();
+		shader.loadMatrix("viewMatrix", createViewMatrix(camera));
+
 		GL30.glBindVertexArray(quad.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
 
-		GL13.glActiveTexture(GL13.GL_TEXTURE0);
+		drawObjects(textures.get("tiles").getID(), tiles);
+		drawObjects(textures.get("enemies").getID(), entities);
+		drawObject(textures.get("keen").getID(), keen);
 
-		shader.loadMatrix("viewMatrix", createViewMatrix(camera));
-
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textures.get("tiles").getID());
-		for (Tile tile : tiles)
-		{
-			shader.loadTransformationMatrix(createTransformationMatrix(tile.getPosition(), tile.getScale()));
-			shader.loadTextureAtlasInformation(tile.getTexture().getTextureRowsAndColumns(), tile.getTexture().getTextureOffset());
-
-			GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
-		}
-
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textures.get("enemies").getID());
-		for (Entity entity : entities)
-		{
-			shader.loadTransformationMatrix(createTransformationMatrix(entity.getPosition(), entity.getScale()));
-			shader.loadTextureAtlasInformation(entity.getTexture().getTextureRowsAndColumns(), entity.getTexture().getTextureOffset());
-
-			GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
-		}
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textures.get("keen").getID());
-		for (Item item : items)
-		{
-			shader.loadTransformationMatrix(createTransformationMatrix(item.getPosition(), new Vector2f(1.0f, 1.0f)));
-			shader.loadTextureAtlasInformation(item.getTexture().getTextureRowsAndColumns(), item.getTexture().getTextureOffset());
-
-			GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
-		}
-
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textures.get("keen").getID());
-
-		shader.loadTransformationMatrix(createTransformationMatrix(keen.getPosition(), keen.getScale()));
-		shader.loadTextureAtlasInformation(keen.getTexture().getTextureRowsAndColumns(), keen.getTexture().getTextureOffset());
-
-		GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
-
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 		GL20.glDisableVertexAttribArray(0);
-		shader.disable();
 
-		// TODO write rendering
+		shader.disable();
 
 		if (GLFW.glfwWindowShouldClose(window))
 			KeenMain.terminate();
 
 		GLFW.glfwSwapBuffers(window);
 		GLFW.glfwPollEvents();
+	}
+
+	public void drawObjects(int texture, List<? extends GameObject> objects)
+	{
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
+		for (GameObject object : objects)
+		{
+			shader.loadTransformationMatrix(createTransformationMatrix(object.getPosition(), object.getScale()));
+			shader.loadTextureAtlasInformation(object.getTexture().getTextureRowsAndColumns(), object.getTexture().getTextureOffset());
+
+			GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
+		}
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+	}
+
+	public void drawObject(int texture, GameObject object)
+	{
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
+
+		shader.loadTransformationMatrix(createTransformationMatrix(object.getPosition(), object.getScale()));
+		shader.loadTextureAtlasInformation(object.getTexture().getTextureRowsAndColumns(), object.getTexture().getTextureOffset());
+
+		GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
+
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 	}
 
 	/**
@@ -132,6 +125,7 @@ public class MasterRenderer
 		GL.createCapabilities();
 		GL11.glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 
 		shader = new TwoDimensionalShader();
 
@@ -142,7 +136,7 @@ public class MasterRenderer
 		textures.put("tiles", new Texture("tilesheet"));
 		textures.put("keen", new Texture("keen_spritesheet"));
 		textures.put("enemies", new Texture("enemy"));
-		// textures.put("background", new Texture("tilesheet"));
+		textures.put("background", new Texture("background"));
 
 		float[] positions = { -1, 1, -1, -1, 1, 1, 1, -1 };
 		quad = loadToVAO(positions);
