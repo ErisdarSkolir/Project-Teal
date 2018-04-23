@@ -103,9 +103,9 @@ public class Keen extends Entity
 		if (!jumping && verticalVelocity > -1.0f && !onPole)
 			verticalVelocity += -0.4f;
 		else if (onPole && Input.isKeyDown(GLFW.GLFW_KEY_UP))
-			verticalVelocity = 0.1f;
+			verticalVelocity = 0.2f;
 		else if (onPole && Input.isKeyDown(GLFW.GLFW_KEY_DOWN))
-			verticalVelocity = -0.1f;
+			verticalVelocity = -0.2f;
 		else if (onPole)
 			verticalVelocity = 0.0f;
 	}
@@ -180,6 +180,7 @@ public class Keen extends Entity
 				else if (tile.isPole() && (Input.isKeyDown(GLFW.GLFW_KEY_UP) || Input.isKeyDown(GLFW.GLFW_KEY_DOWN)))
 				{
 					onPole = true;
+					this.position.x = tile.getPosition().x;
 				}
 				else if (!onPole && tile.isOneWay() && position.y > tile.getPosition().y && verticalVelocity < 0f)
 				{

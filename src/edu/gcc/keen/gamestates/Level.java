@@ -32,7 +32,7 @@ public class Level extends GameState
 
 	private List<Entity> entities = new ArrayList<>();
 	private List<Tile> tiles = new ArrayList<>();
-	private List<Tile> background = new ArrayList<>();
+	private List<Tile> backgroundTiles = new ArrayList<>();
 	private List<Item> items = new ArrayList<>();
 
 	private List<GameObject> gameObjects = new ArrayList<>();
@@ -46,8 +46,6 @@ public class Level extends GameState
 	{
 		super();
 		loadFromFile(levelName);
-
-		keen = new Keen(new Vector3f(0.0f, 6f, 0.0f));
 
 		camera.bindObject(keen);
 
@@ -92,7 +90,7 @@ public class Level extends GameState
 	@Override
 	public void render(MasterRenderer renderer)
 	{
-		renderer.render(keen, entities, tiles, background, items, camera);
+		renderer.render(keen, entities, tiles, backgroundTiles, items, camera);
 	}
 
 	/**
@@ -102,48 +100,42 @@ public class Level extends GameState
 	 */
 	private void loadFromFile(String levelName)
 	{
-		try (Scanner scanner = new Scanner(new File("res/levels/" + levelName + "_foreground.csv")))
+		try (Scanner foreground = new Scanner(new File("res/levels/" + levelName + "_foreground.csv"));
+				Scanner background = new Scanner(new File("res/levels/" + levelName + "_background.csv"));
+				Scanner infoplane = new Scanner(new File("res/levels/" + levelName + "_infoplane.csv")))
 		{
-			scanner.useDelimiter(",|\n");
+			foreground.useDelimiter(",|\n");
+			background.useDelimiter(",|\n");
+			infoplane.useDelimiter(",|\n");
 
-			for (int row = 0; scanner.hasNextLine(); row++)
+			for (int row = 0; foreground.hasNextLine(); row++)
 			{
-				for (int column = 0; scanner.hasNextInt(); column++)
+				for (int column = 0; foreground.hasNextInt(); column++)
 				{
-					int id = scanner.nextInt();
+					int foregroundID = foreground.nextInt();
+					int backgroundID = background.nextInt();
+					int infoplaneID = infoplane.nextInt();
 
-					if (id != -1)
+					if (foregroundID != -1)
 					{
-						Tile tile = TileCreator.createTileWithData(id, new Vector2f(2.0f * column, -(2.0f * row)));
+						Tile tile = TileCreator.createTileWithData(foregroundID, new Vector2f(2.0f * column, -(2.0f * row)));
 
 						if (tile != null)
 							tiles.add(tile);
 					}
+
+					if (backgroundID != -1)
+						backgroundTiles.add(new Tile(backgroundID, 18, 84, new Vector3f(2.0f * column, -(2.0f * row), -0.99f)));
+
+					if (infoplaneID != 2)
+					{
+						keen = new Keen(new Vector3f(column, -row + 2.0f, 0.0f));
+					}
 				}
 
-				scanner.nextLine();
-			}
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-
-		try (Scanner scanner = new Scanner(new File("res/levels/" + levelName + "_background.csv")))
-		{
-			scanner.useDelimiter(",|\n");
-
-			for (int row = 0; scanner.hasNextLine(); row++)
-			{
-				for (int column = 0; scanner.hasNextInt(); column++)
-				{
-					int id = scanner.nextInt();
-
-					if (id != -1)
-						background.add(new Tile(id, 18, 84, new Vector3f(2.0f * column, -(2.0f * row), -0.99f)));
-				}
-
-				scanner.nextLine();
+				foreground.nextLine();
+				background.nextLine();
+				infoplane.nextLine();
 			}
 		}
 		catch (IOException e)
