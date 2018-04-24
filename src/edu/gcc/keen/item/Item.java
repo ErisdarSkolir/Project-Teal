@@ -1,11 +1,8 @@
 package edu.gcc.keen.item;
 
-import java.util.List;
-
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-import edu.gcc.keen.graphics.Texture;
 import edu.gcc.keen.util.GameObject;
 
 public class Item extends GameObject
@@ -18,9 +15,9 @@ public class Item extends GameObject
 	 * @param position
 	 * @param texture
 	 */
-	public Item(Texture texture, Vector3f position, Vector2f scale)
+	public Item(int texture, int columns, int rows, int index, Vector3f position, Vector2f scale)
 	{
-		super(texture, position, scale);
+		super(texture, columns, rows, index, position, scale);
 	}
 
 	/**
@@ -35,19 +32,5 @@ public class Item extends GameObject
 	public int getPointValue()
 	{
 		return pointValue;
-	}
-
-	@Override
-	public void onCollideX(List<GameObject> collidingObjects)
-	{
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onCollideY(List<GameObject> collidingObjects)
-	{
-		// TODO Auto-generated method stub
-
 	}
 }

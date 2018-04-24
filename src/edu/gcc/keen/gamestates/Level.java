@@ -13,6 +13,7 @@ import org.joml.Vector4f;
 import edu.gcc.keen.entities.Entity;
 import edu.gcc.keen.entities.Keen;
 import edu.gcc.keen.graphics.MasterRenderer;
+import edu.gcc.keen.graphics.Texture;
 import edu.gcc.keen.item.Item;
 import edu.gcc.keen.tiles.GameObjectCreator;
 import edu.gcc.keen.tiles.Tile;
@@ -62,7 +63,7 @@ public class Level extends GameState
 	{
 		keen.tick();
 
-		for (GameObject object : entities)
+		for (GameObject object : gameObjects)
 		{
 			object.tick();
 
@@ -85,7 +86,7 @@ public class Level extends GameState
 	@Override
 	public void render(MasterRenderer renderer)
 	{
-		renderer.render(keen, entities, tiles, backgroundTiles, items, camera);
+		renderer.render(keen, gameObjects, camera);
 	}
 
 	/**
@@ -120,7 +121,7 @@ public class Level extends GameState
 					}
 
 					if (backgroundID != -1)
-						gameObjects.add(new Tile(backgroundID, 18, 84, new Vector3f(2.0f * column, -(2.0f * row), -0.99f)));
+						gameObjects.add(new Tile(Texture.getTexture("background"), backgroundID, 18, 84, new Vector3f(2.0f * column, -(2.0f * row), -0.99f)));
 
 					if (infoplaneID != -1 && infoplaneID != 2)
 					{

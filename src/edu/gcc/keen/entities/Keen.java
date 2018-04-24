@@ -162,7 +162,7 @@ public class Keen extends Entity
 		{
 			if (object instanceof Item)
 			{
-				object.destroy();
+				// object.destroy();
 			}
 			else if (object instanceof Tile)
 			{

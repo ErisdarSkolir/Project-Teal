@@ -19,7 +19,7 @@ public class LittleAmpton extends Entity
 
 	public LittleAmpton(Vector3f position)
 	{
-		super(new Texture("enemy", 14, 10, 15), position, new Vector2f(1.625f, 1.625f));
+		super(Texture.getTexture("enemy"), 14, 10, 15, position, new Vector2f(1.625f, 1.625f));
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class LittleAmpton extends Entity
 			{
 				Tile tile = (Tile) object;
 
-				if (tile.canCollide())
+				if (tile.isCollidable())
 				{
 					this.position.add(BoundingBox.minX(this, tile), 0.0f, 0.0f);
 					direction = !direction;
@@ -81,7 +81,7 @@ public class LittleAmpton extends Entity
 			{
 				Tile tile = (Tile) object;
 
-				if (tile.canCollide())
+				if (tile.isCollidable())
 				{
 					this.position.add(0.0f, BoundingBox.minY(this, tile), 0.0f);
 					break;

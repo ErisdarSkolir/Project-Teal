@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.joml.Vector4f;
 
+import edu.gcc.keen.entities.Entity;
+
 /**
  * This class will help with collision detection. It will contain a list of
  * tiles and entities within it, so those entities only have to check collision
@@ -58,36 +60,36 @@ public class Area
 		}
 	}
 
-	public void checkCollisionX(GameObject object)
+	public void checkCollisionX(Entity entity)
 	{
 		List<GameObject> collidingObjects = new ArrayList<>();
 
 		for (GameObject object2 : objects)
 		{
-			if (object != object2 && BoundingBox.isIntersecting(object, object2))
+			if (entity != object2 && BoundingBox.isIntersecting(entity, object2))
 			{
 				collidingObjects.add(object2);
 			}
 		}
 
 		if (!collidingObjects.isEmpty())
-			object.onCollideX(collidingObjects);
+			entity.onCollideX(collidingObjects);
 	}
 
-	public void checkCollisionY(GameObject object)
+	public void checkCollisionY(Entity entity)
 	{
 		List<GameObject> collidingObjects = new ArrayList<>();
 
 		for (GameObject object2 : objects)
 		{
-			if (object != object2 && BoundingBox.isIntersecting(object, object2))
+			if (entity != object2 && BoundingBox.isIntersecting(entity, object2))
 			{
 				collidingObjects.add(object2);
 			}
 		}
 
 		if (!collidingObjects.isEmpty())
-			object.onCollideY(collidingObjects);
+			entity.onCollideY(collidingObjects);
 	}
 
 	public void addObject(GameObject object)

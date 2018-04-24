@@ -13,16 +13,16 @@ import edu.gcc.keen.util.GameObject;
  * @author DONMOYERLR17
  *
  */
-public abstract class Tile extends GameObject
+public class Tile extends GameObject
 {
 	private boolean pole;
 	private boolean oneWay;
 	private boolean collidable;
 	private boolean hangable;
 
-	public Tile(int index, int textureColumns, int textureRows, Vector3f position)
+	public Tile(int texture, int index, int textureColumns, int textureRows, Vector3f position)
 	{
-		super(Texture.getTexture("tilesheet"), textureColumns, textureRows, index, position, new Vector2f(1.0f, 1.0f));
+		super(texture, textureColumns, textureRows, index, position, new Vector2f(1.0f, 1.0f));
 	}
 
 	public Tile(int index, boolean pole, boolean oneWay, boolean collidable, boolean hangable, Vector3f position)
@@ -47,5 +47,12 @@ public abstract class Tile extends GameObject
 	public boolean isPole()
 	{
 		return pole;
+	}
+
+	@Override
+	public void tick()
+	{
+		// TODO Auto-generated method stub
+
 	}
 }

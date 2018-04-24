@@ -65,10 +65,13 @@ public class MasterRenderer
 
 		prepareBatch(renderObjects);
 
+		drawObject(Texture.getTexture("keen_spritesheet"), keen);
 		for (Entry<Integer, List<GameObject>> entry : batches.entrySet())
 		{
 			drawObjects(entry.getKey(), entry.getValue());
 		}
+
+		batches.clear();
 
 		GL20.glDisableVertexAttribArray(0);
 
