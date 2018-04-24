@@ -1,7 +1,5 @@
 package edu.gcc.keen.tiles;
 
-import java.util.List;
-
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -15,46 +13,25 @@ import edu.gcc.keen.util.GameObject;
  * @author DONMOYERLR17
  *
  */
-public class Tile extends GameObject
+public abstract class Tile extends GameObject
 {
-	private int id;
-
 	private boolean pole;
 	private boolean oneWay;
+	private boolean collidable;
 	private boolean hangable;
 
-	public Tile(int id, int textureColumns, int textureRows, Vector3f position)
+	public Tile(int index, int textureColumns, int textureRows, Vector3f position)
 	{
-		super(new Texture("tilesheet", textureColumns, textureRows, id), position, new Vector2f(1.0f, 1.0f));
-		this.id = id;
+		super(Texture.getTexture("tilesheet"), textureColumns, textureRows, index, position, new Vector2f(1.0f, 1.0f));
 	}
 
-	public Tile(int id, boolean pole, boolean oneWay, boolean collidable, boolean hangable, Vector3f position)
+	public Tile(int index, boolean pole, boolean oneWay, boolean collidable, boolean hangable, Vector3f position)
 	{
-		super(new Texture("tilesheet", 18, 165, id), position, new Vector2f(1.0f, 1.0f));
-		this.id = id;
+		super(Texture.getTexture("tilesheet"), 18, 165, index, position, new Vector2f(1.0f, 1.0f));
 		this.pole = pole;
 		this.oneWay = oneWay;
 		this.collidable = collidable;
 		this.hangable = hangable;
-	}
-
-	@Override
-	public void tick()
-	{
-
-	}
-
-	@Override
-	public void onCollideX(List<GameObject> collidingObjects)
-	{
-
-	}
-
-	@Override
-	public void onCollideY(List<GameObject> collidingObjects)
-	{
-
 	}
 
 	public boolean isCollidable()

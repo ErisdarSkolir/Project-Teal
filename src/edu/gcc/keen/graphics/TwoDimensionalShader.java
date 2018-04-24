@@ -38,6 +38,16 @@ public class TwoDimensionalShader extends Shader
 		super.loadVector2f("textureOffset", offset);
 	}
 
+	public void loadTextureRowsAndColumns(float columns, float rows)
+	{
+		super.loadVector2f("textureRowsAndColumns", columns, rows);
+	}
+
+	public void loadTextureOffset(Vector2f offset)
+	{
+		super.loadVector2f("textureOffset", offset);
+	}
+
 	@Override
 	protected void bindAttributes()
 	{

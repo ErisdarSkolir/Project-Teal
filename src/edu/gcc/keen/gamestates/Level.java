@@ -30,11 +30,6 @@ public class Level extends GameState
 {
 	private List<Area> areas = new ArrayList<>();
 
-	private List<Entity> entities = new ArrayList<>();
-	private List<Tile> tiles = new ArrayList<>();
-	private List<Tile> backgroundTiles = new ArrayList<>();
-	private List<Item> items = new ArrayList<>();
-
 	private List<GameObject> gameObjects = new ArrayList<>();
 
 	private Keen keen;
@@ -51,19 +46,9 @@ public class Level extends GameState
 
 		areas.add(new Area(new Vector4f(0.0f, 2.0f, 10.0f, 2.0f)));
 
-		for (Entity entity : entities)
+		for (GameObject object : gameObjects)
 		{
-			areas.get(0).addObject(entity);
-		}
-
-		for (Item item : items)
-		{
-			areas.get(0).addObject(item);
-		}
-
-		for (Tile tile : tiles)
-		{
-			areas.get(0).addObject(tile);
+			areas.get(0).addObject(object);
 		}
 
 		areas.get(0).addObject(keen);
@@ -131,24 +116,24 @@ public class Level extends GameState
 						Tile tile = GameObjectCreator.createTileWithData(foregroundID, new Vector2f(2.0f * column, -(2.0f * row)));
 
 						if (tile != null)
-							tiles.add(tile);
+							gameObjects.add(tile);
 					}
 
 					if (backgroundID != -1)
-						backgroundTiles.add(new Tile(backgroundID, 18, 84, new Vector3f(2.0f * column, -(2.0f * row), -0.99f)));
+						gameObjects.add(new Tile(backgroundID, 18, 84, new Vector3f(2.0f * column, -(2.0f * row), -0.99f)));
 
 					if (infoplaneID != -1 && infoplaneID != 2)
 					{
 						Entity entity = GameObjectCreator.createEnemy(infoplaneID, new Vector2f(column * 2.0f, -(row * 2.0f) + 2.0f));
 
 						if (entity != null)
-							entities.add(entity);
+							gameObjects.add(entity);
 						else
 						{
 							Item item = GameObjectCreator.createItem(infoplaneID, new Vector2f(column * 2.0f, -(row * 2.0f) + 2.0f));
 
 							if (item != null)
-								items.add(item);
+								gameObjects.add(item);
 						}
 					}
 					else if (infoplaneID == 2)

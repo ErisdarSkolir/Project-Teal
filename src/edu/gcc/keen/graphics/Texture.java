@@ -8,7 +8,6 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import org.joml.Vector2f;
 import org.lwjgl.opengl.GL11;
 
 import edu.gcc.keen.util.BufferUtils;
@@ -25,37 +24,12 @@ public class Texture
 {
 	private static Map<String, Integer> textures = new HashMap<>();
 
-	private int id;
-	private int textureIndex = 1;
-	private int columns = 1;
-	private int rows = 1;
-
-	/**
-	 * Constructor
-	 * 
-	 * @param path
-	 *            the file name of the texture file without extension
-	 */
-	public Texture(String path)
+	public static void init(String... textureNames)
 	{
-		this.id = loadTextureFromString(path);
-	}
-
-	/**
-	 * Constructor
-	 * 
-	 * @param path
-	 *            the file name of the texture file without extension
-	 * @param texturePosition
-	 *            the position of the require texture if this file is a texture
-	 *            atlas
-	 */
-	public Texture(String path, int columns, int rows, int index)
-	{
-		this.id = loadTextureFromString(path);
-		this.columns = columns;
-		this.rows = rows;
-		this.textureIndex = index;
+		for (String name : textureNames)
+		{
+			textures.put(name, loadTextureFromString(name));
+		}
 	}
 
 	/**
@@ -66,7 +40,7 @@ public class Texture
 	 *            the filename of the texture without file extension
 	 * @return the OpenGL integer of the created texture
 	 */
-	public int loadTextureFromString(String path)
+	private static int loadTextureFromString(String path)
 	{
 		if (textures.containsKey(path))
 			return textures.get(path);
@@ -110,8 +84,6 @@ public class Texture
 		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, BufferUtils.createIntBuffer(data));
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 
-		textures.put(path, tex);
-
 		return tex;
 	}
 
@@ -126,33 +98,8 @@ public class Texture
 		}
 	}
 
-	public int getID()
+	public static int getTexture(String name)
 	{
-		return id;
-	}
-
-	/**
-	 * Get the texture offset required for texture atlases
-	 * 
-	 * @return the offset positions in a vector2f object
-	 */
-	public Vector2f getTextureOffset()
-	{
-		return new Vector2f((float) (textureIndex % columns) / columns, (float) (textureIndex / columns) / rows);
-	}
-
-	public Vector2f getTextureRowsAndColumns()
-	{
-		return new Vector2f(columns, rows);
-	}
-
-	public void setTextureIndex(int index)
-	{
-		this.textureIndex = index;
-	}
-
-	public int getTextureIndex()
-	{
-		return textureIndex;
+		return textures.get(name);
 	}
 }

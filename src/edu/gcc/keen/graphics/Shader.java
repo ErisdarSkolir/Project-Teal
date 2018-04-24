@@ -147,6 +147,11 @@ public abstract class Shader
 		GL20.glUniform2f(uniforms.get(location), vector.x, vector.y);
 	}
 
+	protected void loadVector2f(String location, float var1, float var2)
+	{
+		GL20.glUniform2f(uniforms.get(location), var1, var2);
+	}
+
 	/**
 	 * Enable this shader
 	 */

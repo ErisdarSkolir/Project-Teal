@@ -37,7 +37,7 @@ public class Keen extends Entity
 
 	public Keen(Vector3f position)
 	{
-		super(new Texture("keen_spritesheet", 11, 7, 0), position, new Vector2f(2.0f, 2.5f));
+		super(Texture.getTexture("keen_spritesheet"), 11, 7, 0, position, new Vector2f(2.0f, 2.5f));
 
 		this.aabbOffset = new Vector2f(-2.5f, -1.0f);
 
@@ -115,7 +115,7 @@ public class Keen extends Entity
 
 		if (tick > 10)
 		{
-			texture.setTextureIndex(currentAnimation.getAnimation()[animationIndex]);
+			setIndex(currentAnimation.getAnimation()[animationIndex]);
 			animationIndex++;
 			tick = 0;
 
@@ -145,7 +145,7 @@ public class Keen extends Entity
 			{
 				Tile tile = (Tile) object;
 
-				if (tile.canCollide())
+				if (tile.isCollidable())
 				{
 					this.position.add(BoundingBox.minX(this, tile), 0.0f, 0.0f);
 				}
@@ -168,7 +168,7 @@ public class Keen extends Entity
 			{
 				Tile tile = (Tile) object;
 
-				if (!tile.isOneWay() && tile.canCollide())
+				if (!tile.isOneWay() && tile.isCollidable())
 				{
 					this.position.add(0.0f, BoundingBox.minY(this, tile), 0.0f);
 

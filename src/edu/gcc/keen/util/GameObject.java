@@ -1,12 +1,7 @@
 package edu.gcc.keen.util;
 
-import java.util.List;
-
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-
-import edu.gcc.keen.graphics.Texture;
-import edu.gcc.keen.graphics.TextureAtlas;
 
 /**
  * The base class for all in-game objects
@@ -14,15 +9,18 @@ import edu.gcc.keen.graphics.TextureAtlas;
  * @author DONMOYERLR17
  *
  */
-public abstract class GameObject implements TextureAtlas
+public abstract class GameObject
 {
 	protected Vector3f position;
 	protected Vector2f scale = new Vector2f(1.0f, 1.0f);
 	protected Vector2f aabbOffset = new Vector2f(0.0f, 0.0f);
-	// protected Texture texture;
 	protected Area area;
 
-	protected boolean collidable;
+	private int texture;
+	private int index;
+	private int columns;
+	private int rows;
+
 	protected boolean shouldDestroy;
 
 	/**
@@ -31,11 +29,14 @@ public abstract class GameObject implements TextureAtlas
 	 * @param texture
 	 * @param position
 	 */
-	public GameObject(Texture texture, Vector3f position, Vector2f scale)
+	public GameObject(int texture, int columns, int rows, int index, Vector3f position, Vector2f scale)
 	{
 		this.texture = texture;
 		this.position = new Vector3f(position);
 		this.scale = scale;
+		this.columns = columns;
+		this.rows = rows;
+		this.index = index;
 	}
 
 	/**
@@ -44,22 +45,18 @@ public abstract class GameObject implements TextureAtlas
 	public abstract void tick();
 
 	/**
-	 * Called when another gameObject collides with this entity
+	 * Get the texture offset required for texture atlases
 	 * 
-	 * @param object
+	 * @return the offset positions in a vector2f object
 	 */
-	public abstract void onCollideX(List<GameObject> collidingObjects);
-
-	public abstract void onCollideY(List<GameObject> collidingObjects);
+	public Vector2f getTextureOffset()
+	{
+		return new Vector2f((float) (index % columns) / columns, (float) (index / columns) / rows);
+	}
 
 	public Vector3f getPosition()
 	{
 		return new Vector3f(position);
-	}
-
-	public void setPosition(Vector3f position)
-	{
-		this.position = position;
 	}
 
 	public void setArea(Area area)
@@ -67,7 +64,7 @@ public abstract class GameObject implements TextureAtlas
 		this.area = area;
 	}
 
-	public Texture getTexture()
+	public int getTexture()
 	{
 		return texture;
 	}
@@ -77,9 +74,14 @@ public abstract class GameObject implements TextureAtlas
 		return new Vector2f(scale);
 	}
 
-	public boolean canCollide()
+	public int getColumns()
 	{
-		return collidable;
+		return columns;
+	}
+
+	public int getRows()
+	{
+		return rows;
 	}
 
 	public boolean shouldDestroy()
@@ -90,5 +92,10 @@ public abstract class GameObject implements TextureAtlas
 	public void destroy()
 	{
 		shouldDestroy = true;
+	}
+
+	protected void setIndex(int index)
+	{
+		this.index = index;
 	}
 }
