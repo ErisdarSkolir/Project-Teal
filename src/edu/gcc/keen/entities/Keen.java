@@ -9,6 +9,7 @@ import org.lwjgl.glfw.GLFW;
 import edu.gcc.keen.animations.KeenAnimation;
 import edu.gcc.keen.graphics.Texture;
 import edu.gcc.keen.input.Input;
+import edu.gcc.keen.item.Item;
 import edu.gcc.keen.tiles.Tile;
 import edu.gcc.keen.util.BoundingBox;
 import edu.gcc.keen.util.GameObject;
@@ -33,9 +34,6 @@ public class Keen extends Entity
 	private int animationIndex;
 	private int tick = 10;
 	private int jumpTick = 0;
-
-	private float verticalVelocity;
-	private float horizontalVelocity;
 
 	public Keen(Vector3f position)
 	{
@@ -150,7 +148,6 @@ public class Keen extends Entity
 				if (tile.canCollide())
 				{
 					this.position.add(BoundingBox.minX(this, tile), 0.0f, 0.0f);
-					break;
 				}
 			}
 		}
@@ -163,7 +160,11 @@ public class Keen extends Entity
 	{
 		for (GameObject object : collidingObjects)
 		{
-			if (object instanceof Tile)
+			if (object instanceof Item)
+			{
+				object.destroy();
+			}
+			else if (object instanceof Tile)
 			{
 				Tile tile = (Tile) object;
 
@@ -177,8 +178,6 @@ public class Keen extends Entity
 						jumpTick = 0;
 						onGround = true;
 					}
-
-					break;
 				}
 				else if (tile.isPole() && (Input.isKeyDown(GLFW.GLFW_KEY_UP) || Input.isKeyDown(GLFW.GLFW_KEY_DOWN)))
 				{
@@ -189,14 +188,14 @@ public class Keen extends Entity
 				{
 					this.position.add(0.0f, BoundingBox.minY(this, tile), 0.0f);
 
+					onPole = false;
+
 					if (verticalVelocity < 0.0f)
 					{
 						verticalVelocity = 0.0f;
 						jumpTick = 0;
 						onGround = true;
 					}
-
-					break;
 				}
 			}
 		}

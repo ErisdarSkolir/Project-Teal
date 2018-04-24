@@ -11,6 +11,7 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import edu.gcc.keen.entities.Entity;
+import edu.gcc.keen.item.Item;
 
 public class GameObjectCreator
 {
@@ -33,6 +34,21 @@ public class GameObjectCreator
 		}
 
 		System.out.println("No enemy data for " + id);
+		return null;
+	}
+
+	public static Item createItem(int id, Vector2f position)
+	{
+		try
+		{
+			return (Item) itemData.get(id).newInstance(new Vector3f(position, -0.5f));
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		System.out.println("No item data for " + id);
 		return null;
 	}
 

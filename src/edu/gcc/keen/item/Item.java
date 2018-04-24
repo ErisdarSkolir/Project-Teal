@@ -10,7 +10,7 @@ import edu.gcc.keen.util.GameObject;
 
 public class Item extends GameObject
 {
-	private float pointValue;
+	protected int pointValue;
 
 	/**
 	 * Constructor
@@ -18,9 +18,9 @@ public class Item extends GameObject
 	 * @param position
 	 * @param texture
 	 */
-	public Item(Vector3f position)
+	public Item(Texture texture, Vector3f position, Vector2f scale)
 	{
-		super(new Texture("tilesheet"), position, new Vector2f(1.0f, 1.0f));
+		super(texture, position, scale);
 	}
 
 	/**
@@ -32,7 +32,7 @@ public class Item extends GameObject
 
 	}
 
-	public float getPointValue()
+	public int getPointValue()
 	{
 		return pointValue;
 	}

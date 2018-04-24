@@ -24,8 +24,8 @@ import edu.gcc.keen.entities.Entity;
 import edu.gcc.keen.entities.Keen;
 import edu.gcc.keen.input.Input;
 import edu.gcc.keen.item.Item;
-import edu.gcc.keen.tiles.Tile;
 import edu.gcc.keen.tiles.GameObjectCreator;
+import edu.gcc.keen.tiles.Tile;
 import edu.gcc.keen.util.BufferUtils;
 import edu.gcc.keen.util.GameObject;
 
@@ -65,8 +65,8 @@ public class MasterRenderer
 		GL20.glEnableVertexAttribArray(0);
 
 		drawObject(textures.get("keen").getID(), keen);
-		// TODO draw items
 		drawObjects(textures.get("enemies").getID(), entities);
+		drawObjects(textures.get("tiles").getID(), items);
 		drawObjects(textures.get("tiles").getID(), tiles);
 		drawObjects(textures.get("background").getID(), background);
 

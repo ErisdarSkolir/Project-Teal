@@ -16,6 +16,9 @@ public abstract class Entity extends GameObject
 {
 	boolean canCollide = false;
 
+	protected float horizontalVelocity;
+	protected float verticalVelocity;
+
 	/**
 	 * Constructor
 	 */

@@ -51,6 +51,16 @@ public class Level extends GameState
 
 		areas.add(new Area(new Vector4f(0.0f, 2.0f, 10.0f, 2.0f)));
 
+		for (Entity entity : entities)
+		{
+			areas.get(0).addObject(entity);
+		}
+
+		for (Item item : items)
+		{
+			areas.get(0).addObject(item);
+		}
+
 		for (Tile tile : tiles)
 		{
 			areas.get(0).addObject(tile);
@@ -67,7 +77,7 @@ public class Level extends GameState
 	{
 		keen.tick();
 
-		for (GameObject object : gameObjects)
+		for (GameObject object : entities)
 		{
 			object.tick();
 
@@ -129,14 +139,21 @@ public class Level extends GameState
 
 					if (infoplaneID != -1 && infoplaneID != 2)
 					{
-						Entity entity = GameObjectCreator.createEnemy(infoplaneID, new Vector2f(column, -row + 2.0f));
+						Entity entity = GameObjectCreator.createEnemy(infoplaneID, new Vector2f(column * 2.0f, -(row * 2.0f) + 2.0f));
 
 						if (entity != null)
 							entities.add(entity);
+						else
+						{
+							Item item = GameObjectCreator.createItem(infoplaneID, new Vector2f(column * 2.0f, -(row * 2.0f) + 2.0f));
+
+							if (item != null)
+								items.add(item);
+						}
 					}
 					else if (infoplaneID == 2)
 					{
-						keen = new Keen(new Vector3f(column, -row + 2.0f, 0.0f));
+						keen = new Keen(new Vector3f(column * 2.0f, -(row * 2.0f) + 2.0f, 0.0f));
 					}
 				}
 
