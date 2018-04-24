@@ -6,6 +6,7 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import edu.gcc.keen.graphics.Texture;
+import edu.gcc.keen.graphics.TextureAtlas;
 
 /**
  * The base class for all in-game objects
@@ -13,7 +14,7 @@ import edu.gcc.keen.graphics.Texture;
  * @author DONMOYERLR17
  *
  */
-public abstract class GameObject
+public abstract class GameObject implements TextureAtlas
 {
 	protected Vector3f position;
 	protected Vector2f scale = new Vector2f(1.0f, 1.0f);
