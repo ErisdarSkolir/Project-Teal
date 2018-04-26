@@ -20,7 +20,7 @@ public class Soda extends Item
 	{
 		animationTick++;
 
-		if (animationTick > 50)
+		if (animationTick > 40)
 		{
 			if (index != 1034)
 				index = 1034;

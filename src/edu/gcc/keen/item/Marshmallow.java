@@ -20,7 +20,7 @@ public class Marshmallow extends Item
 	{
 		animationTick++;
 
-		if (animationTick > 50)
+		if (animationTick > 40)
 		{
 			if (index != 1032)
 				index = 1032;
