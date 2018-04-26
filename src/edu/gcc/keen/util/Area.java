@@ -3,7 +3,7 @@ package edu.gcc.keen.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.joml.Vector4f;
+import org.joml.Vector2f;
 
 import edu.gcc.keen.entities.Entity;
 
@@ -19,7 +19,8 @@ public class Area
 {
 	private List<GameObject> objects = new ArrayList<>();
 
-	private Vector4f positionAndSize;
+	private Vector2f position;
+	private Vector2f scale;
 
 	private boolean shouldUpdate;
 
@@ -28,9 +29,12 @@ public class Area
 	 * 
 	 * @param positionAndSize
 	 */
-	public Area(Vector4f positionAndSize)
+	public Area(Vector2f position, Vector2f scale)
 	{
-		this.positionAndSize = new Vector4f(positionAndSize);
+		this.position = position;
+		this.scale = scale;
+
+		System.out.println("Area " + position + " " + scale);
 	}
 
 	/**
@@ -42,26 +46,20 @@ public class Area
 		{
 			shouldUpdate = false;
 
-			/*
-			 * for (GameObject object : objects)
-			 * {
-			 * for (GameObject object2 : objects)
-			 * {
-			 * if (object != object2 && object.canCollide() &&
-			 * BoundingBox.isIntersecting(object2.getPosition(), object2.getScale(),
-			 * object.getPosition(), object.getScale()))
-			 * {
-			 * object2.onCollide(object);
-			 * object.onCollide(object2);
-			 * }
-			 * }
-			 * }
-			 */
+			for (GameObject object : objects)
+			{
+				if (!BoundingBox.isIntersecting(object, this))
+					object.removeArea(this);
+				else if (!BoundingBox.contains(object, this))
+					object.setShouldUpdateArea(true);
+			}
 		}
 	}
 
 	public void checkCollisionX(Entity entity)
 	{
+		this.setShouldUpdate(true);
+
 		List<GameObject> collidingObjects = new ArrayList<>();
 
 		for (GameObject object2 : objects)
@@ -78,6 +76,8 @@ public class Area
 
 	public void checkCollisionY(Entity entity)
 	{
+		this.setShouldUpdate(true);
+
 		List<GameObject> collidingObjects = new ArrayList<>();
 
 		for (GameObject object2 : objects)
@@ -94,12 +94,13 @@ public class Area
 
 	public void addObject(GameObject object)
 	{
-		object.setArea(this);
+		object.addArea(this);
 		objects.add(object);
 	}
 
 	public void removeObject(GameObject object)
 	{
+		object.removeArea(this);
 		objects.remove(object);
 	}
 
@@ -111,5 +112,15 @@ public class Area
 	public boolean shouldUpdate()
 	{
 		return shouldUpdate;
+	}
+
+	public Vector2f getPosition()
+	{
+		return position;
+	}
+
+	public Vector2f getScale()
+	{
+		return scale;
 	}
 }

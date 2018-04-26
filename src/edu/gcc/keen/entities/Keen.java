@@ -11,6 +11,7 @@ import edu.gcc.keen.graphics.Texture;
 import edu.gcc.keen.input.Input;
 import edu.gcc.keen.item.Item;
 import edu.gcc.keen.tiles.Tile;
+import edu.gcc.keen.util.Area;
 import edu.gcc.keen.util.BoundingBox;
 import edu.gcc.keen.util.GameObject;
 
@@ -49,12 +50,16 @@ public class Keen extends Entity
 		if (horizontalVelocity != 0.0f || verticalVelocity != 0.0f)
 		{
 			position.add(0.0f, verticalVelocity, 0.0f);
-			area.checkCollisionY(this);
+			for (Area area : areas)
+			{
+				area.checkCollisionY(this);
+			}
 
 			position.add(horizontalVelocity, 0.0f, 0.0f);
-			area.checkCollisionX(this);
-
-			area.setShouldUpdate(true);
+			for (Area area : areas)
+			{
+				area.checkCollisionX(this);
+			}
 		}
 
 		if (Input.isKeyDown(GLFW.GLFW_KEY_R))
@@ -99,7 +104,10 @@ public class Keen extends Entity
 			jumping = false;
 
 		if (!jumping && verticalVelocity > -1.0f && !onPole)
+		{
 			verticalVelocity += -0.4f;
+			onGround = false;
+		}
 		else if (onPole && Input.isKeyDown(GLFW.GLFW_KEY_UP))
 			verticalVelocity = 0.2f;
 		else if (onPole && Input.isKeyDown(GLFW.GLFW_KEY_DOWN))
@@ -111,6 +119,8 @@ public class Keen extends Entity
 	@Override
 	public void tick()
 	{
+		System.out.println(areas.size());
+
 		move();
 
 		if (tick > 10)

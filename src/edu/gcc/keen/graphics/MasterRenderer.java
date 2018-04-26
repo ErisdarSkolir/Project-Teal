@@ -157,12 +157,11 @@ public class MasterRenderer
 		shader.loadMatrix("orthographicMatrix", getOrthographicMatrix(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
 		shader.disable();
 
-		Texture.init("keen_spritesheet", "enemy", "tilesheet", "background");
-
 		float[] positions = { -1, 1, -1, -1, 1, 1, 1, -1 };
 		quad = loadToVAO(positions);
 
 		GameObjectCreator.init();
+		Texture.init("keen_spritesheet", "enemy", "tilesheet", "background");
 
 		return true;
 	}

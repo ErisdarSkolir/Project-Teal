@@ -7,6 +7,7 @@ import org.joml.Vector3f;
 
 import edu.gcc.keen.graphics.Texture;
 import edu.gcc.keen.tiles.Tile;
+import edu.gcc.keen.util.Area;
 import edu.gcc.keen.util.BoundingBox;
 import edu.gcc.keen.util.GameObject;
 
@@ -28,12 +29,16 @@ public class LittleAmpton extends Entity
 		if (horizontalVelocity != 0.0f || verticalVelocity != 0.0f)
 		{
 			position.add(0.0f, verticalVelocity, 0.0f);
-			area.checkCollisionY(this);
+			for (Area area : areas)
+			{
+				area.checkCollisionY(this);
+			}
 
 			position.add(horizontalVelocity, 0.0f, 0.0f);
-			area.checkCollisionX(this);
-
-			area.setShouldUpdate(true);
+			for (Area area : areas)
+			{
+				area.checkCollisionX(this);
+			}
 		}
 
 		if (direction)

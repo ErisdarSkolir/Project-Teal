@@ -1,5 +1,8 @@
 package edu.gcc.keen.util;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -14,14 +17,15 @@ public abstract class GameObject
 	protected Vector3f position;
 	protected Vector2f scale = new Vector2f(1.0f, 1.0f);
 	protected Vector2f aabbOffset = new Vector2f(0.0f, 0.0f);
-	protected Area area;
+	protected List<Area> areas = new LinkedList<>();
 
 	private int texture;
-	private int index;
+	protected int index;
 	private int columns;
 	private int rows;
 
 	protected boolean shouldDestroy;
+	protected boolean updateArea;
 
 	/**
 	 * Constructor
@@ -59,9 +63,19 @@ public abstract class GameObject
 		return new Vector3f(position);
 	}
 
-	public void setArea(Area area)
+	public void addArea(Area area)
 	{
-		this.area = area;
+		if (!areas.contains(area))
+		{
+			this.updateArea = false;
+			this.areas.add(area);
+		}
+	}
+
+	public void removeArea(Area area)
+	{
+		this.updateArea = true;
+		this.areas.remove(area);
 	}
 
 	public int getTexture()
@@ -92,10 +106,28 @@ public abstract class GameObject
 	public void destroy()
 	{
 		shouldDestroy = true;
+
+		if (!this.areas.isEmpty())
+		{
+			for (Area area : areas)
+			{
+				area.removeObject(this);
+			}
+		}
 	}
 
 	protected void setIndex(int index)
 	{
 		this.index = index;
+	}
+
+	public boolean shouldUpdateArea()
+	{
+		return updateArea;
+	}
+
+	public void setShouldUpdateArea(boolean shouldUpdateArea)
+	{
+		this.updateArea = shouldUpdateArea;
 	}
 }
