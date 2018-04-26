@@ -45,7 +45,7 @@ public class Level extends GameState
 
 		camera.bindObject(keen);
 
-		areas = generateAreas(gameObjects, 10.0f, 10.0f, 32, 32);
+		areas = generateAreas(gameObjects, 10.0f, 10.0f, 150, 32);
 	}
 
 	/**

@@ -33,8 +33,6 @@ public class Area
 	{
 		this.position = position;
 		this.scale = scale;
-
-		System.out.println("Area " + position + " " + scale);
 	}
 
 	/**
@@ -46,13 +44,20 @@ public class Area
 		{
 			shouldUpdate = false;
 
+			List<GameObject> toRemove = new ArrayList<>();
+
 			for (GameObject object : objects)
 			{
-				if (!BoundingBox.isIntersecting(object, this))
-					object.removeArea(this);
-				else if (!BoundingBox.contains(object, this))
+				if (!BoundingBox.contains(object, this))
 					object.setShouldUpdateArea(true);
+				if (!BoundingBox.isIntersecting(object, this))
+				{
+					toRemove.add(object);
+					object.removeArea(this);
+				}
 			}
+
+			objects.removeAll(toRemove);
 		}
 	}
 
@@ -94,8 +99,11 @@ public class Area
 
 	public void addObject(GameObject object)
 	{
-		object.addArea(this);
-		objects.add(object);
+		if (!objects.contains(object))
+		{
+			object.addArea(this);
+			objects.add(object);
+		}
 	}
 
 	public void removeObject(GameObject object)

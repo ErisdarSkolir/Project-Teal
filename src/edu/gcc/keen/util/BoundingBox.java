@@ -24,11 +24,12 @@ public class BoundingBox
 
 	public static boolean contains(GameObject object, Area area)
 	{
-		Vector3f position1 = object.getPosition();
-		Vector2f scale1 = object.getScale().mul(2.0f).add(object.aabbOffset);
-		Vector2f position2 = area.getPosition();
-		Vector2f scale2 = area.getScale();
-
+		Vector3f position2 = object.getPosition();
+		Vector2f scale2 = object.getScale().mul(2.0f).add(object.aabbOffset);
+		Vector2f position1 = area.getPosition();
+		Vector2f scale1 = area.getScale();
+		// System.out.println((Math.abs(position1.x - position2.x) * 2) + " " +
+		// (scale1.x - scale2.x));
 		return (Math.abs(position1.x - position2.x) * 2 < (scale1.x - scale2.x) && Math.abs(position1.y - position2.y) * 2 < (scale1.y - scale2.y));
 	}
 

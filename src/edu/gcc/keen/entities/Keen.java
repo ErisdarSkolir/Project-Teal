@@ -119,7 +119,7 @@ public class Keen extends Entity
 	@Override
 	public void tick()
 	{
-		System.out.println(areas.size());
+		// System.out.println(this.areas.size());
 
 		move();
 
