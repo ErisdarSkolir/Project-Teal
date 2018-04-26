@@ -39,8 +39,6 @@ public class MasterRenderer
 	private Set<Integer> vaos = new HashSet<>();
 	private Set<Integer> vbos = new HashSet<>();
 
-	private Map<Integer, List<GameObject>> batches = new HashMap<>();
-
 	private TwoDimensionalShader shader;
 	private Mesh quad;
 
@@ -53,7 +51,7 @@ public class MasterRenderer
 	 * @param tiles
 	 * @param items
 	 */
-	public void render(Keen keen, List<GameObject> renderObjects, Camera camera)
+	public void render(Keen keen, List<GameObject> foreground, List<GameObject> background, Camera camera)
 	{
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
@@ -63,15 +61,11 @@ public class MasterRenderer
 		GL30.glBindVertexArray(quad.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
 
-		prepareBatch(renderObjects);
-
 		drawObject(Texture.getTexture("keen_spritesheet"), keen);
-		for (Entry<Integer, List<GameObject>> entry : batches.entrySet())
+		for (Entry<Integer, List<GameObject>> entry : prepareBatch(foreground, background).entrySet())
 		{
 			drawObjects(entry.getKey(), entry.getValue());
 		}
-
-		batches.clear();
 
 		GL20.glDisableVertexAttribArray(0);
 
@@ -84,20 +78,37 @@ public class MasterRenderer
 		GLFW.glfwPollEvents();
 	}
 
-	public void prepareBatch(List<GameObject> objects)
+	public Map<Integer, List<GameObject>> prepareBatch(List<GameObject> objects, List<GameObject> background)
 	{
+		Map<Integer, List<GameObject>> tmpBatch = new HashMap<>();
+
 		for (GameObject object : objects)
 		{
-			if (batches.containsKey(object.getTexture()))
-				batches.get(object.getTexture()).add(object);
+			if (tmpBatch.containsKey(object.getTexture()))
+				tmpBatch.get(object.getTexture()).add(object);
 			else
 			{
 				List<GameObject> newList = new ArrayList<>();
 				newList.add(object);
 
-				batches.put(object.getTexture(), newList);
+				tmpBatch.put(object.getTexture(), newList);
 			}
 		}
+
+		for (GameObject object : background)
+		{
+			if (tmpBatch.containsKey(object.getTexture()))
+				tmpBatch.get(object.getTexture()).add(object);
+			else
+			{
+				List<GameObject> newList = new ArrayList<>();
+				newList.add(object);
+
+				tmpBatch.put(object.getTexture(), newList);
+			}
+		}
+
+		return tmpBatch;
 	}
 
 	public void drawObjects(int texture, List<GameObject> objects)
@@ -144,7 +155,7 @@ public class MasterRenderer
 
 		GLFW.glfwMakeContextCurrent(window);
 		GLFW.glfwShowWindow(window);
-		GLFW.glfwSwapInterval(1);
+		GLFW.glfwSwapInterval(0);
 
 		GL.createCapabilities();
 		GL11.glClearColor(0.5f, 0.5f, 0.5f, 0.0f);

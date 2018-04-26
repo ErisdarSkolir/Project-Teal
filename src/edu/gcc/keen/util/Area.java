@@ -1,6 +1,8 @@
 package edu.gcc.keen.util;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.joml.Vector2f;
@@ -17,7 +19,7 @@ import edu.gcc.keen.entities.Entity;
  */
 public class Area
 {
-	private List<GameObject> objects = new ArrayList<>();
+	private List<GameObject> objects = new LinkedList<>();
 
 	private Vector2f position;
 	private Vector2f scale;
@@ -44,20 +46,23 @@ public class Area
 		{
 			shouldUpdate = false;
 
-			List<GameObject> toRemove = new ArrayList<>();
-
-			for (GameObject object : objects)
+			for (Iterator<GameObject> itr = objects.iterator(); itr.hasNext();)
 			{
+				GameObject object = itr.next();
+
+				if (object.shouldDestroy)
+					itr.remove();
+
 				if (!BoundingBox.contains(object, this))
-					object.setShouldUpdateArea(true);
-				if (!BoundingBox.isIntersecting(object, this))
 				{
-					toRemove.add(object);
-					object.removeArea(this);
+					object.setShouldUpdateArea(true);
+					if (!BoundingBox.isIntersecting(object, this))
+					{
+						itr.remove();
+						object.removeArea(this);
+					}
 				}
 			}
-
-			objects.removeAll(toRemove);
 		}
 	}
 
@@ -104,12 +109,6 @@ public class Area
 			object.addArea(this);
 			objects.add(object);
 		}
-	}
-
-	public void removeObject(GameObject object)
-	{
-		object.removeArea(this);
-		objects.remove(object);
 	}
 
 	public void setShouldUpdate(boolean update)

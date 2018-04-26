@@ -62,14 +62,9 @@ public class LittleAmpton extends Entity
 		{
 			if (object instanceof Tile)
 			{
-				Tile tile = (Tile) object;
-
-				if (tile.isCollidable())
-				{
-					this.position.add(BoundingBox.minX(this, tile), 0.0f, 0.0f);
-					direction = !direction;
-					break;
-				}
+				this.position.add(BoundingBox.minX(this, object), 0.0f, 0.0f);
+				direction = !direction;
+				break;
 			}
 		}
 	}
@@ -77,20 +72,15 @@ public class LittleAmpton extends Entity
 	@Override
 	public void onCollideY(List<GameObject> collidingObjects)
 	{
-		if (collidingObjects.size() <= 2)
-			direction = !direction;
+		// if (collidingObjects.size() <= 1)
+		// direction = !direction;
 
 		for (GameObject object : collidingObjects)
 		{
 			if (object instanceof Tile)
 			{
-				Tile tile = (Tile) object;
-
-				if (tile.isCollidable())
-				{
-					this.position.add(0.0f, BoundingBox.minY(this, tile), 0.0f);
-					break;
-				}
+				this.position.add(0.0f, BoundingBox.minY(this, object), 0.0f);
+				break;
 			}
 		}
 	}

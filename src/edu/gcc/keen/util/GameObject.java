@@ -106,14 +106,6 @@ public abstract class GameObject
 	public void destroy()
 	{
 		shouldDestroy = true;
-
-		if (!this.areas.isEmpty())
-		{
-			for (Area area : areas)
-			{
-				area.removeObject(this);
-			}
-		}
 	}
 
 	protected void setIndex(int index)
