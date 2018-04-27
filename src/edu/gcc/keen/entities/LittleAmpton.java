@@ -5,11 +5,11 @@ import java.util.List;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
+import edu.gcc.keen.gameobjects.GameObject;
+import edu.gcc.keen.gameobjects.Tile;
 import edu.gcc.keen.graphics.Texture;
-import edu.gcc.keen.tiles.Tile;
 import edu.gcc.keen.util.Area;
 import edu.gcc.keen.util.BoundingBox;
-import edu.gcc.keen.util.GameObject;
 
 /**
  * Little Ampton enemy

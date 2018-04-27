@@ -8,6 +8,7 @@ import java.util.List;
 import org.joml.Vector2f;
 
 import edu.gcc.keen.entities.Entity;
+import edu.gcc.keen.gameobjects.GameObject;
 
 /**
  * This class will help with collision detection. It will contain a list of
@@ -50,7 +51,7 @@ public class Area
 			{
 				GameObject object = itr.next();
 
-				if (object.shouldDestroy)
+				if (object.shouldDestroy())
 					itr.remove();
 
 				if (!BoundingBox.contains(object, this))

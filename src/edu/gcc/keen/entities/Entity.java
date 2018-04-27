@@ -5,7 +5,7 @@ import java.util.List;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-import edu.gcc.keen.util.GameObject;
+import edu.gcc.keen.gameobjects.GameObject;
 
 /**
  * An entity is any game object that moves or has more complex logic.

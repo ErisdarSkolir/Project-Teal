@@ -12,14 +12,14 @@ import org.joml.Vector3f;
 
 import edu.gcc.keen.entities.Entity;
 import edu.gcc.keen.entities.Keen;
+import edu.gcc.keen.gameobjects.GameObject;
+import edu.gcc.keen.gameobjects.GameObjectCreator;
+import edu.gcc.keen.gameobjects.Item;
+import edu.gcc.keen.gameobjects.Tile;
 import edu.gcc.keen.graphics.MasterRenderer;
 import edu.gcc.keen.graphics.Texture;
-import edu.gcc.keen.item.Item;
-import edu.gcc.keen.tiles.GameObjectCreator;
-import edu.gcc.keen.tiles.Tile;
 import edu.gcc.keen.util.Area;
 import edu.gcc.keen.util.BoundingBox;
-import edu.gcc.keen.util.GameObject;
 
 /**
  * A level contains a list of all entites, tiles, and items. Also contains the

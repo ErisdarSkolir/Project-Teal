@@ -1,10 +1,12 @@
-package edu.gcc.keen.util;
+package edu.gcc.keen.gameobjects;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+
+import edu.gcc.keen.util.Area;
 
 /**
  * The base class for all in-game objects
@@ -16,7 +18,7 @@ public abstract class GameObject
 {
 	protected Vector3f position;
 	protected Vector2f scale = new Vector2f(1.0f, 1.0f);
-	protected Vector2f aabbOffset = new Vector2f(0.0f, 0.0f);
+	private Vector2f aabbOffset = new Vector2f(0.0f, 0.0f);
 	protected List<Area> areas = new LinkedList<>();
 
 	private int texture;
@@ -24,7 +26,7 @@ public abstract class GameObject
 	private int columns;
 	private int rows;
 
-	protected boolean shouldDestroy;
+	private boolean shouldDestroy;
 	protected boolean updateArea;
 
 	/**
@@ -100,12 +102,12 @@ public abstract class GameObject
 
 	public boolean shouldDestroy()
 	{
-		return shouldDestroy;
+		return this.shouldDestroy;
 	}
 
 	public void destroy()
 	{
-		shouldDestroy = true;
+		this.shouldDestroy = true;
 	}
 
 	protected void setIndex(int index)
@@ -121,5 +123,15 @@ public abstract class GameObject
 	public void setShouldUpdateArea(boolean shouldUpdateArea)
 	{
 		this.updateArea = shouldUpdateArea;
+	}
+
+	public Vector2f getAabbOffset()
+	{
+		return aabbOffset;
+	}
+
+	public void setAabbOffset(Vector2f aabbOffset)
+	{
+		this.aabbOffset = aabbOffset;
 	}
 }

@@ -7,13 +7,13 @@ import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
 import edu.gcc.keen.animations.KeenAnimation;
+import edu.gcc.keen.gameobjects.GameObject;
+import edu.gcc.keen.gameobjects.Item;
+import edu.gcc.keen.gameobjects.Tile;
 import edu.gcc.keen.graphics.Texture;
 import edu.gcc.keen.input.Input;
-import edu.gcc.keen.item.Item;
-import edu.gcc.keen.tiles.Tile;
 import edu.gcc.keen.util.Area;
 import edu.gcc.keen.util.BoundingBox;
-import edu.gcc.keen.util.GameObject;
 
 /**
  * This class represents the character that the player controls
@@ -43,7 +43,7 @@ public class Keen extends Entity
 	{
 		super(Texture.getTexture("keen_spritesheet"), 11, 7, 0, position, new Vector2f(2.0f, 2.5f));
 
-		this.aabbOffset = new Vector2f(-2.5f, -1.0f);
+		this.setAabbOffset(new Vector2f(-2.5f, -1.0f));
 
 	}
 

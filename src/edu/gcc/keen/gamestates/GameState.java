@@ -3,10 +3,10 @@ package edu.gcc.keen.gamestates;
 import org.lwjgl.glfw.GLFW;
 
 import edu.gcc.keen.KeenMain;
+import edu.gcc.keen.gameobjects.GameObject;
 import edu.gcc.keen.graphics.Camera;
 import edu.gcc.keen.graphics.MasterRenderer;
 import edu.gcc.keen.input.Input;
-import edu.gcc.keen.util.GameObject;
 
 /**
  * A game state. Used to differentiate levels, the main menu, and the world map

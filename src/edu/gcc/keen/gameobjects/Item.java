@@ -1,11 +1,10 @@
-package edu.gcc.keen.item;
+package edu.gcc.keen.gameobjects;
 
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import edu.gcc.keen.animations.ItemAnimations;
 import edu.gcc.keen.graphics.Texture;
-import edu.gcc.keen.util.GameObject;
 
 public class Item extends GameObject
 {
@@ -22,17 +21,6 @@ public class Item extends GameObject
 	public int tick;
 
 	protected ItemAnimations currentAnimation;
-
-	/**
-	 * Constructor
-	 * 
-	 * @param position
-	 * @param texture
-	 */
-	public Item(int texture, int columns, int rows, int index, Vector3f position, Vector2f scale)
-	{
-		super(texture, columns, rows, index, position, scale);
-	}
 
 	public Item(int id, int[] data, Vector3f position)
 	{

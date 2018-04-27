@@ -5,8 +5,8 @@ import java.util.List;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
+import edu.gcc.keen.gameobjects.GameObject;
 import edu.gcc.keen.graphics.Texture;
-import edu.gcc.keen.util.GameObject;
 
 /**
  * Sparky enemy

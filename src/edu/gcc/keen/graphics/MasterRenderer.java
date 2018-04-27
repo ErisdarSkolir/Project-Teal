@@ -22,10 +22,10 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryUtil;
 
 import edu.gcc.keen.KeenMain;
+import edu.gcc.keen.gameobjects.GameObject;
+import edu.gcc.keen.gameobjects.GameObjectCreator;
 import edu.gcc.keen.input.Input;
-import edu.gcc.keen.tiles.GameObjectCreator;
 import edu.gcc.keen.util.BufferUtils;
-import edu.gcc.keen.util.GameObject;
 
 /**
  * The master renderer handles window creation and listeners.

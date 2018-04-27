@@ -2,7 +2,7 @@ package edu.gcc.keen.graphics;
 
 import org.joml.Vector3f;
 
-import edu.gcc.keen.util.GameObject;
+import edu.gcc.keen.gameobjects.GameObject;
 
 /**
  * The 2d camera

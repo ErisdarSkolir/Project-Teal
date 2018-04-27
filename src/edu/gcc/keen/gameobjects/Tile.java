@@ -1,10 +1,9 @@
-package edu.gcc.keen.tiles;
+package edu.gcc.keen.gameobjects;
 
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import edu.gcc.keen.graphics.Texture;
-import edu.gcc.keen.util.GameObject;
 
 /**
  * The tile class. A tile is a non-moving collisionable or non-collisionable

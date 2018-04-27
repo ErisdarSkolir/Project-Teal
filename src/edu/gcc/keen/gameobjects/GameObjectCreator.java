@@ -1,4 +1,4 @@
-package edu.gcc.keen.tiles;
+package edu.gcc.keen.gameobjects;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +11,6 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import edu.gcc.keen.entities.Entity;
-import edu.gcc.keen.item.Item;
 
 public class GameObjectCreator
 {
