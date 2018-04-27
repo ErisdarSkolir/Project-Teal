@@ -16,8 +16,9 @@ import edu.gcc.keen.item.Item;
 public class GameObjectCreator
 {
 	private static Map<Integer, boolean[]> tileData = new HashMap<>();
+	private static Map<Integer, int[]> itemData = new HashMap<>();
 	private static Map<Integer, Constructor> enemyData = new HashMap<>();
-	private static Map<Integer, Constructor> itemData = new HashMap<>();
+	// private static Map<Integer, Constructor> itemData = new HashMap<>();
 
 	public static Entity createEnemy(int id, Vector2f position)
 	{
@@ -38,16 +39,12 @@ public class GameObjectCreator
 
 	public static Item createItem(int id, Vector2f position)
 	{
-		try
-		{
-			return (Item) itemData.get(id).newInstance(new Vector3f(position, -0.5f));
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		int[] data = itemData.get(id);
 
-		return null;
+		if (data == null)
+			return null;
+
+		return new Item(id, data, new Vector3f(position, 0.0f));
 	}
 
 	public static Tile createTileWithData(int id, Vector2f position)
@@ -55,16 +52,16 @@ public class GameObjectCreator
 		boolean[] data = tileData.get(id);
 
 		if (data == null)
-		{
 			return null;
-		}
 
 		return new Tile(id, data[0], data[1], data[2], data[3], new Vector3f(position, data[4] ? 0.9f : -0.9f));
 	}
 
 	public static void init()
 	{
-		try (Scanner tileDataScanner = new Scanner(new File("res/data/tiledata.dat")); Scanner enemyDataScanner = new Scanner(new File("res/data/enemydata.dat")))
+		try (Scanner tileDataScanner = new Scanner(new File("res/data/tiledata.dat"));
+				Scanner enemyDataScanner = new Scanner(new File("res/data/enemydata.dat"));
+				Scanner itemDataScanner = new Scanner(new File("res/data/itemdata.dat")))
 		{
 			while (tileDataScanner.hasNext())
 			{
@@ -73,7 +70,7 @@ public class GameObjectCreator
 
 				for (int i = 0; i < data.length; i++)
 				{
-					data[i] = (tileDataScanner.nextInt() == 1) ? true : false;
+					data[i] = (tileDataScanner.nextInt() == 1);
 				}
 
 				tileData.put(id, data);
@@ -88,8 +85,6 @@ public class GameObjectCreator
 
 					if (clazz.getSuperclass() == Class.forName("edu.gcc.keen.entities.Entity"))
 						enemyData.put(id, clazz.getConstructor(Vector3f.class));
-					else if (clazz.getSuperclass() == Class.forName("edu.gcc.keen.item.Item"))
-						itemData.put(id, clazz.getConstructor(Vector3f.class));
 				}
 				catch (NoSuchMethodException e)
 				{
@@ -103,6 +98,19 @@ public class GameObjectCreator
 				{
 					e.printStackTrace();
 				}
+			}
+
+			while (itemDataScanner.hasNextLine())
+			{
+				int[] data = new int[11];
+				int id = itemDataScanner.nextInt();
+
+				for (int i = 0; i < data.length; i++)
+				{
+					data[i] = itemDataScanner.nextInt();
+				}
+
+				itemData.put(id, data);
 			}
 		}
 		catch (IOException e)

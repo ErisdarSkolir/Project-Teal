@@ -29,12 +29,15 @@ public class Keen extends Entity
 	private boolean hanging = false;
 	private boolean onGround = false;
 	private boolean onPole = false;
-	private boolean wallLeft = false;
-	private boolean wallRight = false;
+	private boolean[] keystones = new boolean[4];
 
 	private int animationIndex;
 	private int tick = 10;
 	private int jumpTick = 0;
+
+	private int ammo;
+	private int score;
+	private int vitalin;
 
 	public Keen(Vector3f position)
 	{
@@ -119,8 +122,6 @@ public class Keen extends Entity
 	@Override
 	public void tick()
 	{
-		// System.out.println(this.areas.size());
-
 		move();
 
 		if (tick > 10)
@@ -173,6 +174,17 @@ public class Keen extends Entity
 			if (object instanceof Item)
 			{
 				object.destroy();
+
+				Item item = (Item) object;
+
+				if (item.givesScore)
+					score += item.pointValue;
+				else if (item.givesAmmo)
+					ammo += 5;
+				else if (item.isVitalin)
+					vitalin += 1;
+				else if (item.isKeyStone)
+					keystones[item.keyStoneColor] = true;
 			}
 			else if (object instanceof Tile)
 			{

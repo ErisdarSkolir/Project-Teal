@@ -171,7 +171,7 @@ public class MasterRenderer
 		quad = loadToVAO(positions);
 
 		GameObjectCreator.init();
-		Texture.init("keen_spritesheet", "enemy", "tilesheet", "background");
+		Texture.init("keen_spritesheet", "enemy", "tilesheet", "background", "items_and_particle_spritesheet");
 
 		return true;
 	}
