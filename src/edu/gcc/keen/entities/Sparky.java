@@ -6,7 +6,7 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import edu.gcc.keen.gameobjects.GameObject;
-import edu.gcc.keen.graphics.Texture;
+import edu.gcc.keen.graphics.Textures;
 
 /**
  * Sparky enemy
@@ -18,7 +18,7 @@ public class Sparky extends Entity
 {
 	public Sparky(Vector3f position)
 	{
-		super(Texture.getTexture("enemy"), 14, 10, 0, position, new Vector2f(1.625f, 1.625f));
+		super(Textures.getTexture("enemy"), 14, 10, 0, position, new Vector2f(1.625f, 1.625f));
 	}
 
 	@Override

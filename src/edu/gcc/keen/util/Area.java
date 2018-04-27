@@ -1,6 +1,5 @@
 package edu.gcc.keen.util;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,25 +42,23 @@ public class Area
 	 */
 	public void tick()
 	{
-		if (shouldUpdate)
+		if (!shouldUpdate)
+			return;
+
+		shouldUpdate = false;
+
+		for (Iterator<GameObject> itr = objects.iterator(); itr.hasNext();)
 		{
-			shouldUpdate = false;
+			GameObject object = itr.next();
 
-			for (Iterator<GameObject> itr = objects.iterator(); itr.hasNext();)
+			if (!BoundingBox.contains(object, this))
 			{
-				GameObject object = itr.next();
+				object.setShouldUpdateArea(true);
 
-				if (object.shouldDestroy())
-					itr.remove();
-
-				if (!BoundingBox.contains(object, this))
+				if (!BoundingBox.isIntersecting(object, this))
 				{
-					object.setShouldUpdateArea(true);
-					if (!BoundingBox.isIntersecting(object, this))
-					{
-						itr.remove();
-						object.removeArea(this);
-					}
+					itr.remove();
+					object.removeArea(this);
 				}
 			}
 		}
@@ -69,47 +66,49 @@ public class Area
 
 	public void checkCollisionX(Entity entity)
 	{
-		this.setShouldUpdate(true);
+		shouldUpdate = true;
 
-		List<GameObject> collidingObjects = new ArrayList<>();
+		List<GameObject> collidingObjects = ListPool.get();
 
 		for (GameObject object2 : objects)
 		{
 			if (entity != object2 && BoundingBox.isIntersecting(entity, object2))
-			{
 				collidingObjects.add(object2);
-			}
 		}
 
 		if (!collidingObjects.isEmpty())
 			entity.onCollideX(collidingObjects);
+
+		ListPool.recycle(collidingObjects);
 	}
 
 	public void checkCollisionY(Entity entity)
 	{
-		this.setShouldUpdate(true);
+		shouldUpdate = true;
 
-		List<GameObject> collidingObjects = new ArrayList<>();
+		List<GameObject> collidingObjects = ListPool.get();
 
 		for (GameObject object2 : objects)
 		{
 			if (entity != object2 && BoundingBox.isIntersecting(entity, object2))
-			{
 				collidingObjects.add(object2);
-			}
 		}
 
 		if (!collidingObjects.isEmpty())
 			entity.onCollideY(collidingObjects);
+
+		ListPool.recycle(collidingObjects);
 	}
 
 	public void addObject(GameObject object)
 	{
-		if (!objects.contains(object))
-		{
-			object.addArea(this);
+		if (object.addArea(this))
 			objects.add(object);
-		}
+	}
+
+	public void removeObject(GameObject object)
+	{
+		objects.remove(object);
 	}
 
 	public void setShouldUpdate(boolean update)
@@ -124,11 +123,11 @@ public class Area
 
 	public Vector2f getPosition()
 	{
-		return position;
+		return VectorPool.getVector2f(position.x, position.y);
 	}
 
 	public Vector2f getScale()
 	{
-		return scale;
+		return VectorPool.getVector2f(scale.x, scale.y);
 	}
 }

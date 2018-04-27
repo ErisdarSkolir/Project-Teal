@@ -36,9 +36,9 @@ public abstract class Shader
 	 * @param fragementPath
 	 * @param uniformNames
 	 */
-	protected Shader(String vertexPath, String fragementPath, String... uniformNames)
+	protected Shader(String shaderName, String... uniformNames)
 	{
-		id = createShader(vertexPath, fragementPath);
+		id = createShader(shaderName);
 
 		bindAttributes();
 		GL20.glLinkProgram(id);
@@ -84,14 +84,14 @@ public abstract class Shader
 	 * @param fragmentPath
 	 * @return the OpenGL program id
 	 */
-	private int createShader(String vertexPath, String fragmentPath)
+	private int createShader(String shaderName)
 	{
 		int program = GL20.glCreateProgram();
 		int vertID = GL20.glCreateShader(GL20.GL_VERTEX_SHADER);
 		int fragID = GL20.glCreateShader(GL20.GL_FRAGMENT_SHADER);
 
-		String vertString = FileUtils.loadAsString("res/shaders/" + vertexPath + ".vert");
-		String fragString = FileUtils.loadAsString("res/shaders/" + fragmentPath + ".frag");
+		String vertString = FileUtils.loadAsString("res/shaders/" + shaderName + ".vert");
+		String fragString = FileUtils.loadAsString("res/shaders/" + shaderName + ".frag");
 
 		GL20.glShaderSource(vertID, vertString);
 		GL20.glCompileShader(vertID);
@@ -147,6 +147,13 @@ public abstract class Shader
 		GL20.glUniform2f(uniforms.get(location), vector.x, vector.y);
 	}
 
+	/**
+	 * Load two given parameters into a vector2f in the shader
+	 * 
+	 * @param location
+	 * @param var1
+	 * @param var2
+	 */
 	protected void loadVector2f(String location, float var1, float var2)
 	{
 		GL20.glUniform2f(uniforms.get(location), var1, var2);

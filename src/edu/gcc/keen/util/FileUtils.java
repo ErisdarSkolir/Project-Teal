@@ -3,6 +3,7 @@ package edu.gcc.keen.util;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
  * This class provides utility functions for file IO
@@ -12,6 +13,8 @@ import java.io.IOException;
  */
 public class FileUtils
 {
+	private static final Logger LOGGER = Logger.getLogger("Logger");
+
 	private FileUtils()
 	{
 		throw new IllegalStateException("Utility class");
@@ -37,7 +40,7 @@ public class FileUtils
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			LOGGER.log(java.util.logging.Level.SEVERE, e.getMessage());
 		}
 
 		return stringBuilder.toString();

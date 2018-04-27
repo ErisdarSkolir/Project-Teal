@@ -1,9 +1,12 @@
 package edu.gcc.keen;
 
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
 import edu.gcc.keen.gamestates.GameState;
 import edu.gcc.keen.gamestates.Level;
 import edu.gcc.keen.graphics.MasterRenderer;
-import edu.gcc.keen.graphics.Texture;
 
 /**
  * The main game object. Includes the main game loop and the current game state.
@@ -13,6 +16,7 @@ import edu.gcc.keen.graphics.Texture;
  */
 public class KeenMain
 {
+	private static final Logger LOGGER = Logger.getLogger("Logger");
 	private static MasterRenderer renderer = new MasterRenderer();
 	private static GameState currentState;
 
@@ -53,7 +57,7 @@ public class KeenMain
 
 			if (System.currentTimeMillis() - updateCounter >= 1000)
 			{
-				System.out.println("Updates " + updates + " \tFrames " + frames);
+				LOGGER.log(java.util.logging.Level.FINE, "Updates {0}\tFrames {1}", new Object[] { updates, frames });
 				updateCounter = System.currentTimeMillis();
 				updates = 0;
 				frames = 0;
@@ -68,7 +72,7 @@ public class KeenMain
 	 */
 	public static void cleanup()
 	{
-		Texture.cleanup();
+		renderer.cleanup();
 	}
 
 	/**
@@ -92,12 +96,24 @@ public class KeenMain
 	}
 
 	/**
-	 * Entrypoint
+	 * Entrypoint. Sets up the logger and starts the main game.
 	 * 
 	 * @param args
 	 */
 	public static void main(String[] args)
 	{
+		LOGGER.setLevel(java.util.logging.Level.FINE);
+		try
+		{
+			FileHandler fileHandler = new FileHandler("log.log");
+			fileHandler.setFormatter(new SimpleFormatter());
+			LOGGER.addHandler(fileHandler);
+		}
+		catch (Exception e)
+		{
+			LOGGER.log(java.util.logging.Level.SEVERE, e.getMessage());
+		}
+
 		KeenMain.run();
 	}
 }

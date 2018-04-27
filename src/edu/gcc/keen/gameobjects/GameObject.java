@@ -7,6 +7,7 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import edu.gcc.keen.util.Area;
+import edu.gcc.keen.util.VectorPool;
 
 /**
  * The base class for all in-game objects
@@ -17,7 +18,7 @@ import edu.gcc.keen.util.Area;
 public abstract class GameObject
 {
 	protected Vector3f position;
-	protected Vector2f scale = new Vector2f(1.0f, 1.0f);
+	protected Vector2f scale;
 	private Vector2f aabbOffset = new Vector2f(0.0f, 0.0f);
 	protected List<Area> areas = new LinkedList<>();
 
@@ -62,22 +63,31 @@ public abstract class GameObject
 
 	public Vector3f getPosition()
 	{
-		return new Vector3f(position);
+		return VectorPool.getVector3f(position.x, position.y, position.z);
 	}
 
-	public void addArea(Area area)
+	public boolean addArea(Area area)
 	{
 		if (!areas.contains(area))
 		{
 			this.updateArea = false;
 			this.areas.add(area);
+
+			return true;
 		}
+
+		return false;
 	}
 
 	public void removeArea(Area area)
 	{
 		this.updateArea = true;
 		this.areas.remove(area);
+	}
+
+	public int numAreas()
+	{
+		return this.areas.size();
 	}
 
 	public int getTexture()
@@ -87,7 +97,7 @@ public abstract class GameObject
 
 	public Vector2f getScale()
 	{
-		return new Vector2f(scale);
+		return VectorPool.getVector2f(scale.x, scale.y);
 	}
 
 	public int getColumns()
@@ -107,7 +117,12 @@ public abstract class GameObject
 
 	public void destroy()
 	{
-		this.shouldDestroy = true;
+		shouldDestroy = true;
+
+		for (Area area : areas)
+		{
+			area.removeObject(this);
+		}
 	}
 
 	protected void setIndex(int index)

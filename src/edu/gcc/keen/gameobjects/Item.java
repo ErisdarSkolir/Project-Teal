@@ -4,7 +4,7 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import edu.gcc.keen.animations.ItemAnimations;
-import edu.gcc.keen.graphics.Texture;
+import edu.gcc.keen.graphics.Textures;
 
 public class Item extends GameObject
 {
@@ -24,7 +24,7 @@ public class Item extends GameObject
 
 	public Item(int id, int[] data, Vector3f position)
 	{
-		super(data[1] == 1 ? Texture.getTexture("tilesheet") : Texture.getTexture("items_and_particle_spritesheet"), data[9], data[10], id, position, new Vector2f(1.0f, 1.0f));
+		super(data[1] == 1 ? Textures.getTexture("tilesheet") : Textures.getTexture("items_and_particle_spritesheet"), data[9], data[10], id, position, new Vector2f(1.0f, 1.0f));
 
 		this.oneUp = data[0] == 1;
 		this.givesScore = data[1] == 1;

@@ -10,10 +10,11 @@ import edu.gcc.keen.animations.KeenAnimation;
 import edu.gcc.keen.gameobjects.GameObject;
 import edu.gcc.keen.gameobjects.Item;
 import edu.gcc.keen.gameobjects.Tile;
-import edu.gcc.keen.graphics.Texture;
+import edu.gcc.keen.graphics.Textures;
 import edu.gcc.keen.input.Input;
 import edu.gcc.keen.util.Area;
 import edu.gcc.keen.util.BoundingBox;
+import edu.gcc.keen.util.VectorPool;
 
 /**
  * This class represents the character that the player controls
@@ -41,7 +42,7 @@ public class Keen extends Entity
 
 	public Keen(Vector3f position)
 	{
-		super(Texture.getTexture("keen_spritesheet"), 11, 7, 0, position, new Vector2f(2.0f, 2.5f));
+		super(Textures.getTexture("keen_spritesheet"), 11, 7, 0, position, new Vector2f(2.0f, 2.5f));
 
 		this.setAabbOffset(new Vector2f(-2.5f, -1.0f));
 
@@ -171,6 +172,8 @@ public class Keen extends Entity
 	{
 		for (GameObject object : collidingObjects)
 		{
+			Vector3f tmpPosition = object.getPosition();
+
 			if (object instanceof Item)
 			{
 				object.destroy();
@@ -204,9 +207,9 @@ public class Keen extends Entity
 				else if (tile.isPole() && (Input.isKeyDown(GLFW.GLFW_KEY_UP) || Input.isKeyDown(GLFW.GLFW_KEY_DOWN)))
 				{
 					onPole = true;
-					this.position.x = tile.getPosition().x;
+					this.position.x = tmpPosition.x;
 				}
-				else if (!onPole && tile.isOneWay() && position.y > tile.getPosition().y && verticalVelocity < 0f)
+				else if (!onPole && tile.isOneWay() && position.y > tmpPosition.y && verticalVelocity < 0f)
 				{
 					this.position.add(0.0f, BoundingBox.minY(this, tile), 0.0f);
 
@@ -220,6 +223,8 @@ public class Keen extends Entity
 					}
 				}
 			}
+
+			VectorPool.recycle(tmpPosition);
 		}
 	}
 }

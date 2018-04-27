@@ -13,28 +13,39 @@ import org.lwjgl.opengl.GL11;
 import edu.gcc.keen.util.BufferUtils;
 
 /**
- * Class representing an OpenGL texture which are stored as integer IDs
- * Textures can also be atlases, in which case the number of rows and columns
- * need to be specified
+ * Textures creates openGL textures and stores the resulting id integers to be
+ * accessed later
  * 
  * @author DONMOYERLR17
  *
  */
-public class Texture
+public class Textures
 {
-	private static Map<String, Integer> textures = new HashMap<>();
+	private static Map<String, Integer> textureMap = new HashMap<>();
 
-	public static void init(String... textureNames)
+	private Textures()
 	{
-		for (String name : textureNames)
-		{
-			textures.put(name, loadTextureFromString(name));
-		}
+		throw new UnsupportedOperationException("Static Access Class");
 	}
 
 	/**
-	 * Creates a new OpenGL texture. If a texture with the same filename has already
-	 * been created, it will return the already generated integer instead.
+	 * Get the texture id associated with the given texture name, or if an id for
+	 * that name does not exist, create a new texture;
+	 * 
+	 * @param name
+	 *            of the texture
+	 * @return id of the texture
+	 */
+	public static int getTexture(String name)
+	{
+		if (!textureMap.containsKey(name))
+			textureMap.put(name, loadTextureFromString(name));
+
+		return textureMap.get(name);
+	}
+
+	/**
+	 * Creates a new OpenGL texture and return the resultant id.
 	 * 
 	 * @param path
 	 *            the filename of the texture without file extension
@@ -42,9 +53,6 @@ public class Texture
 	 */
 	private static int loadTextureFromString(String path)
 	{
-		if (textures.containsKey(path))
-			return textures.get(path);
-
 		int[] pixels = null;
 
 		int width = 0;
@@ -92,14 +100,9 @@ public class Texture
 	 */
 	public static void cleanup()
 	{
-		for (Integer texture : textures.values())
+		for (Integer texture : textureMap.values())
 		{
 			GL11.glDeleteTextures(texture);
 		}
-	}
-
-	public static int getTexture(String name)
-	{
-		return textures.get(name);
 	}
 }

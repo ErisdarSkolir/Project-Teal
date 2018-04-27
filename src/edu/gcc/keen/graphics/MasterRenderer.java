@@ -1,7 +1,6 @@
 package edu.gcc.keen.graphics;
 
 import java.nio.FloatBuffer;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -26,6 +25,8 @@ import edu.gcc.keen.gameobjects.GameObject;
 import edu.gcc.keen.gameobjects.GameObjectCreator;
 import edu.gcc.keen.input.Input;
 import edu.gcc.keen.util.BufferUtils;
+import edu.gcc.keen.util.ListPool;
+import edu.gcc.keen.util.VectorPool;
 
 /**
  * The master renderer handles window creation and listeners.
@@ -38,6 +39,7 @@ public class MasterRenderer
 	private Set<Integer> vaos = new HashSet<>();
 	private Set<Integer> vbos = new HashSet<>();
 
+	private Map<Integer, List<GameObject>> batches = new HashMap<>();
 	private TwoDimensionalShader shader;
 	private Mesh quad;
 
@@ -52,19 +54,22 @@ public class MasterRenderer
 	 */
 	public void render(List<GameObject> foreground, List<GameObject> background, Camera camera)
 	{
+		Matrix4f viewMatrix = createViewMatrix(camera);
+
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
 		shader.enable();
-		shader.loadMatrix("viewMatrix", createViewMatrix(camera));
+		shader.loadMatrix("viewMatrix", viewMatrix);
 
 		GL30.glBindVertexArray(quad.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
 
-		// drawObject(Texture.getTexture("keen_spritesheet"), keen);
-		for (Entry<Integer, List<GameObject>> entry : prepareBatch(foreground, background).entrySet())
+		prepareBatch(foreground, background);
+		for (Entry<Integer, List<GameObject>> entry : batches.entrySet())
 		{
 			drawObjects(entry.getKey(), entry.getValue());
 		}
+		clearBatch();
 
 		GL20.glDisableVertexAttribArray(0);
 
@@ -75,41 +80,62 @@ public class MasterRenderer
 
 		GLFW.glfwSwapBuffers(window);
 		GLFW.glfwPollEvents();
+
+		VectorPool.recycle(viewMatrix);
 	}
 
-	public Map<Integer, List<GameObject>> prepareBatch(List<GameObject> objects, List<GameObject> background)
+	/**
+	 * Sort the given gameObject lists into a map sorted by texture
+	 * 
+	 * @param objects
+	 * @param background
+	 * @return
+	 */
+	public void prepareBatch(List<GameObject> objects, List<GameObject> background)
 	{
-		Map<Integer, List<GameObject>> tmpBatch = new HashMap<>();
-
 		for (GameObject object : objects)
 		{
-			if (tmpBatch.containsKey(object.getTexture()))
-				tmpBatch.get(object.getTexture()).add(object);
+			if (batches.containsKey(object.getTexture()))
+				batches.get(object.getTexture()).add(object);
 			else
 			{
-				List<GameObject> newList = new ArrayList<>();
+				List<GameObject> newList = ListPool.get();
 				newList.add(object);
 
-				tmpBatch.put(object.getTexture(), newList);
+				batches.put(object.getTexture(), newList);
 			}
 		}
 
 		for (GameObject object : background)
 		{
-			if (tmpBatch.containsKey(object.getTexture()))
-				tmpBatch.get(object.getTexture()).add(object);
+			if (batches.containsKey(object.getTexture()))
+				batches.get(object.getTexture()).add(object);
 			else
 			{
-				List<GameObject> newList = new ArrayList<>();
+				List<GameObject> newList = ListPool.get();
 				newList.add(object);
 
-				tmpBatch.put(object.getTexture(), newList);
+				batches.put(object.getTexture(), newList);
 			}
 		}
-
-		return tmpBatch;
 	}
 
+	public void clearBatch()
+	{
+		for (List<GameObject> value : batches.values())
+		{
+			ListPool.recycle(value);
+		}
+		
+		batches.clear();
+	}
+
+	/**
+	 * Draw the given objects to the screen with the given texture
+	 * 
+	 * @param texture
+	 * @param objects
+	 */
 	public void drawObjects(int texture, List<GameObject> objects)
 	{
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
@@ -117,24 +143,15 @@ public class MasterRenderer
 
 		for (GameObject object : objects)
 		{
-			shader.loadTransformationMatrix(createTransformationMatrix(object.getPosition(), object.getScale()));
+			Matrix4f transformationMatrix = createTransformationMatrix(object.getPosition(), object.getScale());
+
+			shader.loadTransformationMatrix(transformationMatrix);
 			shader.loadTextureOffset(object.getTextureOffset());
 
 			GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
+
+			VectorPool.recycle(transformationMatrix);
 		}
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-	}
-
-	public void drawObject(int texture, GameObject object)
-	{
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
-
-		shader.loadTextureRowsAndColumns(object.getColumns(), object.getRows());
-		shader.loadTransformationMatrix(createTransformationMatrix(object.getPosition(), object.getScale()));
-		shader.loadTextureOffset(object.getTextureOffset());
-
-		GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
-
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 	}
 
@@ -171,7 +188,6 @@ public class MasterRenderer
 		quad = loadToVAO(positions);
 
 		GameObjectCreator.init();
-		Texture.init("keen_spritesheet", "enemy", "tilesheet", "background", "items_and_particle_spritesheet");
 
 		return true;
 	}
@@ -207,21 +223,6 @@ public class MasterRenderer
 		vaos.add(vaoID);
 		GL30.glBindVertexArray(vaoID);
 		return vaoID;
-	}
-
-	/**
-	 * Create vertex buffer object
-	 * 
-	 * @return id of newly created vbo
-	 */
-	private int createVbo(int floatCount)
-	{
-		int vboID = GL15.glGenBuffers();
-		vbos.add(vboID);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboID);
-		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, floatCount * 4L, GL15.GL_STREAM_DRAW);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-		return vboID;
 	}
 
 	/**
@@ -261,8 +262,7 @@ public class MasterRenderer
 	}
 
 	/**
-	 * returns an orthographic projection matrix with the given widht and height of
-	 * the screen
+	 * Create an orthographic projection matrix with the given parameters
 	 * 
 	 * @param width
 	 * @param height
@@ -292,9 +292,13 @@ public class MasterRenderer
 	 */
 	public Matrix4f createTransformationMatrix(Vector3f translation, Vector2f scale)
 	{
-		Matrix4f matrix = new Matrix4f().identity();
+		Matrix4f matrix = VectorPool.getMatrix4f();
 		matrix.translate(translation);
 		matrix.scale(new Vector3f(scale, 0));
+
+		VectorPool.recycle(translation);
+		VectorPool.recycle(scale);
+
 		return matrix;
 	}
 
@@ -306,8 +310,13 @@ public class MasterRenderer
 	 */
 	public Matrix4f createViewMatrix(Camera camera)
 	{
-		Matrix4f matrix = new Matrix4f().identity();
-		matrix.translate(-camera.getPosition().x, -camera.getPosition().y, 0.0f);
+		Vector3f tmpCamerPosition = camera.getPosition();
+
+		Matrix4f matrix = VectorPool.getMatrix4f();
+		matrix.translate(-tmpCamerPosition.x, -tmpCamerPosition.y, 0.0f);
+
+		VectorPool.recycle(tmpCamerPosition);
+
 		return matrix;
 	}
 
@@ -316,6 +325,8 @@ public class MasterRenderer
 	 */
 	public void cleanup()
 	{
+		Textures.cleanup();
+
 		for (int i : vaos)
 		{
 			GL30.glDeleteVertexArrays(i);

@@ -1,27 +1,81 @@
 package edu.gcc.keen.gameobjects;
 
 import java.io.File;
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import edu.gcc.keen.entities.Entity;
 
+/**
+ * A factory class for creating gameObjects based on configuration from the
+ * given data files.
+ * 
+ * @author DONMOYERLR17
+ *
+ */
 public class GameObjectCreator
 {
-	private static Map<Integer, boolean[]> tileData = new HashMap<>();
-	private static Map<Integer, int[]> itemData = new HashMap<>();
-	private static Map<Integer, Constructor> enemyData = new HashMap<>();
-	// private static Map<Integer, Constructor> itemData = new HashMap<>();
+	private static final Logger LOGGER = Logger.getLogger("Logger");
 
-	public static Entity createEnemy(int id, Vector2f position)
+	private static final String DATA_PATH = "res/data/";
+
+	private static Map<Integer, boolean[]> tileData;
+	private static Map<Integer, int[]> itemData;
+	private static Map<Integer, Constructor<?>> enemyData;
+
+	private GameObjectCreator()
+	{
+		throw new UnsupportedOperationException("Static Factory Class");
+	}
+
+	/**
+	 * Load the data configuration files
+	 */
+	public static void init()
+	{
+		tileData = loadTileData("tiledata");
+		itemData = loadItemData("itemdata");
+		enemyData = loadEntityData("enemydata");
+	}
+
+	/**
+	 * Create an infoplane object which could be either an entity or an item
+	 * 
+	 * @param id
+	 * @param position
+	 * @return the entity or item corresponding to the given id or null if there is
+	 *         no object for the id
+	 */
+	public static GameObject createInfoplaneObject(int id, Vector2f position)
 	{
 		if (enemyData.containsKey(id))
+			return createEnemy(id, position);
+		else if (itemData.containsKey(id))
+			return createItem(id, position);
+		else if (id != -1)
+			LOGGER.log(java.util.logging.Level.INFO, "No infoplane data for {0}", id);
+
+		return null;
+	}
+
+	/**
+	 * Create an entity with the given id and position
+	 * 
+	 * @param id
+	 * @param position
+	 * @return an entity that corresponds to the given id or null if there is
+	 *         no data for the id
+	 */
+	public static Entity createEnemy(int id, Vector2f position)
+	{
+		if (id != -1 && enemyData.containsKey(id))
 		{
 			try
 			{
@@ -29,38 +83,65 @@ public class GameObjectCreator
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
+				LOGGER.log(java.util.logging.Level.SEVERE, e.getMessage());
 			}
 		}
+		else if (id != -1)
+			LOGGER.log(java.util.logging.Level.INFO, "No enemy data for {0}", id);
 
 		return null;
 	}
 
+	/**
+	 * Create an item with the given id and position
+	 * 
+	 * @param id
+	 * @param position
+	 * @return an item that corresponds to the given id or null if there is no data
+	 *         for the id
+	 */
 	public static Item createItem(int id, Vector2f position)
 	{
-		int[] data = itemData.get(id);
+		if (id != -1 && itemData.containsKey(id))
+			return new Item(id, itemData.get(id), new Vector3f(position, 0.0f));
+		else if (id != -1)
+			LOGGER.log(java.util.logging.Level.INFO, "No item data for {0}", id);
 
-		if (data == null)
-			return null;
-
-		return new Item(id, data, new Vector3f(position, 0.0f));
+		return null;
 	}
 
-	public static Tile createTileWithData(int id, Vector2f position)
+	/**
+	 * Create a tile with the given id and position
+	 * 
+	 * @param id
+	 * @param position
+	 * @return a tile that corresponds to the given id or null if there is no data
+	 *         for the id
+	 */
+	public static Tile createTile(int id, Vector2f position)
 	{
-		boolean[] data = tileData.get(id);
+		if (id != -1 && tileData.containsKey(id))
+		{
+			boolean[] data = tileData.get(id);
+			return new Tile(id, data, new Vector3f(position, data[4] ? 0.9f : -0.9f));
+		}
+		else if (id != -1)
+			LOGGER.log(java.util.logging.Level.INFO, "No tile data for {0}", id);
 
-		if (data == null)
-			return null;
-
-		return new Tile(id, data[0], data[1], data[2], data[3], new Vector3f(position, data[4] ? 0.9f : -0.9f));
+		return null;
 	}
 
-	public static void init()
+	/**
+	 * Load tile data from the give file
+	 * 
+	 * @param filename
+	 * @return a map of ids and tile data
+	 */
+	private static Map<Integer, boolean[]> loadTileData(String filename)
 	{
-		try (Scanner tileDataScanner = new Scanner(new File("res/data/tiledata.dat"));
-				Scanner enemyDataScanner = new Scanner(new File("res/data/enemydata.dat"));
-				Scanner itemDataScanner = new Scanner(new File("res/data/itemdata.dat")))
+		Map<Integer, boolean[]> tmpTileData = new HashMap<>();
+
+		try (Scanner tileDataScanner = new Scanner(new File(DATA_PATH + filename + ".dat")))
 		{
 			while (tileDataScanner.hasNext())
 			{
@@ -72,33 +153,29 @@ public class GameObjectCreator
 					data[i] = (tileDataScanner.nextInt() == 1);
 				}
 
-				tileData.put(id, data);
+				tmpTileData.put(id, data);
 			}
+		}
+		catch (FileNotFoundException e)
+		{
+			LOGGER.log(java.util.logging.Level.SEVERE, e.getMessage());
+		}
 
-			while (enemyDataScanner.hasNextLine())
-			{
-				try
-				{
-					int id = enemyDataScanner.nextInt();
-					Class<?> clazz = Class.forName(enemyDataScanner.next());
+		return tmpTileData;
+	}
 
-					if (clazz.getSuperclass() == Class.forName("edu.gcc.keen.entities.Entity"))
-						enemyData.put(id, clazz.getConstructor(Vector3f.class));
-				}
-				catch (NoSuchMethodException e)
-				{
-					e.printStackTrace();
-				}
-				catch (SecurityException e)
-				{
-					e.printStackTrace();
-				}
-				catch (ClassNotFoundException e)
-				{
-					e.printStackTrace();
-				}
-			}
+	/**
+	 * Load item data from the give file
+	 * 
+	 * @param filename
+	 * @return a map of ids and item data
+	 */
+	private static Map<Integer, int[]> loadItemData(String filename)
+	{
+		Map<Integer, int[]> tmpItemData = new HashMap<>();
 
+		try (Scanner itemDataScanner = new Scanner(new File(DATA_PATH + filename + ".dat")))
+		{
 			while (itemDataScanner.hasNextLine())
 			{
 				int[] data = new int[11];
@@ -109,12 +186,43 @@ public class GameObjectCreator
 					data[i] = itemDataScanner.nextInt();
 				}
 
-				itemData.put(id, data);
+				tmpItemData.put(id, data);
 			}
 		}
-		catch (IOException e)
+		catch (FileNotFoundException e)
 		{
-			e.printStackTrace();
+			LOGGER.log(java.util.logging.Level.SEVERE, e.getMessage());
 		}
+
+		return tmpItemData;
+	}
+
+	/**
+	 * Load entity data from the give file
+	 * 
+	 * @param filename
+	 * @return a map of ids and entity constructor
+	 */
+	private static Map<Integer, Constructor<?>> loadEntityData(String filename)
+	{
+		Map<Integer, Constructor<?>> tmpEntityData = new HashMap<>();
+
+		try (Scanner enemyDataScanner = new Scanner(new File(DATA_PATH + filename + ".dat")))
+		{
+			while (enemyDataScanner.hasNextLine())
+			{
+				int id = enemyDataScanner.nextInt();
+				Class<?> clazz = Class.forName(enemyDataScanner.next());
+
+				if (clazz.getSuperclass() == Class.forName("edu.gcc.keen.entities.Entity"))
+					tmpEntityData.put(id, clazz.getConstructor(Vector3f.class));
+			}
+		}
+		catch (Exception e)
+		{
+			LOGGER.log(java.util.logging.Level.SEVERE, e.getMessage());
+		}
+
+		return tmpEntityData;
 	}
 }

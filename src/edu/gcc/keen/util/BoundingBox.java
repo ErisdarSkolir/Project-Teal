@@ -1,7 +1,5 @@
 package edu.gcc.keen.util;
 
-import java.util.List;
-
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -21,7 +19,14 @@ public class BoundingBox
 		Vector2f position2 = area.getPosition();
 		Vector2f scale2 = area.getScale();
 
-		return (Math.abs(position1.x - position2.x) * 2 < (scale1.x + scale2.x) && Math.abs(position1.y - position2.y) * 2 < (scale1.y + scale2.y));
+		boolean result = (Math.abs(position1.x - position2.x) * 2 < (scale1.x + scale2.x) && Math.abs(position1.y - position2.y) * 2 < (scale1.y + scale2.y));
+
+		VectorPool.recycle(scale1);
+		VectorPool.recycle(scale2);
+		VectorPool.recycle(position1);
+		VectorPool.recycle(position2);
+
+		return result;
 	}
 
 	public static boolean contains(GameObject object, Area area)
@@ -30,9 +35,15 @@ public class BoundingBox
 		Vector2f scale2 = object.getScale().mul(2.0f).add(object.getAabbOffset());
 		Vector2f position1 = area.getPosition();
 		Vector2f scale1 = area.getScale();
-		// System.out.println((Math.abs(position1.x - position2.x) * 2) + " " +
-		// (scale1.x - scale2.x));
-		return (Math.abs(position1.x - position2.x) * 2 < (scale1.x - scale2.x) && Math.abs(position1.y - position2.y) * 2 < (scale1.y - scale2.y));
+
+		boolean result = (Math.abs(position1.x - position2.x) * 2 < (scale1.x - scale2.x) && Math.abs(position1.y - position2.y) * 2 < (scale1.y - scale2.y));
+
+		VectorPool.recycle(scale1);
+		VectorPool.recycle(scale2);
+		VectorPool.recycle(position2);
+		VectorPool.recycle(position1);
+
+		return result;
 	}
 
 	public static boolean isIntersecting(GameObject object1, GameObject object2)
@@ -42,7 +53,14 @@ public class BoundingBox
 		Vector3f position2 = object2.getPosition();
 		Vector2f scale2 = object2.getScale().mul(2.0f).add(object2.getAabbOffset());
 
-		return (Math.abs(position1.x - position2.x) * 2 < (scale1.x + scale2.x) && Math.abs(position1.y - position2.y) * 2 < (scale1.y + scale2.y));
+		boolean result = (Math.abs(position1.x - position2.x) * 2 < (scale1.x + scale2.x) && Math.abs(position1.y - position2.y) * 2 < (scale1.y + scale2.y));
+
+		VectorPool.recycle(scale1);
+		VectorPool.recycle(scale2);
+		VectorPool.recycle(position2);
+		VectorPool.recycle(position1);
+
+		return result;
 	}
 
 	public static float minX(GameObject object1, GameObject object2)
@@ -54,7 +72,14 @@ public class BoundingBox
 
 		float amountX = Math.min(Math.abs((position1.x - scale1.x / 2) - (position2.x + scale2.x / 2)), Math.abs((position1.x + scale1.x / 2) - (position2.x - scale2.x / 2)));
 
-		return position1.x - position2.x <= 0 ? -amountX : amountX;
+		float result = position1.x - position2.x <= 0 ? -amountX : amountX;
+
+		VectorPool.recycle(scale1);
+		VectorPool.recycle(scale2);
+		VectorPool.recycle(position2);
+		VectorPool.recycle(position1);
+
+		return result;
 	}
 
 	public static float minY(GameObject object1, GameObject object2)
@@ -66,42 +91,13 @@ public class BoundingBox
 
 		float amountY = Math.min(Math.abs((position1.y + scale1.y / 2f) - (position2.y - scale2.y / 2f)), Math.abs((position1.y - scale1.y / 2f) - (position2.y + scale2.y / 2f)));
 
-		return position1.y - position2.y <= 0 ? -amountY : amountY;
-	}
+		float result = position1.y - position2.y <= 0 ? -amountY : amountY;
 
-	public static Vector3f resolveY(GameObject object, List<GameObject> collidingObjects)
-	{
-		if (collidingObjects.isEmpty())
-			return new Vector3f();
+		VectorPool.recycle(scale1);
+		VectorPool.recycle(scale2);
+		VectorPool.recycle(position2);
+		VectorPool.recycle(position1);
 
-		float smallest = BoundingBox.minY(object, collidingObjects.get(0));
-
-		for (GameObject secondObject : collidingObjects)
-		{
-			float tmp = BoundingBox.minY(object, secondObject);
-
-			if (tmp < smallest)
-				smallest = tmp;
-		}
-
-		return new Vector3f(0.0f, smallest, 0.0f);
-	}
-
-	public static Vector3f resolveX(GameObject object, List<GameObject> collidingObjects)
-	{
-		if (collidingObjects.isEmpty())
-			return new Vector3f();
-
-		float smallest = BoundingBox.minX(object, collidingObjects.get(0));
-
-		for (GameObject secondObject : collidingObjects)
-		{
-			float tmp = BoundingBox.minX(object, secondObject);
-
-			if (tmp < smallest)
-				smallest = tmp;
-		}
-
-		return new Vector3f(smallest, 0.0f, 0.0f);
+		return result;
 	}
 }

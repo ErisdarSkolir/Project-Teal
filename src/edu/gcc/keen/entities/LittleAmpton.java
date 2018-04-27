@@ -7,7 +7,7 @@ import org.joml.Vector3f;
 
 import edu.gcc.keen.gameobjects.GameObject;
 import edu.gcc.keen.gameobjects.Tile;
-import edu.gcc.keen.graphics.Texture;
+import edu.gcc.keen.graphics.Textures;
 import edu.gcc.keen.util.Area;
 import edu.gcc.keen.util.BoundingBox;
 
@@ -20,7 +20,7 @@ public class LittleAmpton extends Entity
 
 	public LittleAmpton(Vector3f position)
 	{
-		super(Texture.getTexture("enemy"), 14, 10, 15, position, new Vector2f(1.625f, 1.625f));
+		super(Textures.getTexture("enemy"), 14, 10, 15, position, new Vector2f(1.625f, 1.625f));
 	}
 
 	@Override

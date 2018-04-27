@@ -6,18 +6,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-import edu.gcc.keen.entities.Entity;
 import edu.gcc.keen.entities.Keen;
 import edu.gcc.keen.gameobjects.GameObject;
 import edu.gcc.keen.gameobjects.GameObjectCreator;
-import edu.gcc.keen.gameobjects.Item;
 import edu.gcc.keen.gameobjects.Tile;
 import edu.gcc.keen.graphics.MasterRenderer;
-import edu.gcc.keen.graphics.Texture;
+import edu.gcc.keen.graphics.Textures;
 import edu.gcc.keen.util.Area;
 import edu.gcc.keen.util.BoundingBox;
 
@@ -30,12 +29,13 @@ import edu.gcc.keen.util.BoundingBox;
  */
 public class Level extends GameState
 {
-	private List<Area> areas = new ArrayList<>();
+	private static final Logger LOGGER = Logger.getLogger("Logger");
 
+	private static final String LEVEL_PATH = "res/levels/";
+
+	private List<Area> areas = new ArrayList<>();
 	private List<GameObject> gameObjects = new ArrayList<>();
 	private List<GameObject> backgroundTiles = new ArrayList<>();
-
-	private Keen keen;
 
 	/**
 	 * Constructor
@@ -97,9 +97,12 @@ public class Level extends GameState
 	{
 		List<GameObject> tmpObjects = new ArrayList<>();
 
-		try (Scanner foreground = new Scanner(new File("res/levels/" + levelName + "_foreground.csv"));
-				Scanner background = new Scanner(new File("res/levels/" + levelName + "_background.csv"));
-				Scanner infoplane = new Scanner(new File("res/levels/" + levelName + "_infoplane.csv")))
+		Tile tmpTile;
+		GameObject tmpiInfoplaneObject;
+
+		try (Scanner foreground = new Scanner(new File(LEVEL_PATH + levelName + "_foreground.csv"));
+				Scanner background = new Scanner(new File(LEVEL_PATH + levelName + "_background.csv"));
+				Scanner infoplane = new Scanner(new File(LEVEL_PATH + levelName + "_infoplane.csv")))
 		{
 			foreground.useDelimiter(",");
 			background.useDelimiter(",");
@@ -109,51 +112,23 @@ public class Level extends GameState
 			{
 				for (int column = 0; foreground.hasNextInt(); column++)
 				{
-					int foregroundID = foreground.nextInt();
-					int backgroundID = background.nextInt();
-					int infoplaneID = infoplane.nextInt();
-
-					if (foregroundID != -1)
+					if ((tmpTile = GameObjectCreator.createTile(foreground.nextInt(), new Vector2f(2.0f * column, -(2.0f * row)))) != null)
 					{
-						Tile tile = GameObjectCreator.createTileWithData(foregroundID, new Vector2f(2.0f * column, -(2.0f * row)));
-
-						if (tile != null)
-						{
-							if (tile.isCollidable() || tile.isOneWay() || tile.isPole())
-								tmpObjects.add(tile);
-							else
-								backgroundTiles.add(tile);
-						}
+						if (tmpTile.isCollidable() || tmpTile.isOneWay() || tmpTile.isPole())
+							tmpObjects.add(tmpTile);
 						else
-							System.out.println("No tile data for " + foregroundID);
+							backgroundTiles.add(tmpTile);
 					}
 
-					if (backgroundID != -1)
-						backgroundTiles.add(new Tile(Texture.getTexture("background"), backgroundID, 18, 84, new Vector3f(2.0f * column, -(2.0f * row), -0.99f)));
-					else
-						System.out.println("No background data for " + backgroundID);
-
-					if (infoplaneID != -1)
+					if ((tmpiInfoplaneObject = GameObjectCreator.createInfoplaneObject(infoplane.nextInt(), new Vector2f(column * 2.0f, -(row * 2.0f) + 2.0f))) != null)
 					{
-						Entity entity = GameObjectCreator.createEnemy(infoplaneID, new Vector2f(column * 2.0f, -(row * 2.0f) + 2.0f));
+						tmpObjects.add(tmpiInfoplaneObject);
 
-						if (entity != null)
-							tmpObjects.add(entity);
-						else
-						{
-							Item item = GameObjectCreator.createItem(infoplaneID, new Vector2f(column * 2.0f, -(row * 2.0f) + 2.0f));
-
-							if (item != null)
-								tmpObjects.add(item);
-							else
-								System.out.println("No infoplane data for " + infoplaneID);
-						}
-
-						if (entity instanceof Keen)
-						{
-							camera.bindObject(entity);
-						}
+						if (tmpiInfoplaneObject instanceof Keen)
+							camera.bindObject(tmpiInfoplaneObject);
 					}
+
+					backgroundTiles.add(new Tile(Textures.getTexture("background"), background.nextInt(), 18, 84, new Vector3f(2.0f * column, -(2.0f * row), -0.99f)));
 				}
 
 				foreground.nextLine();
@@ -163,12 +138,23 @@ public class Level extends GameState
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			LOGGER.log(java.util.logging.Level.SEVERE, e.getMessage());
 		}
 
 		return tmpObjects;
 	}
 
+	/**
+	 * Generate the spatial partitioning grid and place previously generated
+	 * gameObjects inside the correct area
+	 * 
+	 * @param objects
+	 * @param minAreaWidth
+	 * @param minAreaHeight
+	 * @param levelWidthInTiles
+	 * @param levelHeightInTiles
+	 * @return a list of areas created for the level
+	 */
 	public List<Area> generateAreas(List<GameObject> objects, float minAreaWidth, float minAreaHeight, float levelWidthInTiles, float levelHeightInTiles)
 	{
 		List<Area> tmpAreas = new ArrayList<>();
@@ -191,7 +177,10 @@ public class Level extends GameState
 			for (Area area : tmpAreas)
 			{
 				if (BoundingBox.isIntersecting(object, area))
+				{
 					area.addObject(object);
+					break;
+				}
 			}
 		}
 
