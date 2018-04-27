@@ -33,7 +33,6 @@ public class GameObjectCreator
 			}
 		}
 
-		System.out.println("No enemy data for " + id);
 		return null;
 	}
 
@@ -48,7 +47,6 @@ public class GameObjectCreator
 			e.printStackTrace();
 		}
 
-		System.out.println("No item data for " + id);
 		return null;
 	}
 
@@ -58,7 +56,6 @@ public class GameObjectCreator
 
 		if (data == null)
 		{
-			System.out.println("No tile data for " + id);
 			return null;
 		}
 

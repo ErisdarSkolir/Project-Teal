@@ -5,14 +5,14 @@ import org.joml.Vector3f;
 
 import edu.gcc.keen.graphics.Texture;
 
-public class Soda extends Item
+public class PixieStick extends Item
 {
 	private int animationTick;
 
-	public Soda(Vector3f position)
+	public PixieStick(Vector3f position)
 	{
-		super(Texture.getTexture("tilesheet"), 18, 165, 63, position, new Vector2f(1.0f, 1.0f));
-		this.pointValue = 500;
+		super(Texture.getTexture("tilesheet"), 18, 165, 1036, position, new Vector2f(1.0f, 1.0f));
+		this.pointValue = 1000;
 	}
 
 	@Override
@@ -22,10 +22,10 @@ public class Soda extends Item
 
 		if (animationTick > 40)
 		{
-			if (index != 1034)
-				index = 1034;
+			if (index != 1036)
+				index = 1036;
 			else
-				index = 1035;
+				index = 1037;
 
 			animationTick = 0;
 		}

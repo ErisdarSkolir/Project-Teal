@@ -22,7 +22,6 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryUtil;
 
 import edu.gcc.keen.KeenMain;
-import edu.gcc.keen.entities.Keen;
 import edu.gcc.keen.input.Input;
 import edu.gcc.keen.tiles.GameObjectCreator;
 import edu.gcc.keen.util.BufferUtils;
@@ -51,7 +50,7 @@ public class MasterRenderer
 	 * @param tiles
 	 * @param items
 	 */
-	public void render(Keen keen, List<GameObject> foreground, List<GameObject> background, Camera camera)
+	public void render(List<GameObject> foreground, List<GameObject> background, Camera camera)
 	{
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
@@ -61,7 +60,7 @@ public class MasterRenderer
 		GL30.glBindVertexArray(quad.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
 
-		drawObject(Texture.getTexture("keen_spritesheet"), keen);
+		// drawObject(Texture.getTexture("keen_spritesheet"), keen);
 		for (Entry<Integer, List<GameObject>> entry : prepareBatch(foreground, background).entrySet())
 		{
 			drawObjects(entry.getKey(), entry.getValue());

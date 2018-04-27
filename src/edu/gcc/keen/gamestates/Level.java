@@ -45,8 +45,6 @@ public class Level extends GameState
 		super();
 		gameObjects = loadFromFile(levelName);
 		areas = generateAreas(gameObjects, 10.0f, 10.0f, 150, 32);
-
-		camera.bindObject(keen);
 	}
 
 	/**
@@ -78,7 +76,6 @@ public class Level extends GameState
 			area.tick();
 		}
 
-		// TODO check for collisions
 		super.tick();
 	}
 
@@ -88,7 +85,7 @@ public class Level extends GameState
 	@Override
 	public void render(MasterRenderer renderer)
 	{
-		renderer.render(keen, gameObjects, backgroundTiles, camera);
+		renderer.render(gameObjects, backgroundTiles, camera);
 	}
 
 	/**
@@ -127,12 +124,16 @@ public class Level extends GameState
 							else
 								backgroundTiles.add(tile);
 						}
+						else
+							System.out.println("No tile data for " + foregroundID);
 					}
 
 					if (backgroundID != -1)
 						backgroundTiles.add(new Tile(Texture.getTexture("background"), backgroundID, 18, 84, new Vector3f(2.0f * column, -(2.0f * row), -0.99f)));
+					else
+						System.out.println("No background data for " + backgroundID);
 
-					if (infoplaneID != -1 && infoplaneID != 2)
+					if (infoplaneID != -1)
 					{
 						Entity entity = GameObjectCreator.createEnemy(infoplaneID, new Vector2f(column * 2.0f, -(row * 2.0f) + 2.0f));
 
@@ -144,12 +145,14 @@ public class Level extends GameState
 
 							if (item != null)
 								tmpObjects.add(item);
+							else
+								System.out.println("No infoplane data for " + infoplaneID);
 						}
-					}
-					else if (infoplaneID == 2)
-					{
-						keen = new Keen(new Vector3f(column * 2.0f, -(row * 2.0f) + 2.0f, 0.0f));
-						tmpObjects.add(keen);
+
+						if (entity instanceof Keen)
+						{
+							camera.bindObject(entity);
+						}
 					}
 				}
 

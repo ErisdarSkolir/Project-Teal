@@ -72,9 +72,6 @@ public class LittleAmpton extends Entity
 	@Override
 	public void onCollideY(List<GameObject> collidingObjects)
 	{
-		// if (collidingObjects.size() <= 1)
-		// direction = !direction;
-
 		for (GameObject object : collidingObjects)
 		{
 			if (object instanceof Tile)

@@ -7,7 +7,7 @@ import edu.gcc.keen.graphics.Texture;
 
 public class Marshmallow extends Item
 {
-	public int animationTick;
+	private int animationTick;
 
 	public Marshmallow(Vector3f position)
 	{

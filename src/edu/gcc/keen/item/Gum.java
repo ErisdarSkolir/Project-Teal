@@ -7,7 +7,7 @@ import edu.gcc.keen.graphics.Texture;
 
 public class Gum extends Item
 {
-	public int animationTick;
+	private int animationTick;
 
 	public Gum(Vector3f position)
 	{
