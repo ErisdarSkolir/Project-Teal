@@ -1,136 +1,80 @@
-Apr 28, 2018 2:56:05 PM edu.gcc.keen.gameobjects.GameObjectCreator createTile
+Apr 28, 2018 2:59:08 PM edu.gcc.keen.gameobjects.GameObjectCreator createTile
 INFO: No tile data for 1,314
-Apr 28, 2018 2:56:05 PM edu.gcc.keen.gameobjects.GameObjectCreator createInfoplaneObject
+Apr 28, 2018 2:59:08 PM edu.gcc.keen.gameobjects.GameObjectCreator createInfoplaneObject
 INFO: No infoplane data for 1,314
-Apr 28, 2018 2:56:05 PM edu.gcc.keen.gameobjects.GameObjectCreator createTile
+Apr 28, 2018 2:59:08 PM edu.gcc.keen.gameobjects.GameObjectCreator createTile
 INFO: No tile data for 1,314
-Apr 28, 2018 2:56:05 PM edu.gcc.keen.gameobjects.GameObjectCreator createInfoplaneObject
+Apr 28, 2018 2:59:08 PM edu.gcc.keen.gameobjects.GameObjectCreator createInfoplaneObject
 INFO: No infoplane data for 1,314
-Apr 28, 2018 2:56:05 PM edu.gcc.keen.gameobjects.GameObjectCreator createTile
+Apr 28, 2018 2:59:08 PM edu.gcc.keen.gameobjects.GameObjectCreator createTile
 INFO: No tile data for 1,314
-Apr 28, 2018 2:56:05 PM edu.gcc.keen.gameobjects.GameObjectCreator createInfoplaneObject
+Apr 28, 2018 2:59:08 PM edu.gcc.keen.gameobjects.GameObjectCreator createInfoplaneObject
 INFO: No infoplane data for 1,314
-Apr 28, 2018 2:56:05 PM edu.gcc.keen.gameobjects.GameObjectCreator createTile
+Apr 28, 2018 2:59:08 PM edu.gcc.keen.gameobjects.GameObjectCreator createTile
 INFO: No tile data for 1,314
-Apr 28, 2018 2:56:05 PM edu.gcc.keen.gameobjects.GameObjectCreator createInfoplaneObject
+Apr 28, 2018 2:59:08 PM edu.gcc.keen.gameobjects.GameObjectCreator createInfoplaneObject
 INFO: No infoplane data for 1,314
-Apr 28, 2018 2:56:05 PM edu.gcc.keen.gameobjects.GameObjectCreator createInfoplaneObject
+Apr 28, 2018 2:59:08 PM edu.gcc.keen.gameobjects.GameObjectCreator createInfoplaneObject
 INFO: No infoplane data for 1,196
-Apr 28, 2018 2:56:05 PM edu.gcc.keen.gameobjects.GameObjectCreator createTile
+Apr 28, 2018 2:59:08 PM edu.gcc.keen.gameobjects.GameObjectCreator createTile
 INFO: No tile data for 1,332
-Apr 28, 2018 2:56:05 PM edu.gcc.keen.gameobjects.GameObjectCreator createInfoplaneObject
+Apr 28, 2018 2:59:08 PM edu.gcc.keen.gameobjects.GameObjectCreator createInfoplaneObject
 INFO: No infoplane data for 1,332
-Apr 28, 2018 2:56:05 PM edu.gcc.keen.gameobjects.GameObjectCreator createTile
+Apr 28, 2018 2:59:08 PM edu.gcc.keen.gameobjects.GameObjectCreator createTile
 INFO: No tile data for 1,350
-Apr 28, 2018 2:56:05 PM edu.gcc.keen.gameobjects.GameObjectCreator createInfoplaneObject
+Apr 28, 2018 2:59:08 PM edu.gcc.keen.gameobjects.GameObjectCreator createInfoplaneObject
 INFO: No infoplane data for 1,350
-Apr 28, 2018 2:56:07 PM edu.gcc.keen.KeenMain run
-FINE: Updates 59	Frames 101
-Apr 28, 2018 2:56:08 PM edu.gcc.keen.KeenMain run
-FINE: Updates 61	Frames 146
-Apr 28, 2018 2:56:09 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 137
-Apr 28, 2018 2:56:10 PM edu.gcc.keen.KeenMain run
+Apr 28, 2018 2:59:09 PM edu.gcc.keen.KeenMain run
+FINE: Updates 59	Frames 121
+Apr 28, 2018 2:59:10 PM edu.gcc.keen.KeenMain run
+FINE: Updates 60	Frames 171
+Apr 28, 2018 2:59:11 PM edu.gcc.keen.KeenMain run
+FINE: Updates 61	Frames 177
+Apr 28, 2018 2:59:12 PM edu.gcc.keen.KeenMain run
+FINE: Updates 60	Frames 174
+Apr 28, 2018 2:59:13 PM edu.gcc.keen.KeenMain run
+FINE: Updates 60	Frames 171
+Apr 28, 2018 2:59:14 PM edu.gcc.keen.KeenMain run
+FINE: Updates 60	Frames 132
+Apr 28, 2018 2:59:15 PM edu.gcc.keen.KeenMain run
+FINE: Updates 61	Frames 116
+Apr 28, 2018 2:59:16 PM edu.gcc.keen.KeenMain run
+FINE: Updates 60	Frames 118
+Apr 28, 2018 2:59:17 PM edu.gcc.keen.KeenMain run
+FINE: Updates 61	Frames 132
+Apr 28, 2018 2:59:18 PM edu.gcc.keen.KeenMain run
 FINE: Updates 60	Frames 138
-Apr 28, 2018 2:56:11 PM edu.gcc.keen.KeenMain run
-FINE: Updates 61	Frames 139
-Apr 28, 2018 2:56:12 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 141
-Apr 28, 2018 2:56:13 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 139
-Apr 28, 2018 2:56:14 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 141
-Apr 28, 2018 2:56:15 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 140
-Apr 28, 2018 2:56:16 PM edu.gcc.keen.KeenMain run
+Apr 28, 2018 2:59:20 PM edu.gcc.keen.KeenMain run
+FINE: Updates 60	Frames 138
+Apr 28, 2018 2:59:21 PM edu.gcc.keen.KeenMain run
 FINE: Updates 61	Frames 140
-Apr 28, 2018 2:56:17 PM edu.gcc.keen.KeenMain run
+Apr 28, 2018 2:59:22 PM edu.gcc.keen.KeenMain run
 FINE: Updates 60	Frames 140
-Apr 28, 2018 2:56:18 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 142
-Apr 28, 2018 2:56:19 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 141
-Apr 28, 2018 2:56:20 PM edu.gcc.keen.KeenMain run
+Apr 28, 2018 2:59:23 PM edu.gcc.keen.KeenMain run
+FINE: Updates 60	Frames 139
+Apr 28, 2018 2:59:24 PM edu.gcc.keen.KeenMain run
 FINE: Updates 60	Frames 140
-Apr 28, 2018 2:56:21 PM edu.gcc.keen.KeenMain run
-FINE: Updates 61	Frames 144
-Apr 28, 2018 2:56:22 PM edu.gcc.keen.KeenMain run
+Apr 28, 2018 2:59:25 PM edu.gcc.keen.KeenMain run
+FINE: Updates 60	Frames 138
+Apr 28, 2018 2:59:26 PM edu.gcc.keen.KeenMain run
 FINE: Updates 60	Frames 141
-Apr 28, 2018 2:56:23 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 143
-Apr 28, 2018 2:56:24 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 136
-Apr 28, 2018 2:56:25 PM edu.gcc.keen.KeenMain run
-FINE: Updates 61	Frames 137
-Apr 28, 2018 2:56:26 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 142
-Apr 28, 2018 2:56:27 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 146
-Apr 28, 2018 2:56:28 PM edu.gcc.keen.KeenMain run
-FINE: Updates 61	Frames 139
-Apr 28, 2018 2:56:29 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 146
-Apr 28, 2018 2:56:30 PM edu.gcc.keen.KeenMain run
-FINE: Updates 61	Frames 145
-Apr 28, 2018 2:56:31 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 144
-Apr 28, 2018 2:56:32 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 145
-Apr 28, 2018 2:56:33 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 144
-Apr 28, 2018 2:56:34 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 146
-Apr 28, 2018 2:56:35 PM edu.gcc.keen.KeenMain run
-FINE: Updates 61	Frames 147
-Apr 28, 2018 2:56:36 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 141
-Apr 28, 2018 2:56:37 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 144
-Apr 28, 2018 2:56:38 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 146
-Apr 28, 2018 2:56:39 PM edu.gcc.keen.KeenMain run
-FINE: Updates 61	Frames 146
-Apr 28, 2018 2:56:40 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 153
-Apr 28, 2018 2:56:41 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 146
-Apr 28, 2018 2:56:42 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 145
-Apr 28, 2018 2:56:43 PM edu.gcc.keen.KeenMain run
-FINE: Updates 61	Frames 143
-Apr 28, 2018 2:56:44 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 149
-Apr 28, 2018 2:56:45 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 143
-Apr 28, 2018 2:56:46 PM edu.gcc.keen.KeenMain run
+Apr 28, 2018 2:59:27 PM edu.gcc.keen.KeenMain run
+FINE: Updates 60	Frames 140
+Apr 28, 2018 2:59:28 PM edu.gcc.keen.KeenMain run
 FINE: Updates 61	Frames 142
-Apr 28, 2018 2:56:47 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 144
-Apr 28, 2018 2:56:48 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 145
-Apr 28, 2018 2:56:49 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 142
-Apr 28, 2018 2:56:50 PM edu.gcc.keen.KeenMain run
+Apr 28, 2018 2:59:29 PM edu.gcc.keen.KeenMain run
+FINE: Updates 60	Frames 139
+Apr 28, 2018 2:59:30 PM edu.gcc.keen.KeenMain run
+FINE: Updates 60	Frames 134
+Apr 28, 2018 2:59:31 PM edu.gcc.keen.KeenMain run
 FINE: Updates 60	Frames 141
-Apr 28, 2018 2:56:51 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 144
-Apr 28, 2018 2:56:52 PM edu.gcc.keen.KeenMain run
+Apr 28, 2018 2:59:32 PM edu.gcc.keen.KeenMain run
 FINE: Updates 61	Frames 142
-Apr 28, 2018 2:56:53 PM edu.gcc.keen.KeenMain run
+Apr 28, 2018 2:59:33 PM edu.gcc.keen.KeenMain run
 FINE: Updates 60	Frames 142
-Apr 28, 2018 2:56:54 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 145
-Apr 28, 2018 2:56:55 PM edu.gcc.keen.KeenMain run
+Apr 28, 2018 2:59:34 PM edu.gcc.keen.KeenMain run
 FINE: Updates 60	Frames 141
-Apr 28, 2018 2:56:56 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 140
-Apr 28, 2018 2:56:57 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 147
-Apr 28, 2018 2:56:58 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 143
-Apr 28, 2018 2:56:59 PM edu.gcc.keen.KeenMain run
-FINE: Updates 61	Frames 143
-Apr 28, 2018 2:57:00 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 140
-Apr 28, 2018 2:57:01 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 142
+Apr 28, 2018 2:59:35 PM edu.gcc.keen.KeenMain run
+FINE: Updates 61	Frames 138
+Apr 28, 2018 2:59:36 PM edu.gcc.keen.KeenMain run
+FINE: Updates 60	Frames 138

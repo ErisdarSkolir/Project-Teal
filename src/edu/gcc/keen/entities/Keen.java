@@ -75,10 +75,30 @@ public class Keen extends Entity
 			horizontalVelocity = -0.5f;
 			setAnimation(KeenAnimation.WALK_LEFT);
 		}
+		else if (Input.isKeyDown(GLFW.GLFW_KEY_RIGHT) && onPole)
+		{
+			setAnimation(KeenAnimation.STATIONARY_POLE_RIGHT);
+		}
 		else if (Input.isKeyDown(GLFW.GLFW_KEY_RIGHT) && !onPole)
 		{
 			horizontalVelocity = 0.5f;
 			setAnimation(KeenAnimation.WALK_RIGHT);
+		}
+		else if (Input.isKeyDown(GLFW.GLFW_KEY_LEFT) && onPole)
+		{
+			setAnimation(KeenAnimation.STATIONARY_POLE_LEFT);
+		}
+		else if (Input.isKeyDown(GLFW.GLFW_KEY_DOWN) && !onPole)
+		{
+			setAnimation(KeenAnimation.LOOK_DOWN);
+		}
+		else if (Input.isKeyDown(GLFW.GLFW_KEY_DOWN) && onPole)
+		{
+			verticalVelocity = 6.0f;
+		}
+		else if (Input.isKeyDown(GLFW.GLFW_KEY_SPACE) && horizontalVelocity == 0.0f && verticalVelocity == 0.0f)
+		{
+			setAnimation(KeenAnimation.SHOOT_LEFT);
 		}
 		else
 		{
@@ -134,6 +154,7 @@ public class Keen extends Entity
 
 			if (animationIndex >= currentAnimation.getLenth())
 				animationIndex = 0;
+
 		}
 
 		tick++;
