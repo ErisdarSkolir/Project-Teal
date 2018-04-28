@@ -10,6 +10,7 @@ public abstract class Interactable extends GameObject
 	public Interactable(int texture, int columns, int rows, int index, Vector3f position, Vector2f scale)
 	{
 		super(texture, columns, rows, index, position, scale);
+
 	}
 
 	public abstract void toggle();
