@@ -130,6 +130,7 @@ public class Keen extends Entity
 				setAnimation(direction ? KeenAnimation.STATIONARY_LEFT : KeenAnimation.STATIONARY_RIGHT);
 			else
 				setAnimation(direction ? KeenAnimation.STATIONARY_POLE_LEFT : KeenAnimation.STATIONARY_POLE_RIGHT);
+
 		}
 
 		if (Input.isKeyDown(GLFW.GLFW_KEY_LEFT_CONTROL))
