@@ -126,7 +126,7 @@ public class MasterRenderer
 		{
 			ListPool.recycle(value);
 		}
-		
+
 		batches.clear();
 	}
 
@@ -139,7 +139,6 @@ public class MasterRenderer
 	public void drawObjects(int texture, List<GameObject> objects)
 	{
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
-		shader.loadTextureRowsAndColumns(objects.get(0).getColumns(), objects.get(0).getRows());
 
 		for (GameObject object : objects)
 		{
@@ -147,6 +146,7 @@ public class MasterRenderer
 
 			shader.loadTransformationMatrix(transformationMatrix);
 			shader.loadTextureOffset(object.getTextureOffset());
+			shader.loadTextureRowsAndColumns(object.getColumns(), object.getRows());
 
 			GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
 
