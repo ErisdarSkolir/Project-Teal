@@ -110,11 +110,11 @@ public class Area
 
 	public Vector2f getPosition()
 	{
-		return VectorPool.getVector2f(position.x, position.y);
+		return new Vector2f(position.x, position.y);
 	}
 
 	public Vector2f getScale()
 	{
-		return VectorPool.getVector2f(scale.x, scale.y);
+		return new Vector2f(scale.x, scale.y);
 	}
 }

@@ -3,7 +3,6 @@ package edu.gcc.keen.graphics;
 import org.joml.Vector3f;
 
 import edu.gcc.keen.gameobjects.GameObject;
-import edu.gcc.keen.util.VectorPool;
 
 /**
  * The 2d camera
@@ -32,11 +31,7 @@ public class Camera
 	public void tick()
 	{
 		if (this.boundObject != null)
-		{
-			Vector3f tmpPosition = boundObject.getPosition();
-			this.position.set(tmpPosition);
-			VectorPool.recycle(tmpPosition);
-		}
+			this.position.set(boundObject.getPosition());
 	}
 
 	/**
@@ -57,6 +52,6 @@ public class Camera
 
 	public Vector3f getPosition()
 	{
-		return VectorPool.getVector3f(position.x, position.y, position.z);
+		return new Vector3f(position.x, position.y, position.z);
 	}
 }

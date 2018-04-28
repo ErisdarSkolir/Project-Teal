@@ -18,7 +18,6 @@ import edu.gcc.keen.input.Input;
 import edu.gcc.keen.interactable.KeyStoneHolder;
 import edu.gcc.keen.util.Area;
 import edu.gcc.keen.util.BoundingBox;
-import edu.gcc.keen.util.VectorPool;
 
 /**
  * This class represents the character that the player controls
@@ -211,8 +210,6 @@ public class Keen extends Entity implements Animateable
 	{
 		for (GameObject object : collidingObjects)
 		{
-			Vector3f tmpPosition = object.getPosition();
-
 			if (object.isCollidable())
 			{
 				position.add(0.0f, BoundingBox.minY(this, object), 0.0f);
@@ -253,9 +250,9 @@ public class Keen extends Entity implements Animateable
 				else if (tile.isPole() && (Input.isKeyDown(GLFW.GLFW_KEY_UP) || Input.isKeyDown(GLFW.GLFW_KEY_DOWN)))
 				{
 					onPole = true;
-					this.position.x = tmpPosition.x;
+					this.position.x = object.getPosition().x;
 				}
-				else if (!onPole && tile.isOneWay() && position.y > tmpPosition.y && verticalVelocity < 0f)
+				else if (!onPole && tile.isOneWay() && position.y > object.getPosition().y && verticalVelocity < 0f)
 				{
 					this.position.add(0.0f, BoundingBox.minY(this, tile), 0.0f);
 
@@ -279,8 +276,6 @@ public class Keen extends Entity implements Animateable
 					keystones[holder.getColor()] = false;
 				}
 			}
-
-			VectorPool.recycle(tmpPosition);
 		}
 	}
 }

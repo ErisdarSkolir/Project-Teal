@@ -41,6 +41,9 @@ public class Level extends GameState
 	private List<GameObject> gameObjects = new ArrayList<>();
 	private List<GameObject> backgroundTiles = new ArrayList<>();
 
+	private int width;
+	private int height;
+
 	/**
 	 * Constructor
 	 */

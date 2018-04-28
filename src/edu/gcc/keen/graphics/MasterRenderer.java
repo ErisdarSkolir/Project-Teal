@@ -26,7 +26,6 @@ import edu.gcc.keen.gameobjects.GameObject;
 import edu.gcc.keen.gameobjects.GameObjectCreator;
 import edu.gcc.keen.input.Input;
 import edu.gcc.keen.util.BufferUtils;
-import edu.gcc.keen.util.VectorPool;
 
 /**
  * The master renderer handles window creation and listeners.
@@ -53,12 +52,10 @@ public class MasterRenderer
 	 */
 	public void render(List<GameObject> foreground, List<GameObject> background, Camera camera)
 	{
-		Matrix4f viewMatrix = createViewMatrix(camera);
-
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
 		shader.enable();
-		shader.loadMatrix("viewMatrix", viewMatrix);
+		shader.loadMatrix("viewMatrix", createViewMatrix(camera));
 
 		GL30.glBindVertexArray(quad.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
@@ -77,8 +74,6 @@ public class MasterRenderer
 
 		GLFW.glfwSwapBuffers(window);
 		GLFW.glfwPollEvents();
-
-		VectorPool.recycle(viewMatrix);
 	}
 
 	/**
@@ -133,15 +128,11 @@ public class MasterRenderer
 
 		for (GameObject object : objects)
 		{
-			Matrix4f transformationMatrix = createTransformationMatrix(object.getPosition(), object.getScale());
-
-			shader.loadTransformationMatrix(transformationMatrix);
+			shader.loadTransformationMatrix(createTransformationMatrix(object.getPosition(), object.getScale()));
 			shader.loadTextureOffset(object.getTextureOffset());
 			shader.loadTextureRowsAndColumns(object.getColumns(), object.getRows());
 
 			GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
-
-			VectorPool.recycle(transformationMatrix);
 		}
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 	}
@@ -283,12 +274,9 @@ public class MasterRenderer
 	 */
 	public Matrix4f createTransformationMatrix(Vector3f translation, Vector2f scale)
 	{
-		Matrix4f matrix = VectorPool.getMatrix4f();
+		Matrix4f matrix = new Matrix4f().identity();
 		matrix.translate(translation);
 		matrix.scale(new Vector3f(scale, 0));
-
-		VectorPool.recycle(translation);
-		VectorPool.recycle(scale);
 
 		return matrix;
 	}
@@ -302,11 +290,8 @@ public class MasterRenderer
 	public Matrix4f createViewMatrix(Camera camera)
 	{
 		Vector3f tmpCamerPosition = camera.getPosition();
-
-		Matrix4f matrix = VectorPool.getMatrix4f();
+		Matrix4f matrix = new Matrix4f().identity();
 		matrix.translate(-tmpCamerPosition.x, -tmpCamerPosition.y, 0.0f);
-
-		VectorPool.recycle(tmpCamerPosition);
 
 		return matrix;
 	}

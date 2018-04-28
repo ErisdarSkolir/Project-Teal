@@ -8,7 +8,6 @@ import org.joml.Vector3f;
 
 import edu.gcc.keen.animations.Animation;
 import edu.gcc.keen.util.Area;
-import edu.gcc.keen.util.VectorPool;
 
 /**
  * The base class for all in-game objects
@@ -71,7 +70,7 @@ public abstract class GameObject
 
 	public Vector3f getPosition()
 	{
-		return VectorPool.getVector3f(position.x, position.y, position.z);
+		return new Vector3f(position.x, position.y, position.z);
 	}
 
 	public boolean addArea(Area area)
@@ -105,7 +104,7 @@ public abstract class GameObject
 
 	public Vector2f getScale()
 	{
-		return VectorPool.getVector2f(scale.x, scale.y);
+		return new Vector2f(scale.x, scale.y);
 	}
 
 	public int getColumns()
