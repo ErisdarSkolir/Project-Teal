@@ -12,6 +12,7 @@ import edu.gcc.keen.gameobjects.Item;
 import edu.gcc.keen.gameobjects.Tile;
 import edu.gcc.keen.graphics.Textures;
 import edu.gcc.keen.input.Input;
+import edu.gcc.keen.interactable.KeyStoneHolder;
 import edu.gcc.keen.util.Area;
 import edu.gcc.keen.util.BoundingBox;
 import edu.gcc.keen.util.VectorPool;
@@ -153,14 +154,9 @@ public class Keen extends Entity
 	{
 		for (GameObject object : collidingObjects)
 		{
-			if (object instanceof Tile)
+			if (object.isCollidable())
 			{
-				Tile tile = (Tile) object;
-
-				if (tile.isCollidable())
-				{
-					this.position.add(BoundingBox.minX(this, tile), 0.0f, 0.0f);
-				}
+				this.position.add(BoundingBox.minX(this, object), 0.0f, 0.0f);
 			}
 		}
 
@@ -173,6 +169,11 @@ public class Keen extends Entity
 		for (GameObject object : collidingObjects)
 		{
 			Vector3f tmpPosition = object.getPosition();
+
+			if (object.isCollidable())
+			{
+				position.add(0.0f, BoundingBox.minY(this, object), 0.0f);
+			}
 
 			if (object instanceof Item)
 			{
@@ -221,6 +222,16 @@ public class Keen extends Entity
 						jumpTick = 0;
 						onGround = true;
 					}
+				}
+			}
+			else if (object instanceof KeyStoneHolder)
+			{
+				KeyStoneHolder holder = (KeyStoneHolder) object;
+
+				if (keystones[holder.getColor()])
+				{
+					holder.toggle();
+					keystones[holder.getColor()] = false;
 				}
 			}
 

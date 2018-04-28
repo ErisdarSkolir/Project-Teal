@@ -11,12 +11,16 @@ import java.util.logging.Logger;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
+import edu.gcc.keen.animations.InteractableAnimation;
 import edu.gcc.keen.entities.Keen;
 import edu.gcc.keen.gameobjects.GameObject;
 import edu.gcc.keen.gameobjects.GameObjectCreator;
 import edu.gcc.keen.gameobjects.Tile;
 import edu.gcc.keen.graphics.MasterRenderer;
 import edu.gcc.keen.graphics.Textures;
+import edu.gcc.keen.interactable.Interactable;
+import edu.gcc.keen.interactable.KeyStoneDoor;
+import edu.gcc.keen.interactable.KeyStoneHolder;
 import edu.gcc.keen.util.Area;
 import edu.gcc.keen.util.BoundingBox;
 
@@ -134,6 +138,34 @@ public class Level extends GameState
 				foreground.nextLine();
 				background.nextLine();
 				infoplane.nextLine();
+			}
+
+			while (infoplane.hasNextLine())
+			{
+				Interactable last = null;
+				Interactable now = null;
+
+				while (infoplane.hasNextInt())
+				{
+					int id = infoplane.nextInt();
+					Vector3f position = new Vector3f(infoplane.nextInt() * 2.0f, -infoplane.nextInt() * 2.0f, -0.1f);
+
+					if (id == 1196)
+						now = new KeyStoneHolder(0, position);
+					else if (id == 1350)
+						now = new KeyStoneDoor(InteractableAnimation.KEYSTONE_DOOR_BOTTOM, position);
+					else if (id == 1332)
+						now = new KeyStoneDoor(InteractableAnimation.KEYSTONE_DOOR_MIDDLE, position);
+					else if (id == 1314)
+						now = new KeyStoneDoor(InteractableAnimation.KEYSTONE_DOOR_TOP, position);
+
+					if (last != null)
+						last.setBoundObject(now);
+
+					last = now;
+
+					tmpObjects.add(now);
+				}
 			}
 		}
 		catch (IOException e)

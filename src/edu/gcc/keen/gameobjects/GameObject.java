@@ -17,6 +17,8 @@ import edu.gcc.keen.util.VectorPool;
  */
 public abstract class GameObject
 {
+	protected ObjectType objectType;
+
 	protected Vector3f position;
 	protected Vector2f scale;
 	private Vector2f aabbOffset = new Vector2f(0.0f, 0.0f);
@@ -29,6 +31,7 @@ public abstract class GameObject
 
 	private boolean shouldDestroy;
 	protected boolean updateArea;
+	protected boolean collidable;
 
 	/**
 	 * Constructor
@@ -148,5 +151,10 @@ public abstract class GameObject
 	public void setAabbOffset(Vector2f aabbOffset)
 	{
 		this.aabbOffset = aabbOffset;
+	}
+
+	public boolean isCollidable()
+	{
+		return this.collidable;
 	}
 }
