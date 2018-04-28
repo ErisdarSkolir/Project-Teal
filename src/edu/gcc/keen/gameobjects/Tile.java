@@ -21,12 +21,12 @@ public class Tile extends GameObject
 
 	public Tile(int texture, int index, int textureColumns, int textureRows, Vector3f position)
 	{
-		super(texture, textureColumns, textureRows, index, position, new Vector2f(1.0f, 1.0f));
+		super(texture, textureColumns, textureRows, index, position, new Vector2f(1.0f, 1.0f), ObjectType.TILE);
 	}
 
 	public Tile(int index, boolean[] data, Vector3f position)
 	{
-		super(Textures.getTexture("tilesheet"), 18, 165, index, position, new Vector2f(1.0f, 1.0f));
+		super(Textures.getTexture("tilesheet"), 18, 165, index, position, new Vector2f(1.0f, 1.0f), ObjectType.TILE);
 
 		this.pole = data[0];
 		this.oneWay = data[1];
@@ -34,6 +34,7 @@ public class Tile extends GameObject
 		this.hangable = data[3];
 	}
 
+	@Override
 	public boolean isCollidable()
 	{
 		return collidable;

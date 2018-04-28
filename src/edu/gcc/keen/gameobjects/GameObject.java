@@ -39,7 +39,7 @@ public abstract class GameObject
 	 * @param texture
 	 * @param position
 	 */
-	public GameObject(int texture, int columns, int rows, int index, Vector3f position, Vector2f scale)
+	public GameObject(int texture, int columns, int rows, int index, Vector3f position, Vector2f scale, ObjectType type)
 	{
 		this.texture = texture;
 		this.position = new Vector3f(position);
@@ -47,6 +47,7 @@ public abstract class GameObject
 		this.columns = columns;
 		this.rows = rows;
 		this.index = index;
+		this.objectType = type;
 	}
 
 	/**
@@ -156,5 +157,10 @@ public abstract class GameObject
 	public boolean isCollidable()
 	{
 		return this.collidable;
+	}
+
+	public ObjectType getType()
+	{
+		return this.objectType;
 	}
 }

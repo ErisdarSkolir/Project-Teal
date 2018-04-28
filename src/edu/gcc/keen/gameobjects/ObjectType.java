@@ -2,7 +2,10 @@ package edu.gcc.keen.gameobjects;
 
 public enum ObjectType
 {
+	KEEN,
 	TILE,
 	ENTITY,
-	INTERACTABLE;
+	ITEM,
+	INTERACTABLE,
+	KEYSTONE_HOLDER;
 }

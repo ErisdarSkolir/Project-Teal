@@ -17,9 +17,8 @@ public class KeyStoneHolder extends Interactable
 
 	public KeyStoneHolder(int color, Vector3f position)
 	{
-		super(Textures.getTexture("tilesheet"), 18, 165, InteractableAnimation.values()[color].getAnimation()[0], position, new Vector2f(1.0f, 1.0f));
+		super(Textures.getTexture("tilesheet"), 18, 165, InteractableAnimation.values()[color].getAnimation()[0], position, new Vector2f(1.0f, 1.0f), ObjectType.KEYSTONE_HOLDER);
 		this.currentAnimation = InteractableAnimation.values()[color];
-		this.objectType = ObjectType.INTERACTABLE;
 		this.color = color;
 	}
 

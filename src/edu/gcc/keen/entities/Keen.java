@@ -9,7 +9,9 @@ import org.lwjgl.glfw.GLFW;
 import edu.gcc.keen.animations.KeenAnimation;
 import edu.gcc.keen.gameobjects.GameObject;
 import edu.gcc.keen.gameobjects.Item;
+import edu.gcc.keen.gameobjects.ObjectType;
 import edu.gcc.keen.gameobjects.Tile;
+import edu.gcc.keen.gamestates.Level;
 import edu.gcc.keen.graphics.Textures;
 import edu.gcc.keen.input.Input;
 import edu.gcc.keen.interactable.KeyStoneHolder;
@@ -27,15 +29,23 @@ public class Keen extends Entity
 {
 	private KeenAnimation currentAnimation = KeenAnimation.STATIONARY_LEFT;
 
+	private static float LEFT_SPEED = -0.4f;
+	private static float RIGHT_SPEED = 0.4f;
+	private static float INITIAL_JUMP_SPEED = 0.7f;
+	private static float JUMP_VELOCITY = 0.09f;
+	private static float GRAVITY = -0.15f;
+
 	private boolean jumping = false;
 	private boolean hanging = false;
 	private boolean onGround = false;
 	private boolean onPole = false;
 	private boolean[] keystones = new boolean[4];
+	private boolean direction = true;
 
 	private int animationIndex;
 	private int tick = 10;
 	private int jumpTick = 0;
+	private int shootCooldown = 10;
 
 	private int ammo;
 	private int score;
@@ -46,7 +56,7 @@ public class Keen extends Entity
 		super(Textures.getTexture("keen_spritesheet"), 11, 7, 0, position, new Vector2f(2.0f, 2.5f));
 
 		this.setAabbOffset(new Vector2f(-2.5f, -1.0f));
-
+		this.objectType = ObjectType.KEEN;
 	}
 
 	@Override
@@ -70,40 +80,56 @@ public class Keen extends Entity
 		if (Input.isKeyDown(GLFW.GLFW_KEY_R))
 			position = new Vector3f(0.0f, 6f, 0.0f);
 
-		if (Input.isKeyDown(GLFW.GLFW_KEY_LEFT) && !onPole)
+		if (Input.isKeyDown(GLFW.GLFW_KEY_LEFT))
 		{
-			horizontalVelocity = -0.5f;
-			setAnimation(KeenAnimation.WALK_LEFT);
+			direction = true;
+
+			if (!onPole)
+			{
+				horizontalVelocity = LEFT_SPEED;
+				tryShoot(0);
+				setAnimation(KeenAnimation.WALK_LEFT);
+			}
+			else
+			{
+				setAnimation(KeenAnimation.STATIONARY_POLE_LEFT);
+			}
 		}
-		else if (Input.isKeyDown(GLFW.GLFW_KEY_RIGHT) && onPole)
+		else if (Input.isKeyDown(GLFW.GLFW_KEY_RIGHT))
 		{
-			setAnimation(KeenAnimation.STATIONARY_POLE_RIGHT);
+			direction = false;
+
+			if (!onPole)
+			{
+				horizontalVelocity = RIGHT_SPEED;
+				tryShoot(2);
+				setAnimation(KeenAnimation.WALK_RIGHT);
+			}
+			else
+			{
+				setAnimation(KeenAnimation.STATIONARY_POLE_RIGHT);
+			}
 		}
-		else if (Input.isKeyDown(GLFW.GLFW_KEY_RIGHT) && !onPole)
+		else if (Input.isKeyDown(GLFW.GLFW_KEY_DOWN))
 		{
-			horizontalVelocity = 0.5f;
-			setAnimation(KeenAnimation.WALK_RIGHT);
-		}
-		else if (Input.isKeyDown(GLFW.GLFW_KEY_LEFT) && onPole)
-		{
-			setAnimation(KeenAnimation.STATIONARY_POLE_LEFT);
-		}
-		else if (Input.isKeyDown(GLFW.GLFW_KEY_DOWN) && !onPole)
-		{
-			setAnimation(KeenAnimation.LOOK_DOWN);
-		}
-		else if (Input.isKeyDown(GLFW.GLFW_KEY_DOWN) && onPole)
-		{
-			verticalVelocity = 6.0f;
-		}
-		else if (Input.isKeyDown(GLFW.GLFW_KEY_SPACE) && horizontalVelocity == 0.0f && verticalVelocity == 0.0f)
-		{
-			setAnimation(KeenAnimation.SHOOT_LEFT);
+			if (!onPole && onGround)
+			{
+				setAnimation(KeenAnimation.LOOK_DOWN);
+			}
+			else
+			{
+				verticalVelocity = 6.0f;
+				setAnimation(KeenAnimation.SLIDE_POLE);
+			}
 		}
 		else
 		{
 			horizontalVelocity = 0.0f;
-			setAnimation(KeenAnimation.STATIONARY_RIGHT);
+
+			if (!onPole)
+				setAnimation(direction ? KeenAnimation.STATIONARY_LEFT : KeenAnimation.STATIONARY_RIGHT);
+			else
+				setAnimation(direction ? KeenAnimation.STATIONARY_POLE_LEFT : KeenAnimation.STATIONARY_POLE_RIGHT);
 		}
 
 		if (Input.isKeyDown(GLFW.GLFW_KEY_LEFT_CONTROL))
@@ -113,14 +139,14 @@ public class Keen extends Entity
 				jumping = true;
 				onPole = false;
 				onGround = false;
-				verticalVelocity = 1.0f;
+				verticalVelocity = INITIAL_JUMP_SPEED;
 			}
-			else if (jumping && verticalVelocity < 1.0f)
+			else if (jumping && verticalVelocity < 0.9f)
 			{
-				verticalVelocity += 0.2f;
+				verticalVelocity += JUMP_VELOCITY;
 			}
 
-			if (jumpTick > 10)
+			if (jumpTick > 8)
 				jumping = false;
 
 			jumpTick++;
@@ -130,7 +156,7 @@ public class Keen extends Entity
 
 		if (!jumping && verticalVelocity > -1.0f && !onPole)
 		{
-			verticalVelocity += -0.4f;
+			verticalVelocity += GRAVITY;
 			onGround = false;
 		}
 		else if (onPole && Input.isKeyDown(GLFW.GLFW_KEY_UP))
@@ -141,23 +167,38 @@ public class Keen extends Entity
 			verticalVelocity = 0.0f;
 	}
 
+	public void tryShoot(int direction)
+	{
+		if (Input.isKeyDown(GLFW.GLFW_KEY_SPACE) && shootCooldown <= 0 && ammo > 0)
+		{
+			Level.addObject(new Bullet(direction, new Vector3f(position)));
+
+			if (direction == 0 && horizontalVelocity == 0.0f && verticalVelocity == 0.0f)
+				setAnimation(KeenAnimation.SHOOT_LEFT);
+
+			shootCooldown = 10;
+			ammo--;
+		}
+	}
+
 	@Override
 	public void tick()
 	{
 		move();
 
-		if (tick > 10)
+		if (tick > 9)
 		{
-			setIndex(currentAnimation.getAnimation()[animationIndex]);
-			animationIndex++;
-			tick = 0;
-
 			if (animationIndex >= currentAnimation.getLenth())
 				animationIndex = 0;
 
+			setIndex(currentAnimation.getAnimation()[animationIndex++]);
+			tick = 0;
 		}
 
 		tick++;
+
+		if (shootCooldown > 0)
+			shootCooldown--;
 	}
 
 	public void setAnimation(KeenAnimation animation)
@@ -166,7 +207,9 @@ public class Keen extends Entity
 		{
 			currentAnimation = animation;
 			animationIndex = 0;
-			tick = 10;
+			tick = 0;
+
+			setIndex(currentAnimation.getAnimation()[animationIndex++]);
 		}
 	}
 
@@ -196,7 +239,7 @@ public class Keen extends Entity
 				position.add(0.0f, BoundingBox.minY(this, object), 0.0f);
 			}
 
-			if (object instanceof Item)
+			if (object.getType() == ObjectType.ITEM)
 			{
 				object.destroy();
 
@@ -211,7 +254,7 @@ public class Keen extends Entity
 				else if (item.isKeyStone)
 					keystones[item.keyStoneColor] = true;
 			}
-			else if (object instanceof Tile)
+			else if (object.getType() == ObjectType.TILE)
 			{
 				Tile tile = (Tile) object;
 
@@ -225,6 +268,8 @@ public class Keen extends Entity
 						jumpTick = 0;
 						onGround = true;
 					}
+					else
+						jumping = false;
 				}
 				else if (tile.isPole() && (Input.isKeyDown(GLFW.GLFW_KEY_UP) || Input.isKeyDown(GLFW.GLFW_KEY_DOWN)))
 				{
@@ -245,7 +290,7 @@ public class Keen extends Entity
 					}
 				}
 			}
-			else if (object instanceof KeyStoneHolder)
+			else if (object.getType() == ObjectType.KEYSTONE_HOLDER)
 			{
 				KeyStoneHolder holder = (KeyStoneHolder) object;
 

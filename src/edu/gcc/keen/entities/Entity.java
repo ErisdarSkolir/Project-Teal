@@ -6,6 +6,7 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import edu.gcc.keen.gameobjects.GameObject;
+import edu.gcc.keen.gameobjects.ObjectType;
 
 /**
  * An entity is any game object that moves or has more complex logic.
@@ -23,7 +24,7 @@ public abstract class Entity extends GameObject
 	 */
 	public Entity(int texture, int columns, int rows, int index, Vector3f position, Vector2f scale)
 	{
-		super(texture, columns, rows, index, position, scale);
+		super(texture, columns, rows, index, position, scale, ObjectType.ENTITY);
 	}
 
 	/**

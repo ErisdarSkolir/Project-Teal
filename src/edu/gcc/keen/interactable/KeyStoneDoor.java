@@ -18,7 +18,7 @@ public class KeyStoneDoor extends Interactable
 
 	public KeyStoneDoor(InteractableAnimation animation, Vector3f position)
 	{
-		super(Textures.getTexture("tilesheet"), 18, 165, animation.getAnimation()[0], position, new Vector2f(1.0f, 1.0f));
+		super(Textures.getTexture("tilesheet"), 18, 165, animation.getAnimation()[0], position, new Vector2f(1.0f, 1.0f), ObjectType.INTERACTABLE);
 		this.objectType = ObjectType.INTERACTABLE;
 		this.animation = animation;
 		collidable = true;

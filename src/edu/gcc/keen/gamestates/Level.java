@@ -12,9 +12,9 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import edu.gcc.keen.animations.InteractableAnimation;
-import edu.gcc.keen.entities.Keen;
 import edu.gcc.keen.gameobjects.GameObject;
 import edu.gcc.keen.gameobjects.GameObjectCreator;
+import edu.gcc.keen.gameobjects.ObjectType;
 import edu.gcc.keen.gameobjects.Tile;
 import edu.gcc.keen.graphics.MasterRenderer;
 import edu.gcc.keen.graphics.Textures;
@@ -37,6 +37,8 @@ public class Level extends GameState
 
 	private static final String LEVEL_PATH = "res/levels/";
 
+	private static List<GameObject> addObjects = new ArrayList<>();
+
 	private List<Area> areas = new ArrayList<>();
 	private List<GameObject> gameObjects = new ArrayList<>();
 	private List<GameObject> backgroundTiles = new ArrayList<>();
@@ -57,6 +59,22 @@ public class Level extends GameState
 	@Override
 	public void tick()
 	{
+		if (!addObjects.isEmpty())
+		{
+			gameObjects.addAll(addObjects);
+
+			for (GameObject object : addObjects)
+			{
+				for (Area area : areas)
+				{
+					if (BoundingBox.isIntersecting(object, area))
+						area.addObject(object);
+				}
+			}
+
+			addObjects.clear();
+		}
+
 		for (Iterator<GameObject> itr = gameObjects.iterator(); itr.hasNext();)
 		{
 			GameObject object = itr.next();
@@ -90,6 +108,11 @@ public class Level extends GameState
 	public void render(MasterRenderer renderer)
 	{
 		renderer.render(gameObjects, backgroundTiles, camera);
+	}
+
+	public static void addObject(GameObject object)
+	{
+		addObjects.add(object);
 	}
 
 	/**
@@ -128,7 +151,7 @@ public class Level extends GameState
 					{
 						tmpObjects.add(tmpiInfoplaneObject);
 
-						if (tmpiInfoplaneObject instanceof Keen)
+						if (tmpiInfoplaneObject.getType() == ObjectType.KEEN)
 							camera.bindObject(tmpiInfoplaneObject);
 					}
 
