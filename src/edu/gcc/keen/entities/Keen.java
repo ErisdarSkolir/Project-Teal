@@ -30,7 +30,6 @@ public class Keen extends Entity
 	private boolean hanging = false;
 	private boolean onGround = false;
 	private boolean onPole = false;
-
 	private boolean[] keystones = new boolean[4];
 
 	private int animationIndex;
