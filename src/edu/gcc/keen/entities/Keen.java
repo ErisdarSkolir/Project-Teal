@@ -125,12 +125,7 @@ public class Keen extends Entity implements Animateable
 			if (!onPole)
 				setAnimation(direction ? KeenAnimation.STATIONARY_LEFT : KeenAnimation.STATIONARY_RIGHT, this);
 			else
-<<<<<<< HEAD
-				setAnimation(direction ? KeenAnimation.STATIONARY_POLE_LEFT : KeenAnimation.STATIONARY_POLE_RIGHT);
-
-=======
 				setAnimation(direction ? KeenAnimation.STATIONARY_POLE_LEFT : KeenAnimation.STATIONARY_POLE_RIGHT, this);
->>>>>>> refs/heads/Interactable_branch
 		}
 
 		if (Input.isKeyDown(GLFW.GLFW_KEY_LEFT_CONTROL))
