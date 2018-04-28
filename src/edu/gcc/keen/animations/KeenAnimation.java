@@ -1,6 +1,6 @@
 package edu.gcc.keen.animations;
 
-public enum KeenAnimation
+public enum KeenAnimation implements Animation
 {
 	STATIONARY_LEFT(0),
 	STATIONARY_RIGHT(1),
@@ -48,11 +48,13 @@ public enum KeenAnimation
 		this.animation = animation;
 	}
 
+	@Override
 	public int[] getAnimation()
 	{
 		return animation;
 	}
 
+	@Override
 	public int getLenth()
 	{
 		return animation.length;

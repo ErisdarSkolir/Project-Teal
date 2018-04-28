@@ -31,13 +31,13 @@ public class LittleAmpton extends Entity
 			position.add(0.0f, verticalVelocity, 0.0f);
 			for (Area area : areas)
 			{
-				area.checkCollisionY(this);
+				area.checkCollision(false, this);
 			}
 
 			position.add(horizontalVelocity, 0.0f, 0.0f);
 			for (Area area : areas)
 			{
-				area.checkCollisionX(this);
+				area.checkCollision(true, this);
 			}
 		}
 

@@ -1,5 +1,6 @@
 package edu.gcc.keen.util;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -64,11 +65,12 @@ public class Area
 		}
 	}
 
-	public void checkCollisionX(Entity entity)
+	public void checkCollision(boolean axis, Entity entity)
 	{
 		shouldUpdate = true;
 
-		List<GameObject> collidingObjects = ListPool.get();
+		ArrayList<GameObject> collidingObjects = new ArrayList<>();
+		collidingObjects.ensureCapacity(objects.size());
 
 		for (GameObject object2 : objects)
 		{
@@ -77,27 +79,12 @@ public class Area
 		}
 
 		if (!collidingObjects.isEmpty())
-			entity.onCollideX(collidingObjects);
-
-		ListPool.recycle(collidingObjects);
-	}
-
-	public void checkCollisionY(Entity entity)
-	{
-		shouldUpdate = true;
-
-		List<GameObject> collidingObjects = ListPool.get();
-
-		for (GameObject object2 : objects)
 		{
-			if (entity != object2 && BoundingBox.isIntersecting(entity, object2))
-				collidingObjects.add(object2);
+			if (axis)
+				entity.onCollideX(collidingObjects);
+			else
+				entity.onCollideY(collidingObjects);
 		}
-
-		if (!collidingObjects.isEmpty())
-			entity.onCollideY(collidingObjects);
-
-		ListPool.recycle(collidingObjects);
 	}
 
 	public void addObject(GameObject object)
@@ -123,11 +110,11 @@ public class Area
 
 	public Vector2f getPosition()
 	{
-		return VectorPool.getVector2f(position.x, position.y);
+		return new Vector2f(position.x, position.y);
 	}
 
 	public Vector2f getScale()
 	{
-		return VectorPool.getVector2f(scale.x, scale.y);
+		return new Vector2f(scale.x, scale.y);
 	}
 }

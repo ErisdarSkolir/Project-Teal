@@ -6,8 +6,8 @@ import java.util.List;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
+import edu.gcc.keen.animations.Animation;
 import edu.gcc.keen.util.Area;
-import edu.gcc.keen.util.VectorPool;
 
 /**
  * The base class for all in-game objects
@@ -18,6 +18,7 @@ import edu.gcc.keen.util.VectorPool;
 public abstract class GameObject
 {
 	protected ObjectType objectType;
+	protected Animation currentAnimation;
 
 	protected Vector3f position;
 	protected Vector2f scale;
@@ -28,6 +29,8 @@ public abstract class GameObject
 	protected int index;
 	private int columns;
 	private int rows;
+	private int animationIndex;
+	protected int animationTick;
 
 	private boolean shouldDestroy;
 	protected boolean updateArea;
@@ -67,7 +70,7 @@ public abstract class GameObject
 
 	public Vector3f getPosition()
 	{
-		return VectorPool.getVector3f(position.x, position.y, position.z);
+		return new Vector3f(position.x, position.y, position.z);
 	}
 
 	public boolean addArea(Area area)
@@ -101,7 +104,7 @@ public abstract class GameObject
 
 	public Vector2f getScale()
 	{
-		return VectorPool.getVector2f(scale.x, scale.y);
+		return new Vector2f(scale.x, scale.y);
 	}
 
 	public int getColumns()
@@ -129,9 +132,14 @@ public abstract class GameObject
 		}
 	}
 
-	protected void setIndex(int index)
+	public void setIndex(int index)
 	{
 		this.index = index;
+	}
+
+	public int getIndex()
+	{
+		return index;
 	}
 
 	public boolean shouldUpdateArea()
@@ -162,5 +170,35 @@ public abstract class GameObject
 	public ObjectType getType()
 	{
 		return this.objectType;
+	}
+
+	public Animation getCurrentAnimation()
+	{
+		return currentAnimation;
+	}
+
+	public void setCurrentAnimation(Animation animation)
+	{
+		this.currentAnimation = animation;
+	}
+
+	public void setAnimationIndex(int index)
+	{
+		this.animationIndex = index;
+	}
+
+	public int getAnimationIndex()
+	{
+		return animationIndex;
+	}
+
+	public int getAnimationTick()
+	{
+		return animationTick;
+	}
+
+	public void setAnimationTick(int tick)
+	{
+		this.animationTick = tick;
 	}
 }

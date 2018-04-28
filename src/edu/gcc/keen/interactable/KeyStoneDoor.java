@@ -3,7 +3,7 @@ package edu.gcc.keen.interactable;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-import edu.gcc.keen.animations.InteractableAnimation;
+import edu.gcc.keen.animations.InteractableAnimations;
 import edu.gcc.keen.gameobjects.ObjectType;
 import edu.gcc.keen.graphics.Textures;
 
@@ -14,9 +14,9 @@ public class KeyStoneDoor extends Interactable
 
 	private boolean animate;
 
-	private InteractableAnimation animation;
+	private InteractableAnimations animation;
 
-	public KeyStoneDoor(InteractableAnimation animation, Vector3f position)
+	public KeyStoneDoor(InteractableAnimations animation, Vector3f position)
 	{
 		super(Textures.getTexture("tilesheet"), 18, 165, animation.getAnimation()[0], position, new Vector2f(1.0f, 1.0f), ObjectType.INTERACTABLE);
 		this.objectType = ObjectType.INTERACTABLE;
@@ -40,7 +40,7 @@ public class KeyStoneDoor extends Interactable
 			{
 				animate = false;
 
-				if (animation == InteractableAnimation.KEYSTONE_DOOR_MIDDLE || animation == InteractableAnimation.KEYSTONE_DOOR_TOP)
+				if (animation == InteractableAnimations.KEYSTONE_DOOR_MIDDLE || animation == InteractableAnimations.KEYSTONE_DOOR_TOP)
 					collidable = false;
 			}
 			if (animationTick > 4)
