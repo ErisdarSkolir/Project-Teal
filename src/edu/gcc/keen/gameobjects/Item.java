@@ -3,10 +3,11 @@ package edu.gcc.keen.gameobjects;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
+import edu.gcc.keen.animations.Animateable;
 import edu.gcc.keen.animations.ItemAnimations;
 import edu.gcc.keen.graphics.Textures;
 
-public class Item extends GameObject
+public class Item extends GameObject implements Animateable
 {
 	public boolean oneUp;
 	public boolean givesScore;
@@ -17,10 +18,6 @@ public class Item extends GameObject
 
 	public int keyStoneColor;
 	public int pointValue;
-	public int animationIndex;
-	public int tick;
-
-	protected ItemAnimations currentAnimation;
 
 	public Item(int id, int[] data, Vector3f position)
 	{
@@ -43,17 +40,10 @@ public class Item extends GameObject
 	@Override
 	public void tick()
 	{
-		if (tick > 40)
-		{
-			setIndex(currentAnimation.getAnimation()[animationIndex]);
-			animationIndex++;
-			tick = 0;
+		if (animationTick > 40)
+			nextAnimationFrame(this);
 
-			if (animationIndex >= currentAnimation.getLenth())
-				animationIndex = 0;
-		}
-
-		tick++;
+		animationTick++;
 	}
 
 	public int getPointValue()

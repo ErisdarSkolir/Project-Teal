@@ -3,6 +3,7 @@ package edu.gcc.keen.graphics;
 import java.nio.FloatBuffer;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -25,7 +26,6 @@ import edu.gcc.keen.gameobjects.GameObject;
 import edu.gcc.keen.gameobjects.GameObjectCreator;
 import edu.gcc.keen.input.Input;
 import edu.gcc.keen.util.BufferUtils;
-import edu.gcc.keen.util.ListPool;
 import edu.gcc.keen.util.VectorPool;
 
 /**
@@ -39,7 +39,6 @@ public class MasterRenderer
 	private Set<Integer> vaos = new HashSet<>();
 	private Set<Integer> vbos = new HashSet<>();
 
-	private Map<Integer, List<GameObject>> batches = new HashMap<>();
 	private TwoDimensionalShader shader;
 	private Mesh quad;
 
@@ -64,12 +63,10 @@ public class MasterRenderer
 		GL30.glBindVertexArray(quad.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
 
-		prepareBatch(foreground, background);
-		for (Entry<Integer, List<GameObject>> entry : batches.entrySet())
+		for (Entry<Integer, List<GameObject>> entry : prepareBatch(foreground, background).entrySet())
 		{
 			drawObjects(entry.getKey(), entry.getValue());
 		}
-		clearBatch();
 
 		GL20.glDisableVertexAttribArray(0);
 
@@ -91,43 +88,37 @@ public class MasterRenderer
 	 * @param background
 	 * @return
 	 */
-	public void prepareBatch(List<GameObject> objects, List<GameObject> background)
+	public Map<Integer, List<GameObject>> prepareBatch(List<GameObject> objects, List<GameObject> background)
 	{
+		Map<Integer, List<GameObject>> tmpBatches = new HashMap<>();
+
 		for (GameObject object : objects)
 		{
-			if (batches.containsKey(object.getTexture()))
-				batches.get(object.getTexture()).add(object);
+			if (tmpBatches.containsKey(object.getTexture()))
+				tmpBatches.get(object.getTexture()).add(object);
 			else
 			{
-				List<GameObject> newList = ListPool.get();
+				List<GameObject> newList = new LinkedList<>();
 				newList.add(object);
 
-				batches.put(object.getTexture(), newList);
+				tmpBatches.put(object.getTexture(), newList);
 			}
 		}
 
 		for (GameObject object : background)
 		{
-			if (batches.containsKey(object.getTexture()))
-				batches.get(object.getTexture()).add(object);
+			if (tmpBatches.containsKey(object.getTexture()))
+				tmpBatches.get(object.getTexture()).add(object);
 			else
 			{
-				List<GameObject> newList = ListPool.get();
+				List<GameObject> newList = new LinkedList<>();
 				newList.add(object);
 
-				batches.put(object.getTexture(), newList);
+				tmpBatches.put(object.getTexture(), newList);
 			}
 		}
-	}
 
-	public void clearBatch()
-	{
-		for (List<GameObject> value : batches.values())
-		{
-			ListPool.recycle(value);
-		}
-
-		batches.clear();
+		return tmpBatches;
 	}
 
 	/**
@@ -171,7 +162,7 @@ public class MasterRenderer
 
 		GLFW.glfwMakeContextCurrent(window);
 		GLFW.glfwShowWindow(window);
-		GLFW.glfwSwapInterval(1);
+		GLFW.glfwSwapInterval(0);
 
 		GL.createCapabilities();
 		GL11.glClearColor(0.5f, 0.5f, 0.5f, 0.0f);

@@ -1,6 +1,6 @@
 package edu.gcc.keen.animations;
 
-public enum ItemAnimations
+public enum ItemAnimations implements Animation
 {
 	RED_KEYSTONE(6, 7),
 	YELLOW_KEYSTONE(8, 9),
@@ -24,11 +24,13 @@ public enum ItemAnimations
 		this.animation = animation;
 	}
 
+	@Override
 	public int[] getAnimation()
 	{
 		return animation;
 	}
 
+	@Override
 	public int getLenth()
 	{
 		return animation.length;

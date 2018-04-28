@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-import edu.gcc.keen.animations.InteractableAnimation;
+import edu.gcc.keen.animations.InteractableAnimations;
 import edu.gcc.keen.gameobjects.GameObject;
 import edu.gcc.keen.gameobjects.GameObjectCreator;
 import edu.gcc.keen.gameobjects.ObjectType;
@@ -34,9 +34,7 @@ import edu.gcc.keen.util.BoundingBox;
 public class Level extends GameState
 {
 	private static final Logger LOGGER = Logger.getLogger("Logger");
-
 	private static final String LEVEL_PATH = "res/levels/";
-
 	private static List<GameObject> addObjects = new ArrayList<>();
 
 	private List<Area> areas = new ArrayList<>();
@@ -176,11 +174,11 @@ public class Level extends GameState
 					if (id == 1196)
 						now = new KeyStoneHolder(0, position);
 					else if (id == 1350)
-						now = new KeyStoneDoor(InteractableAnimation.KEYSTONE_DOOR_BOTTOM, position);
+						now = new KeyStoneDoor(InteractableAnimations.KEYSTONE_DOOR_BOTTOM, position);
 					else if (id == 1332)
-						now = new KeyStoneDoor(InteractableAnimation.KEYSTONE_DOOR_MIDDLE, position);
+						now = new KeyStoneDoor(InteractableAnimations.KEYSTONE_DOOR_MIDDLE, position);
 					else if (id == 1314)
-						now = new KeyStoneDoor(InteractableAnimation.KEYSTONE_DOOR_TOP, position);
+						now = new KeyStoneDoor(InteractableAnimations.KEYSTONE_DOOR_TOP, position);
 
 					if (last != null)
 						last.setBoundObject(now);

@@ -1,6 +1,6 @@
 package edu.gcc.keen.animations;
 
-public enum InteractableAnimation
+public enum InteractableAnimations implements Animation
 {
 	KEYSTONE_HOLDER_RED(1196, 1214),
 	KEYSTONE_HOLDER_YELLOW(1197, 1215),
@@ -12,16 +12,18 @@ public enum InteractableAnimation
 
 	private int[] animation;
 
-	InteractableAnimation(int... animation)
+	InteractableAnimations(int... animation)
 	{
 		this.animation = animation;
 	}
 
+	@Override
 	public int[] getAnimation()
 	{
 		return animation;
 	}
 
+	@Override
 	public int getLenth()
 	{
 		return animation.length;

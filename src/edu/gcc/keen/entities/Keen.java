@@ -6,6 +6,7 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
+import edu.gcc.keen.animations.Animateable;
 import edu.gcc.keen.animations.KeenAnimation;
 import edu.gcc.keen.gameobjects.GameObject;
 import edu.gcc.keen.gameobjects.Item;
@@ -25,15 +26,13 @@ import edu.gcc.keen.util.VectorPool;
  * @author DONMOYERLR17
  *
  */
-public class Keen extends Entity
+public class Keen extends Entity implements Animateable
 {
-	private KeenAnimation currentAnimation = KeenAnimation.STATIONARY_LEFT;
-
-	private static float LEFT_SPEED = -0.4f;
-	private static float RIGHT_SPEED = 0.4f;
-	private static float INITIAL_JUMP_SPEED = 0.7f;
-	private static float JUMP_VELOCITY = 0.09f;
-	private static float GRAVITY = -0.15f;
+	private static final float LEFT_SPEED = -0.4f;
+	private static final float RIGHT_SPEED = 0.4f;
+	private static final float INITIAL_JUMP_SPEED = 0.7f;
+	private static final float JUMP_VELOCITY = 0.09f;
+	private static final float GRAVITY = -0.15f;
 
 	private boolean jumping = false;
 	private boolean hanging = false;
@@ -42,8 +41,6 @@ public class Keen extends Entity
 	private boolean[] keystones = new boolean[4];
 	private boolean direction = true;
 
-	private int animationIndex;
-	private int tick = 10;
 	private int jumpTick = 0;
 	private int shootCooldown = 10;
 
@@ -57,6 +54,7 @@ public class Keen extends Entity
 
 		this.setAabbOffset(new Vector2f(-2.5f, -1.0f));
 		this.objectType = ObjectType.KEEN;
+		this.currentAnimation = KeenAnimation.STATIONARY_LEFT;
 	}
 
 	@Override
@@ -67,13 +65,13 @@ public class Keen extends Entity
 			position.add(0.0f, verticalVelocity, 0.0f);
 			for (Area area : areas)
 			{
-				area.checkCollisionY(this);
+				area.checkCollision(false, this);
 			}
 
 			position.add(horizontalVelocity, 0.0f, 0.0f);
 			for (Area area : areas)
 			{
-				area.checkCollisionX(this);
+				area.checkCollision(true, this);
 			}
 		}
 
@@ -88,11 +86,11 @@ public class Keen extends Entity
 			{
 				horizontalVelocity = LEFT_SPEED;
 				tryShoot(0);
-				setAnimation(KeenAnimation.WALK_LEFT);
+				setAnimation(KeenAnimation.WALK_LEFT, this);
 			}
 			else
 			{
-				setAnimation(KeenAnimation.STATIONARY_POLE_LEFT);
+				setAnimation(KeenAnimation.STATIONARY_POLE_LEFT, this);
 			}
 		}
 		else if (Input.isKeyDown(GLFW.GLFW_KEY_RIGHT))
@@ -103,23 +101,22 @@ public class Keen extends Entity
 			{
 				horizontalVelocity = RIGHT_SPEED;
 				tryShoot(2);
-				setAnimation(KeenAnimation.WALK_RIGHT);
+				setAnimation(KeenAnimation.WALK_RIGHT, this);
 			}
 			else
 			{
-				setAnimation(KeenAnimation.STATIONARY_POLE_RIGHT);
+				setAnimation(KeenAnimation.STATIONARY_POLE_RIGHT, this);
 			}
 		}
 		else if (Input.isKeyDown(GLFW.GLFW_KEY_DOWN))
 		{
 			if (!onPole && onGround)
 			{
-				setAnimation(KeenAnimation.LOOK_DOWN);
+				setAnimation(KeenAnimation.LOOK_DOWN, this);
 			}
 			else
 			{
-				verticalVelocity = 6.0f;
-				setAnimation(KeenAnimation.SLIDE_POLE);
+				setAnimation(KeenAnimation.SLIDE_POLE, this);
 			}
 		}
 		else
@@ -127,9 +124,9 @@ public class Keen extends Entity
 			horizontalVelocity = 0.0f;
 
 			if (!onPole)
-				setAnimation(direction ? KeenAnimation.STATIONARY_LEFT : KeenAnimation.STATIONARY_RIGHT);
+				setAnimation(direction ? KeenAnimation.STATIONARY_LEFT : KeenAnimation.STATIONARY_RIGHT, this);
 			else
-				setAnimation(direction ? KeenAnimation.STATIONARY_POLE_LEFT : KeenAnimation.STATIONARY_POLE_RIGHT);
+				setAnimation(direction ? KeenAnimation.STATIONARY_POLE_LEFT : KeenAnimation.STATIONARY_POLE_RIGHT, this);
 		}
 
 		if (Input.isKeyDown(GLFW.GLFW_KEY_LEFT_CONTROL))
@@ -146,7 +143,7 @@ public class Keen extends Entity
 				verticalVelocity += JUMP_VELOCITY;
 			}
 
-			if (jumpTick > 8)
+			if (jumpTick > 6)
 				jumping = false;
 
 			jumpTick++;
@@ -162,7 +159,7 @@ public class Keen extends Entity
 		else if (onPole && Input.isKeyDown(GLFW.GLFW_KEY_UP))
 			verticalVelocity = 0.2f;
 		else if (onPole && Input.isKeyDown(GLFW.GLFW_KEY_DOWN))
-			verticalVelocity = -0.2f;
+			verticalVelocity = -0.3f;
 		else if (onPole)
 			verticalVelocity = 0.0f;
 	}
@@ -174,7 +171,7 @@ public class Keen extends Entity
 			Level.addObject(new Bullet(direction, new Vector3f(position)));
 
 			if (direction == 0 && horizontalVelocity == 0.0f && verticalVelocity == 0.0f)
-				setAnimation(KeenAnimation.SHOOT_LEFT);
+				setAnimation(KeenAnimation.SHOOT_LEFT, this);
 
 			shootCooldown = 10;
 			ammo--;
@@ -186,31 +183,13 @@ public class Keen extends Entity
 	{
 		move();
 
-		if (tick > 9)
-		{
-			if (animationIndex >= currentAnimation.getLenth())
-				animationIndex = 0;
+		if (animationTick > 9)
+			nextAnimationFrame(this);
 
-			setIndex(currentAnimation.getAnimation()[animationIndex++]);
-			tick = 0;
-		}
-
-		tick++;
+		animationTick++;
 
 		if (shootCooldown > 0)
 			shootCooldown--;
-	}
-
-	public void setAnimation(KeenAnimation animation)
-	{
-		if (currentAnimation != animation)
-		{
-			currentAnimation = animation;
-			animationIndex = 0;
-			tick = 0;
-
-			setIndex(currentAnimation.getAnimation()[animationIndex++]);
-		}
 	}
 
 	@Override
