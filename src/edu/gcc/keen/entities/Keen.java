@@ -74,6 +74,11 @@ public class Keen extends Entity
 			horizontalVelocity = -0.5f;
 			setAnimation(KeenAnimation.WALK_LEFT);
 		}
+		else if (Input.isKeyDown(GLFW.GLFW_KEY_RIGHT) && onPole)
+			{
+				setAnimation(KeenAnimation.STATIONARY_POLE_RIGHT);
+			}
+		
 		else if (Input.isKeyDown(GLFW.GLFW_KEY_RIGHT) && !onPole)
 		{
 			horizontalVelocity = 0.5f;
