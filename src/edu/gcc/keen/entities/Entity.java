@@ -19,6 +19,8 @@ public abstract class Entity extends GameObject
 	protected float horizontalVelocity;
 	protected float verticalVelocity;
 
+	protected boolean canKill;
+
 	/**
 	 * Constructor
 	 */

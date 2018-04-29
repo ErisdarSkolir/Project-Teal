@@ -33,6 +33,22 @@ public class Input
 	}
 
 	/**
+	 * Check if the given key is being pressed, and if so make it unpressed.
+	 * 
+	 * @param keycode
+	 * @return true if key is pressed
+	 */
+	public static boolean isKeyDownOnce(int keycode)
+	{
+		if (keys[keycode])
+		{
+			keys[keycode] = false;
+			return true;
+		}
+		return keys[keycode];
+	}
+
+	/**
 	 * Check if the given mouse button is being pressed. Uses the standard GLFW
 	 * keycodes
 	 * 
@@ -73,7 +89,7 @@ public class Input
 	{
 		GLFW.glfwSetKeyCallback(WINDOW, (long window, int key, int scancode, int action, int mods) ->
 		{
-			keys[key] = (action != GLFW.GLFW_RELEASE);
+			keys[key] = (action != GLFW.GLFW_RELEASE && action != GLFW.GLFW_REPEAT);
 		});
 
 		GLFW.glfwSetMouseButtonCallback(WINDOW, (long window, int button, int action, int mod) ->
