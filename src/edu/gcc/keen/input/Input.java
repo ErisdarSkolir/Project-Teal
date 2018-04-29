@@ -59,6 +59,16 @@ public class Input
 	{
 		return buttons[keycode];
 	}
+	
+	public static boolean isKeyDownOnce(int keycode)
+	{
+		if (keys[keycode])
+		{
+			keys[keycode] = false;
+			return true;
+		}
+		return keys[keycode];
+	}
 
 	/**
 	 * Get the most recent mouse position as a 2d vector
