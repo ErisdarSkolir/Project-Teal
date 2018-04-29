@@ -49,7 +49,6 @@ public class Keen extends Entity implements Animateable
 	private int jumpTick = 0;
 	private int pogoTick = 0;
 	private int shootCooldown = 10;
-	private int inactiveTick = 0;
 
 	private int ammo;
 	private int score;
@@ -92,10 +91,11 @@ public class Keen extends Entity implements Animateable
 
 			if (!onPole && !onPogo)
 			{
-				horizontalVelocity = LEFT_SPEED;
-				tryShoot(0);
 				if(onGround)
 					setAnimation(KeenAnimation.WALK_LEFT, this);
+				horizontalVelocity = LEFT_SPEED;
+				tryShoot(0);
+
 			}
 			else if (onPogo)
 			{
@@ -120,7 +120,6 @@ public class Keen extends Entity implements Animateable
 				tryShoot(0);
 				setAnimation(KeenAnimation.POGO_RIGHT, this);
 			}
-
 		}
 		else if (Input.isKeyDown(GLFW.GLFW_KEY_DOWN))
 		{
@@ -242,6 +241,12 @@ public class Keen extends Entity implements Animateable
 			verticalVelocity = -0.3f;
 		else if (onPole)
 			verticalVelocity = 0.0f;
+		
+		if (direction)
+			tryShoot(0);
+		if (!direction)
+			tryShoot(2);
+
 	}
 
 	public void tryShoot(int direction)
@@ -264,7 +269,7 @@ public class Keen extends Entity implements Animateable
 	{
 		move();
 
-		if (animationTick > (onGround ? 9 : 15))
+		if (animationTick > (onGround ? 15 : 9))
 			nextAnimationFrame(this);
 
 		animationTick++;

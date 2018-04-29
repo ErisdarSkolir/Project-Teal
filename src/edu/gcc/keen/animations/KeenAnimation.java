@@ -11,7 +11,7 @@ public enum KeenAnimation implements Animation
 	POGO_RIGHT(32, 43),
 	POGO_LEFT(10, 21),
 	LOOK_UP(17),
-	LOOK_DOWN(18, 19),
+	LOOK_DOWN(18),
 	WAITING(22, 23, 24, 25),
 	OPEN_BOOK(26, 27, 28, 29, 30),
 	WAIT_WITH_BOOK(33, 31),
