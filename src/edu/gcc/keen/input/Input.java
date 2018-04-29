@@ -33,6 +33,22 @@ public class Input
 	}
 
 	/**
+	 * Check if the given key is being pressed, and if so make it unpressed.
+	 * 
+	 * @param keycode
+	 * @return true if key is pressed
+	 */
+	public static boolean isKeyDownOnce(int keycode)
+	{
+		if (keys[keycode])
+		{
+			keys[keycode] = false;
+			return keys[keycode];
+		}
+		return keys[keycode];
+	}
+
+	/**
 	 * Check if the given mouse button is being pressed. Uses the standard GLFW
 	 * keycodes
 	 * 
