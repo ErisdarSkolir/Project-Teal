@@ -67,7 +67,6 @@ public class LittleAmpton extends Entity implements Animateable
 				horizontalVelocity = 0.2f;
 				setAnimation(EntityAnimations.AMPTON_WALK_RIGHT, this);
 			}
-			else
 
 			if (onPole && direction)
 			{
@@ -80,7 +79,9 @@ public class LittleAmpton extends Entity implements Animateable
 				setAnimation(EntityAnimations.AMPTON_ON_POLE, this);
 			}
 			else
+			{
 				verticalVelocity = -0.4f;
+			}
 		}
 		else if (verticalVelocity > 0.0f)
 			verticalVelocity += -0.2f;
@@ -128,38 +129,33 @@ public class LittleAmpton extends Entity implements Animateable
 		{
 			if (object.getType().equals(ObjectType.TILE))
 			{
-				if (onPole)
+				if (onPole && poleCooldown >= 50 && verticalVelocity < 0.0f && (((Tile) object).isOneWay() || object.isCollidable()))
 				{
-					if (poleCooldown >= 50 && (((Tile) object).isOneWay() || object.isCollidable()))
-					{
-						onPole = false;
-						canKill = false;
-						position.add(0.0f, BoundingBox.minY(this, object), 0.0f);
-						poleCooldown = 0;
-						verticalVelocity = 0.0f;
-					}
-					else if ((((Tile) object).isCollidable() || (object.getIndex() == 193 && object.getPosition().y <= position.y)))
-					{
-						direction = !direction;
-
-						if (object.isCollidable())
-							position.add(0.0f, BoundingBox.minY(this, object), 0.0f);
-					}
+					onPole = false;
+					canKill = false;
+					position.add(0.0f, BoundingBox.minY(this, object), 0.0f);
+					poleCooldown = 0;
+					verticalVelocity = 0.0f;
 				}
-				else
+				else if (onPole && (((Tile) object).isCollidable() || (object.getIndex() == 193 && object.getPosition().y <= position.y)))
 				{
-					if (poleCooldown >= 100 && ((Tile) object).isPole())
-					{
-						onPole = true;
-						canKill = true;
-						poleCooldown = 0;
-						horizontalVelocity = 0.0f;
-						position.x = object.getPosition().x;
-					}
-					else if ((object.isCollidable() || ((Tile) object).isOneWay()))
-					{
+					direction = !direction;
+
+					if (object.isCollidable())
 						position.add(0.0f, BoundingBox.minY(this, object), 0.0f);
-					}
+				}
+
+				else if (!onPole && poleCooldown >= 100 && ((Tile) object).isPole())
+				{
+					onPole = true;
+					canKill = true;
+					poleCooldown = 0;
+					horizontalVelocity = 0.0f;
+					position.x = object.getPosition().x;
+				}
+				else if (!onPole && (object.isCollidable() || ((Tile) object).isOneWay()))
+				{
+					position.add(0.0f, BoundingBox.minY(this, object), 0.0f);
 				}
 			}
 		}
