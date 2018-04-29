@@ -43,7 +43,7 @@ public class Input
 		if (keys[keycode])
 		{
 			keys[keycode] = false;
-			return keys[keycode];
+			return true;
 		}
 		return keys[keycode];
 	}
@@ -79,7 +79,7 @@ public class Input
 	{
 		GLFW.glfwSetKeyCallback(WINDOW, (long window, int key, int scancode, int action, int mods) ->
 		{
-			keys[key] = (action != GLFW.GLFW_RELEASE);
+			keys[key] = (action != GLFW.GLFW_RELEASE && action != GLFW.GLFW_REPEAT);
 		});
 
 		GLFW.glfwSetMouseButtonCallback(WINDOW, (long window, int button, int action, int mod) ->

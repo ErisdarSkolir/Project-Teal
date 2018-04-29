@@ -71,7 +71,7 @@ public class LittleAmpton extends Entity implements Animateable
 			verticalVelocity = -0.4f;
 		}
 		else
-			verticalVelocity = -0.4f
+			verticalVelocity = -0.4f;
 	}
 
 	@Override
