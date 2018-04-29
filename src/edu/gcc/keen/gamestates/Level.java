@@ -172,7 +172,7 @@ public class Level extends GameState
 				while (infoplane.hasNextInt())
 				{
 					int id = infoplane.nextInt();
-					Vector3f position = new Vector3f(infoplane.nextInt() * 2.0f, -infoplane.nextInt() * 2.0f, -0.1f);
+					Vector3f position = new Vector3f(infoplane.nextInt() * 2.0f, -infoplane.nextInt() * 2.0f, -0.2f);
 
 					if (id == 1196)
 						now = new KeyStoneHolder(0, position);

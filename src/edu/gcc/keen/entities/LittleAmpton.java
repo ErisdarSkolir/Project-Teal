@@ -55,41 +55,46 @@ public class LittleAmpton extends Entity implements Animateable
 			}
 		}
 
-		if (direction && !onPole)
+		if (!stunned)
 		{
-			horizontalVelocity = -0.2f;
-			setAnimation(EntityAnimations.AMPTON_WALK_LEFT, this);
-		}
-		else if (!onPole)
-		{
-			horizontalVelocity = 0.2f;
-			setAnimation(EntityAnimations.AMPTON_WALK_RIGHT, this);
-		}
+			if (direction && !onPole)
+			{
+				horizontalVelocity = -0.2f;
+				setAnimation(EntityAnimations.AMPTON_WALK_LEFT, this);
+			}
+			else if (!onPole)
+			{
+				horizontalVelocity = 0.2f;
+				setAnimation(EntityAnimations.AMPTON_WALK_RIGHT, this);
+			}
 
-		if (onPole && direction)
-		{
-			verticalVelocity = 0.4f;
-			setAnimation(EntityAnimations.AMPTON_ON_POLE, this);
+			if (onPole && direction)
+			{
+				verticalVelocity = 0.4f;
+				setAnimation(EntityAnimations.AMPTON_ON_POLE, this);
+			}
+			else if (onPole)
+			{
+				verticalVelocity = -0.4f;
+				setAnimation(EntityAnimations.AMPTON_ON_POLE, this);
+			}
+			else
+				verticalVelocity = -0.4f;
 		}
-		else if (onPole)
-		{
-			verticalVelocity = -0.4f;
-			setAnimation(EntityAnimations.AMPTON_ON_POLE, this);
-		}
-		else
-			verticalVelocity = -0.4f;
+		else if (verticalVelocity > 0.0f)
+			verticalVelocity += -0.2f;
 	}
 
 	@Override
 	public void tick()
 	{
-		if (!stunned)
-			move();
+		move();
 
-		if (stunned)
+		if (stunned && canBeStunned)
 		{
 			setAnimation(EntityAnimations.AMPTON_STUNNED, this);
-			verticalVelocity = 0.4f;
+			verticalVelocity = 0.6f;
+			horizontalVelocity = 0.0f;
 			canBeStunned = false;
 		}
 
