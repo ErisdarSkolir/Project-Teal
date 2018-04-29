@@ -8,6 +8,7 @@ import org.joml.Vector3f;
 import edu.gcc.keen.animations.Animateable;
 import edu.gcc.keen.animations.EntityAnimations;
 import edu.gcc.keen.gameobjects.GameObject;
+import edu.gcc.keen.gameobjects.ObjectType;
 import edu.gcc.keen.graphics.Textures;
 import edu.gcc.keen.util.Area;
 
@@ -89,6 +90,12 @@ public class Bullet extends Entity implements Animateable
 
 				horizontalVelocity = 0.0f;
 			}
+
+			if (object.getType() == ObjectType.ENTITY && ((Entity) object).canBeStunned)
+			{
+				((Entity) object).stunned = true;
+				setAnimation(EntityAnimations.BULLET_SPLASH, this);
+			}
 		}
 	}
 
@@ -102,6 +109,12 @@ public class Bullet extends Entity implements Animateable
 				setAnimation(EntityAnimations.BULLET_SPLASH, this);
 
 				verticalVelocity = 0.0f;
+			}
+
+			if (object.getType() == ObjectType.ENTITY && ((Entity) object).canBeStunned)
+			{
+				((Entity) object).stunned = true;
+				setAnimation(EntityAnimations.BULLET_SPLASH, this);
 			}
 		}
 	}

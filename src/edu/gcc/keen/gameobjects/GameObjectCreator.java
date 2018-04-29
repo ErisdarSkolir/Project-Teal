@@ -79,7 +79,7 @@ public class GameObjectCreator
 		{
 			try
 			{
-				return (Entity) enemyData.get(id).newInstance(new Vector3f(position, 0.0f));
+				return (Entity) enemyData.get(id).newInstance(new Vector3f(position, -0.1f));
 			}
 			catch (Exception e)
 			{

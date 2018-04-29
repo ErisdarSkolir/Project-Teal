@@ -79,7 +79,7 @@ public class Input
 	{
 		GLFW.glfwSetKeyCallback(WINDOW, (long window, int key, int scancode, int action, int mods) ->
 		{
-			keys[key] = (action != GLFW.GLFW_RELEASE && action != GLFW.GLFW_REPEAT);
+			keys[key] = action != GLFW.GLFW_RELEASE;
 		});
 
 		GLFW.glfwSetMouseButtonCallback(WINDOW, (long window, int button, int action, int mod) ->

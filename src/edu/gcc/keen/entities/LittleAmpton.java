@@ -25,12 +25,16 @@ public class LittleAmpton extends Entity implements Animateable
 	private boolean direction;
 	private boolean onPole;
 
+	private int poleCooldown = 100;
+
 	public LittleAmpton(Vector3f position)
 	{
 		super(Textures.getTexture("enemy"), 14, 10, 15, position, new Vector2f(1.625f, 1.625f));
 		this.setAabbOffset(new Vector2f(0.5f, 0.5f));
 		this.currentAnimation = EntityAnimations.AMPTON_WALK_LEFT;
 		this.canKill = false;
+		this.canCollideWithKeen = true;
+		this.canBeStunned = true;
 	}
 
 	@Override
@@ -62,13 +66,15 @@ public class LittleAmpton extends Entity implements Animateable
 			setAnimation(EntityAnimations.AMPTON_WALK_RIGHT, this);
 		}
 
-		if (onPole)
+		if (onPole && direction)
 		{
 			verticalVelocity = 0.4f;
+			setAnimation(EntityAnimations.AMPTON_ON_POLE, this);
 		}
 		else if (onPole)
 		{
 			verticalVelocity = -0.4f;
+			setAnimation(EntityAnimations.AMPTON_ON_POLE, this);
 		}
 		else
 			verticalVelocity = -0.4f;
@@ -77,12 +83,22 @@ public class LittleAmpton extends Entity implements Animateable
 	@Override
 	public void tick()
 	{
-		move();
+		if (!stunned)
+			move();
+
+		if (stunned)
+		{
+			setAnimation(EntityAnimations.AMPTON_STUNNED, this);
+			verticalVelocity = 0.4f;
+			canBeStunned = false;
+		}
 
 		if (animationTick > 9)
 			nextAnimationFrame(this);
 
 		animationTick++;
+		if (poleCooldown < 100)
+			poleCooldown++;
 	}
 
 	@Override
@@ -90,14 +106,11 @@ public class LittleAmpton extends Entity implements Animateable
 	{
 		for (GameObject object : collidingObjects)
 		{
-			if (object.getType().equals(ObjectType.TILE))
+			if (object.isCollidable())
 			{
-				if (object.isCollidable() || ((Tile) object).isOneWay())
-				{
-					position.add(BoundingBox.minX(this, object), 0.0f, 0.0f);
-					direction = !direction;
-					break;
-				}
+				position.add(BoundingBox.minX(this, object), 0.0f, 0.0f);
+				direction = !direction;
+				break;
 			}
 		}
 	}
@@ -109,12 +122,31 @@ public class LittleAmpton extends Entity implements Animateable
 		{
 			if (object.getType().equals(ObjectType.TILE))
 			{
-				if (!onPole && ((Tile) object).isPole() && random.nextInt(10) > 8)
+				if (onPole && poleCooldown >= 50 && verticalVelocity < 0.0f && (((Tile) object).isOneWay() || object.isCollidable()))
+				{
+					onPole = false;
+					canKill = false;
+					position.add(0.0f, BoundingBox.minY(this, object), 0.0f);
+					poleCooldown = 0;
+					verticalVelocity = 0.0f;
+				}
+				else if (onPole && (((Tile) object).isCollidable() || (object.getIndex() == 193 && object.getPosition().y <= position.y)))
+				{
+					direction = !direction;
+
+					if (object.isCollidable())
+						position.add(0.0f, BoundingBox.minY(this, object), 0.0f);
+				}
+
+				else if (!onPole && poleCooldown >= 100 && ((Tile) object).isPole())
 				{
 					onPole = true;
+					canKill = true;
+					poleCooldown = 0;
+					horizontalVelocity = 0.0f;
 					position.x = object.getPosition().x;
 				}
-				else if (object.isCollidable() || ((Tile) object).isOneWay())
+				else if (!onPole && (object.isCollidable() || ((Tile) object).isOneWay()))
 				{
 					position.add(0.0f, BoundingBox.minY(this, object), 0.0f);
 				}

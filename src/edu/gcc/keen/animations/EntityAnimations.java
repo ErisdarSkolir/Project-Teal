@@ -6,7 +6,8 @@ public enum EntityAnimations implements Animation
 	BULLET_SPLASH(5),
 	AMPTON_WALK_LEFT(18, 19, 20, 21),
 	AMPTON_WALK_RIGHT(25, 24, 23, 22),
-	AMPTON_ON_POLE(15);
+	AMPTON_ON_POLE(15),
+	AMPTON_STUNNED(17);
 
 	private int[] animation;
 
