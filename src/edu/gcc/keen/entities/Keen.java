@@ -37,6 +37,7 @@ public class Keen extends Entity implements Animateable
 	private boolean hanging = false;
 	private boolean onGround = false;
 	private boolean onPole = false;
+	private boolean onPogo = false;
 	private boolean[] keystones = new boolean[4];
 	private boolean direction = true;
 
@@ -86,6 +87,10 @@ public class Keen extends Entity implements Animateable
 				horizontalVelocity = LEFT_SPEED;
 				tryShoot(0);
 				setAnimation(KeenAnimation.WALK_LEFT, this);
+			}
+			else if (onPogo)
+			{
+				setAnimation(KeenAnimation.POGO_LEFT, this);
 			}
 			else
 			{
