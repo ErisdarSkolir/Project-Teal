@@ -86,7 +86,6 @@ public class Keen extends Entity implements Animateable
 		if (Input.isKeyDown(GLFW.GLFW_KEY_R))
 			position = new Vector3f(0.0f, 6f, 0.0f);
 
-
 		if (Input.isKeyDown(GLFW.GLFW_KEY_LEFT))
 		{
 			direction = true;
