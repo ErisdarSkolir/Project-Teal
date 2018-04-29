@@ -1,18 +1,28 @@
-Apr 28, 2018 8:35:40 PM edu.gcc.keen.gameobjects.GameObjectCreator createTile
+Apr 29, 2018 3:58:16 PM edu.gcc.keen.gameobjects.GameObjectCreator createTile
 INFO: No tile data for 1,314
-Apr 28, 2018 8:35:40 PM edu.gcc.keen.gameobjects.GameObjectCreator createTile
+Apr 29, 2018 3:58:16 PM edu.gcc.keen.gameobjects.GameObjectCreator createTile
 INFO: No tile data for 1,314
-Apr 28, 2018 8:35:40 PM edu.gcc.keen.gameobjects.GameObjectCreator createTile
+Apr 29, 2018 3:58:16 PM edu.gcc.keen.gameobjects.GameObjectCreator createTile
 INFO: No tile data for 1,314
-Apr 28, 2018 8:35:41 PM edu.gcc.keen.gameobjects.GameObjectCreator createTile
+Apr 29, 2018 3:58:16 PM edu.gcc.keen.gameobjects.GameObjectCreator createTile
 INFO: No tile data for 1,314
-Apr 28, 2018 8:35:41 PM edu.gcc.keen.gameobjects.GameObjectCreator createTile
+Apr 29, 2018 3:58:16 PM edu.gcc.keen.gameobjects.GameObjectCreator createTile
 INFO: No tile data for 1,332
-Apr 28, 2018 8:35:41 PM edu.gcc.keen.gameobjects.GameObjectCreator createTile
+Apr 29, 2018 3:58:16 PM edu.gcc.keen.gameobjects.GameObjectCreator createTile
 INFO: No tile data for 1,350
-Apr 28, 2018 8:35:42 PM edu.gcc.keen.KeenMain run
-FINE: Updates 59	Frames 83
-Apr 28, 2018 8:35:43 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 86
-Apr 28, 2018 8:35:44 PM edu.gcc.keen.KeenMain run
-FINE: Updates 60	Frames 77
+Apr 29, 2018 3:58:17 PM edu.gcc.keen.KeenMain run
+FINE: Updates 59	Frames 119
+Apr 29, 2018 3:58:18 PM edu.gcc.keen.KeenMain run
+FINE: Updates 61	Frames 147
+Apr 29, 2018 3:58:19 PM edu.gcc.keen.KeenMain run
+FINE: Updates 60	Frames 160
+Apr 29, 2018 3:58:20 PM edu.gcc.keen.KeenMain run
+FINE: Updates 60	Frames 165
+Apr 29, 2018 3:58:21 PM edu.gcc.keen.KeenMain run
+FINE: Updates 60	Frames 162
+Apr 29, 2018 3:58:22 PM edu.gcc.keen.KeenMain run
+FINE: Updates 61	Frames 164
+Apr 29, 2018 3:58:23 PM edu.gcc.keen.KeenMain run
+FINE: Updates 60	Frames 137
+Apr 29, 2018 3:58:24 PM edu.gcc.keen.KeenMain run
+FINE: Updates 60	Frames 128
