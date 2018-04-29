@@ -30,19 +30,26 @@ public class Keen extends Entity implements Animateable
 	private static final float LEFT_SPEED = -0.4f;
 	private static final float RIGHT_SPEED = 0.4f;
 	private static final float INITIAL_JUMP_SPEED = 0.7f;
+	private static final float INITIAL_POGO_SPEED = 0.7f;
 	private static final float JUMP_VELOCITY = 0.09f;
-	private static final float GRAVITY = -0.15f;
+	private static final float POGO_VELOCITY = 0.08f;
+	private static final float GRAVITY = -0.1f;
 
 	private boolean jumping = false;
+	private boolean jumpingToo = false;
 	private boolean hanging = false;
 	private boolean onGround = false;
 	private boolean onPole = false;
 	private boolean onPogo = false;
+	private boolean pogoUp = false;
 	private boolean[] keystones = new boolean[4];
 	private boolean direction = true;
 
+
 	private int jumpTick = 0;
+	private int pogoTick = 0;
 	private int shootCooldown = 10;
+	private int inactiveTick = 0;
 
 	private int ammo;
 	private int score;
@@ -50,6 +57,7 @@ public class Keen extends Entity implements Animateable
 
 	public Keen(Vector3f position)
 	{
+
 		super(Textures.getTexture("keen_spritesheet"), 11, 7, 0, position, new Vector2f(2.0f, 2.5f));
 
 		this.setAabbOffset(new Vector2f(-2.5f, -1.0f));
@@ -78,52 +86,70 @@ public class Keen extends Entity implements Animateable
 		if (Input.isKeyDown(GLFW.GLFW_KEY_R))
 			position = new Vector3f(0.0f, 6f, 0.0f);
 
+
 		if (Input.isKeyDown(GLFW.GLFW_KEY_LEFT))
 		{
 			direction = true;
 
-			if (!onPole)
+			if (!onPole && !onPogo)
 			{
 				horizontalVelocity = LEFT_SPEED;
 				tryShoot(0);
-				setAnimation(KeenAnimation.WALK_LEFT, this);
+				if(onGround)
+					setAnimation(KeenAnimation.WALK_LEFT, this);
 			}
 			else if (onPogo)
 			{
+				horizontalVelocity = LEFT_SPEED + .1f;
+				tryShoot(0);
 				setAnimation(KeenAnimation.POGO_LEFT, this);
-			}
-			else
-			{
-				setAnimation(KeenAnimation.STATIONARY_POLE_LEFT, this);
 			}
 		}
 		else if (Input.isKeyDown(GLFW.GLFW_KEY_RIGHT))
 		{
 			direction = false;
 
-			if (!onPole)
+			if (!onPole && !onPogo)
 			{
 				horizontalVelocity = RIGHT_SPEED;
 				tryShoot(2);
 				setAnimation(KeenAnimation.WALK_RIGHT, this);
 			}
-			else
+			else if (onPogo)
 			{
-				setAnimation(KeenAnimation.STATIONARY_POLE_RIGHT, this);
+				horizontalVelocity = RIGHT_SPEED - .1f;
+				tryShoot(0);
+				setAnimation(KeenAnimation.POGO_RIGHT, this);
 			}
+
 		}
 		else if (Input.isKeyDown(GLFW.GLFW_KEY_DOWN))
 		{
 			if (!onPole && onGround)
 			{
 				setAnimation(KeenAnimation.LOOK_DOWN, this);
+				tryShoot(3);
 			}
-			else
+			else if (onPole)
 			{
 				setAnimation(KeenAnimation.SLIDE_POLE, this);
+				tryShoot(3);
 			}
 		}
-		else
+		else if (Input.isKeyDown(GLFW.GLFW_KEY_UP))
+		{
+			if  (!onPole && onGround)
+			{
+				setAnimation(KeenAnimation.LOOK_UP, this);
+				tryShoot(1);
+			}
+			else if (onPole)
+			{
+				setAnimation(direction ? KeenAnimation.CLIMB_POLE_LEFT : KeenAnimation.CLIMB_POLE_RIGHT, this);
+				tryShoot(1);
+			}
+		}
+		else if (!jumping && onGround)
 		{
 			horizontalVelocity = 0.0f;
 
@@ -135,27 +161,78 @@ public class Keen extends Entity implements Animateable
 
 		if (Input.isKeyDown(GLFW.GLFW_KEY_LEFT_CONTROL))
 		{
-			if (onGround || onPole)
+			if ((onGround || onPole) && !onPogo)
 			{
 				jumping = true;
 				onPole = false;
 				onGround = false;
 				verticalVelocity = INITIAL_JUMP_SPEED;
 			}
-			else if (jumping && verticalVelocity < 0.9f)
+			else if (jumping && verticalVelocity < 0.9f && !onPogo)
 			{
 				verticalVelocity += JUMP_VELOCITY;
+			}
+			else if (onPogo)
+			{
+				jumpingToo = true;
 			}
 
 			if (jumpTick > 6)
 				jumping = false;
 
+			if (direction)
+				setAnimation(KeenAnimation.JUMP_LEFT, this);
+			else
+				setAnimation(KeenAnimation.JUMP_RIGHT, this);
+
 			jumpTick++;
 		}
 		else
+		{
 			jumping = false;
+			jumpingToo = false;
+		}
 
-		if (!jumping && verticalVelocity > -1.0f && !onPole)
+		if (Input.isKeyDownOnce(GLFW.GLFW_KEY_LEFT_ALT)) 
+		{
+			onPogo = !onPogo;
+
+			if(!onPogo)
+				pogoUp = false;
+		}
+
+		if (onPogo)
+		{
+			if (onGround || onPole)
+			{
+				pogoUp = true;
+				onPole = false;
+				onGround = false;
+				verticalVelocity = INITIAL_POGO_SPEED;
+			}
+			else if (pogoUp && verticalVelocity < 1.0f)
+			{
+				verticalVelocity += POGO_VELOCITY;
+			}
+
+			if (jumpingToo) {
+				if (pogoTick > 15)
+					pogoUp = false;
+			}
+			else {
+				if (pogoTick > 5)
+					pogoUp = false;
+			}
+
+			if (direction)
+				setAnimation(KeenAnimation.POGO_LEFT, this);
+			else
+				setAnimation(KeenAnimation.POGO_RIGHT, this);
+
+			pogoTick++;
+		}
+
+		if (!jumping && !pogoUp && !onPole && verticalVelocity > -1.0f)
 		{
 			verticalVelocity += GRAVITY;
 			onGround = false;
@@ -172,6 +249,7 @@ public class Keen extends Entity implements Animateable
 	{
 		if (Input.isKeyDown(GLFW.GLFW_KEY_SPACE) && shootCooldown <= 0 && ammo > 0)
 		{
+
 			Level.addObject(new Bullet(direction, new Vector3f(position)));
 
 			if (direction == 0 && horizontalVelocity == 0.0f && verticalVelocity == 0.0f)
@@ -187,7 +265,7 @@ public class Keen extends Entity implements Animateable
 	{
 		move();
 
-		if (animationTick > 9)
+		if (animationTick > (onGround ? 9 : 15))
 			nextAnimationFrame(this);
 
 		animationTick++;
@@ -247,10 +325,14 @@ public class Keen extends Entity implements Animateable
 					{
 						verticalVelocity = 0.0f;
 						jumpTick = 0;
+						pogoTick = 0;
 						onGround = true;
 					}
 					else
+					{
 						jumping = false;
+						pogoUp = false;
+					}
 				}
 				else if (tile.isPole() && (Input.isKeyDown(GLFW.GLFW_KEY_UP) || Input.isKeyDown(GLFW.GLFW_KEY_DOWN)))
 				{
@@ -267,6 +349,7 @@ public class Keen extends Entity implements Animateable
 					{
 						verticalVelocity = 0.0f;
 						jumpTick = 0;
+						pogoTick = 0;
 						onGround = true;
 					}
 				}
