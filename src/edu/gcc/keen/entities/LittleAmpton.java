@@ -67,6 +67,7 @@ public class LittleAmpton extends Entity implements Animateable
 				horizontalVelocity = 0.2f;
 				setAnimation(EntityAnimations.AMPTON_WALK_RIGHT, this);
 			}
+			else
 
 			if (onPole && direction)
 			{
@@ -127,33 +128,38 @@ public class LittleAmpton extends Entity implements Animateable
 		{
 			if (object.getType().equals(ObjectType.TILE))
 			{
-				if (onPole && poleCooldown >= 50 && verticalVelocity < 0.0f && (((Tile) object).isOneWay() || object.isCollidable()))
+				if (onPole)
 				{
-					onPole = false;
-					canKill = false;
-					position.add(0.0f, BoundingBox.minY(this, object), 0.0f);
-					poleCooldown = 0;
-					verticalVelocity = 0.0f;
-				}
-				else if (onPole && (((Tile) object).isCollidable() || (object.getIndex() == 193 && object.getPosition().y <= position.y)))
-				{
-					direction = !direction;
-
-					if (object.isCollidable())
+					if (poleCooldown >= 50 && (((Tile) object).isOneWay() || object.isCollidable()))
+					{
+						onPole = false;
+						canKill = false;
 						position.add(0.0f, BoundingBox.minY(this, object), 0.0f);
-				}
+						poleCooldown = 0;
+						verticalVelocity = 0.0f;
+					}
+					else if ((((Tile) object).isCollidable() || (object.getIndex() == 193 && object.getPosition().y <= position.y)))
+					{
+						direction = !direction;
 
-				else if (!onPole && poleCooldown >= 100 && ((Tile) object).isPole())
-				{
-					onPole = true;
-					canKill = true;
-					poleCooldown = 0;
-					horizontalVelocity = 0.0f;
-					position.x = object.getPosition().x;
+						if (object.isCollidable())
+							position.add(0.0f, BoundingBox.minY(this, object), 0.0f);
+					}
 				}
-				else if (!onPole && (object.isCollidable() || ((Tile) object).isOneWay()))
+				else
 				{
-					position.add(0.0f, BoundingBox.minY(this, object), 0.0f);
+					if (poleCooldown >= 100 && ((Tile) object).isPole())
+					{
+						onPole = true;
+						canKill = true;
+						poleCooldown = 0;
+						horizontalVelocity = 0.0f;
+						position.x = object.getPosition().x;
+					}
+					else if ((object.isCollidable() || ((Tile) object).isOneWay()))
+					{
+						position.add(0.0f, BoundingBox.minY(this, object), 0.0f);
+					}
 				}
 			}
 		}
