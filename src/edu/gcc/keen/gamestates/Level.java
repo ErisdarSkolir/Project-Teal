@@ -141,7 +141,7 @@ public class Level extends GameState
 		{
 			foreground.useDelimiter(",");
 			background.useDelimiter(",");
-			infoplane.useDelimiter(",");
+			infoplane.useDelimiter(",|\n|\t|\r");
 
 			for (int row = 0; foreground.hasNextLine(); row++)
 			{
@@ -201,23 +201,29 @@ public class Level extends GameState
 			{
 				int id = infoplane.nextInt();
 				Vector3f position = new Vector3f(infoplane.nextInt() * 2.0f, -infoplane.nextInt() * 2.0f, -0.2f);
-
 				if (id == 1196)
 					now = new KeyStoneHolder(0, position);
+				else if (id == 1197)
+					now = new KeyStoneHolder(1, position);
+				else if (id == 1198)
+					now = new KeyStoneHolder(2, position);
+				else if (id == 1199)
+					now = new KeyStoneHolder(3, position);
 				else if (id == 1350)
 					now = new KeyStoneDoor(InteractableAnimations.KEYSTONE_DOOR_BOTTOM, position);
 				else if (id == 1332)
 					now = new KeyStoneDoor(InteractableAnimations.KEYSTONE_DOOR_MIDDLE, position);
 				else if (id == 1314)
 					now = new KeyStoneDoor(InteractableAnimations.KEYSTONE_DOOR_TOP, position);
-
 				if (last != null)
 					last.setBoundObject(now);
-
 				last = now;
-
 				tmpObjects.add(now);
+
 			}
+
+			if (infoplane.hasNextLine())
+				infoplane.nextLine();
 		}
 
 		return tmpObjects;

@@ -65,14 +65,16 @@ public class Keen extends Entity implements Animateable
 	@Override
 	public void move()
 	{
-		if (horizontalVelocity != 0.0f || verticalVelocity != 0.0f)
+		if (verticalVelocity != 0.0f)
 		{
 			position.add(0.0f, verticalVelocity, 0.0f);
 			for (Area area : areas)
 			{
 				area.checkCollision(false, this);
 			}
-
+		}
+		if (horizontalVelocity != 0.0f)
+		{
 			position.add(horizontalVelocity, 0.0f, 0.0f);
 			for (Area area : areas)
 			{
@@ -363,9 +365,7 @@ public class Keen extends Entity implements Animateable
 		for (GameObject object : collidingObjects)
 		{
 			if (object.isCollidable())
-			{
 				this.position.add(BoundingBox.minX(this, object), 0.0f, 0.0f);
-			}
 		}
 
 		horizontalVelocity = 0.0f;
@@ -377,9 +377,7 @@ public class Keen extends Entity implements Animateable
 		for (GameObject object : collidingObjects)
 		{
 			if (object.isCollidable())
-			{
 				position.add(0.0f, BoundingBox.minY(this, object), 0.0f);
-			}
 
 			if (object.getType() == ObjectType.ITEM)
 			{

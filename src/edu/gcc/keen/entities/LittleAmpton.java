@@ -27,7 +27,6 @@ public class LittleAmpton extends Entity implements Animateable
 	public LittleAmpton(Vector3f position)
 	{
 		super(Textures.getTexture("enemy"), 14, 10, 15, position, new Vector2f(1.625f, 1.625f));
-		this.setAabbOffset(new Vector2f(0.5f, 0.5f));
 		this.currentAnimation = EntityAnimations.AMPTON_WALK_LEFT;
 		this.canKill = false;
 		this.canCollideWithKeen = true;
