@@ -7,10 +7,11 @@ import edu.gcc.keen.animations.InteractableAnimations;
 import edu.gcc.keen.gameobjects.ObjectType;
 import edu.gcc.keen.graphics.Textures;
 
+/**
+ * An interactable representing a keystone holder that opens a keystone door
+ */
 public class KeyStoneHolder extends Interactable
 {
-	private InteractableAnimations currentAnimation;
-
 	private int color;
 
 	private boolean containsKeyStone;
@@ -36,8 +37,10 @@ public class KeyStoneHolder extends Interactable
 	@Override
 	public void tick()
 	{
-
+		// Keystone Holder does not currently update
 	}
+
+	// Getters
 
 	public boolean containsKeyStone()
 	{

@@ -8,9 +8,6 @@ import java.nio.IntBuffer;
 /**
  * This class provides utility functions to create arrays into buffers needed
  * for OpenGL
- * 
- * @author DONMOYERLR17
- *
  */
 public class BufferUtils
 {

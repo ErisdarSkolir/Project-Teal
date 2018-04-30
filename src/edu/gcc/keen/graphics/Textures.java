@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
@@ -21,6 +22,8 @@ import edu.gcc.keen.util.BufferUtils;
  */
 public class Textures
 {
+	private static final Logger LOGGER = Logger.getLogger("Logger");
+
 	private static Map<String, Integer> textureMap = new HashMap<>();
 
 	private Textures()
@@ -70,7 +73,7 @@ public class Textures
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			LOGGER.log(java.util.logging.Level.SEVERE, e.getMessage());
 		}
 
 		int[] data = new int[width * height];

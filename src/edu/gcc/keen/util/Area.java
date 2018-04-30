@@ -14,9 +14,6 @@ import edu.gcc.keen.gameobjects.GameObject;
  * This class will help with collision detection. It will contain a list of
  * tiles and entities within it, so those entities only have to check collision
  * with what is in this area
- * 
- * @author DONMOYERLR17
- *
  */
 public class Area
 {
@@ -65,6 +62,14 @@ public class Area
 		}
 	}
 
+	/**
+	 * Check for collision between the given entity and the rest of the objects in
+	 * this area. Calls the entity's collision methods if there is a collision on
+	 * the given axis
+	 * 
+	 * @param axis
+	 * @param entity
+	 */
 	public void checkCollision(boolean axis, Entity entity)
 	{
 		shouldUpdate = true;
@@ -87,16 +92,28 @@ public class Area
 		}
 	}
 
+	/**
+	 * Add an object to this area
+	 * 
+	 * @param object
+	 */
 	public void addObject(GameObject object)
 	{
 		if (object.addArea(this))
 			objects.add(object);
 	}
 
+	/**
+	 * Remove an object from this area
+	 * 
+	 * @param object
+	 */
 	public void removeObject(GameObject object)
 	{
 		objects.remove(object);
 	}
+
+	// Getters and Setters
 
 	public void setShouldUpdate(boolean update)
 	{

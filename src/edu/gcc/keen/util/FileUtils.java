@@ -7,9 +7,6 @@ import java.util.logging.Logger;
 
 /**
  * This class provides utility functions for file IO
- * 
- * @author DONMOYERLR17
- *
  */
 public class FileUtils
 {

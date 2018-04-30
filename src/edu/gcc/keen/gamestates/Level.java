@@ -54,21 +54,7 @@ public class Level extends GameState
 	@Override
 	public void tick()
 	{
-		if (!addObjects.isEmpty())
-		{
-			gameObjects.addAll(addObjects);
-
-			for (GameObject object : addObjects)
-			{
-				for (Area area : areas)
-				{
-					if (BoundingBox.isIntersecting(object, area))
-						area.addObject(object);
-				}
-			}
-
-			addObjects.clear();
-		}
+		processObjectsToAdd();
 
 		for (Iterator<GameObject> itr = gameObjects.iterator(); itr.hasNext();)
 		{
@@ -113,6 +99,28 @@ public class Level extends GameState
 	public static void addObject(GameObject object)
 	{
 		addObjects.add(object);
+	}
+
+	/**
+	 * Process any entities in the addObject static array and add them to the level
+	 */
+	public void processObjectsToAdd()
+	{
+		if (!addObjects.isEmpty())
+		{
+			gameObjects.addAll(addObjects);
+
+			for (GameObject object : addObjects)
+			{
+				for (Area area : areas)
+				{
+					if (BoundingBox.isIntersecting(object, area))
+						area.addObject(object);
+				}
+			}
+
+			addObjects.clear();
+		}
 	}
 
 	/**
@@ -163,37 +171,53 @@ public class Level extends GameState
 				infoplane.nextLine();
 			}
 
-			while (infoplane.hasNextLine())
-			{
-				Interactable last = null;
-				Interactable now = null;
-
-				while (infoplane.hasNextInt())
-				{
-					int id = infoplane.nextInt();
-					Vector3f position = new Vector3f(infoplane.nextInt() * 2.0f, -infoplane.nextInt() * 2.0f, -0.2f);
-
-					if (id == 1196)
-						now = new KeyStoneHolder(0, position);
-					else if (id == 1350)
-						now = new KeyStoneDoor(InteractableAnimations.KEYSTONE_DOOR_BOTTOM, position);
-					else if (id == 1332)
-						now = new KeyStoneDoor(InteractableAnimations.KEYSTONE_DOOR_MIDDLE, position);
-					else if (id == 1314)
-						now = new KeyStoneDoor(InteractableAnimations.KEYSTONE_DOOR_TOP, position);
-
-					if (last != null)
-						last.setBoundObject(now);
-
-					last = now;
-
-					tmpObjects.add(now);
-				}
-			}
+			tmpObjects.addAll(createInteractables(infoplane));
 		}
 		catch (IOException e)
 		{
 			LOGGER.log(java.util.logging.Level.SEVERE, e.getMessage());
+		}
+
+		return tmpObjects;
+	}
+
+	/**
+	 * Create interactable game objects from the infoplane scanner preset to the
+	 * correct position
+	 * 
+	 * @param infoplane
+	 * @return a list of interactables
+	 */
+	public List<GameObject> createInteractables(Scanner infoplane)
+	{
+		List<GameObject> tmpObjects = new ArrayList<>();
+
+		while (infoplane.hasNextLine())
+		{
+			Interactable last = null;
+			Interactable now = null;
+
+			while (infoplane.hasNextInt())
+			{
+				int id = infoplane.nextInt();
+				Vector3f position = new Vector3f(infoplane.nextInt() * 2.0f, -infoplane.nextInt() * 2.0f, -0.2f);
+
+				if (id == 1196)
+					now = new KeyStoneHolder(0, position);
+				else if (id == 1350)
+					now = new KeyStoneDoor(InteractableAnimations.KEYSTONE_DOOR_BOTTOM, position);
+				else if (id == 1332)
+					now = new KeyStoneDoor(InteractableAnimations.KEYSTONE_DOOR_MIDDLE, position);
+				else if (id == 1314)
+					now = new KeyStoneDoor(InteractableAnimations.KEYSTONE_DOOR_TOP, position);
+
+				if (last != null)
+					last.setBoundObject(now);
+
+				last = now;
+
+				tmpObjects.add(now);
+			}
 		}
 
 		return tmpObjects;

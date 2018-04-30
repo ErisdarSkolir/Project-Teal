@@ -26,7 +26,7 @@ public abstract class GameObject
 	private int texture;
 	private int columns;
 	private int rows;
-	private int animationIndex;
+	protected int animationIndex;
 	protected int index;
 	protected int animationTick;
 

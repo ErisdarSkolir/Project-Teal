@@ -3,25 +3,24 @@ package edu.gcc.keen.interactable;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
+import edu.gcc.keen.animations.Animateable;
 import edu.gcc.keen.animations.InteractableAnimations;
 import edu.gcc.keen.gameobjects.ObjectType;
 import edu.gcc.keen.graphics.Textures;
 
-public class KeyStoneDoor extends Interactable
+/**
+ * Represents an interactable object that switches between opens when toggled
+ */
+public class KeyStoneDoor extends Interactable implements Animateable
 {
-	private int animationIndex = 0;
-	private int animationTick = 10;
-
 	private boolean animate;
-
-	private InteractableAnimations animation;
 
 	public KeyStoneDoor(InteractableAnimations animation, Vector3f position)
 	{
 		super(Textures.getTexture("tilesheet"), 18, 165, animation.getAnimation()[0], position, new Vector2f(1.0f, 1.0f), ObjectType.INTERACTABLE);
 		this.objectType = ObjectType.INTERACTABLE;
-		this.animation = animation;
-		collidable = true;
+		this.currentAnimation = animation;
+		this.collidable = true;
 	}
 
 	@Override
@@ -36,18 +35,15 @@ public class KeyStoneDoor extends Interactable
 	{
 		if (animate)
 		{
-			if (animationIndex > animation.getLenth() - 1)
+			if (animationIndex >= currentAnimation.getLenth())
 			{
 				animate = false;
 
-				if (animation == InteractableAnimations.KEYSTONE_DOOR_MIDDLE || animation == InteractableAnimations.KEYSTONE_DOOR_TOP)
+				if (currentAnimation == InteractableAnimations.KEYSTONE_DOOR_MIDDLE || currentAnimation == InteractableAnimations.KEYSTONE_DOOR_TOP)
 					collidable = false;
 			}
 			if (animationTick > 4)
-			{
-				index = animation.getAnimation()[animationIndex++];
-				animationTick = 0;
-			}
+				nextAnimationFrame(this);
 
 			animationTick++;
 		}
