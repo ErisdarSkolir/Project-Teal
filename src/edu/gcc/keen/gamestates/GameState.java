@@ -11,9 +11,6 @@ import edu.gcc.keen.input.Input;
 /**
  * A game state. Used to differentiate levels, the main menu, and the world map
  * from each other
- * 
- * @author DONMOYERLR17
- *
  */
 public abstract class GameState
 {
@@ -38,7 +35,7 @@ public abstract class GameState
 	}
 
 	/**
-	 * Update the current game state and update all objects inside this state
+	 * Update camera and terminate if the escape key is pressed
 	 */
 	public void tick()
 	{

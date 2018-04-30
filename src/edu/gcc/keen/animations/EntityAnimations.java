@@ -1,5 +1,8 @@
 package edu.gcc.keen.animations;
 
+/**
+ * Animations associated with entities besides the player
+ */
 public enum EntityAnimations implements Animation
 {
 	BULLET(0, 1, 2, 3, 4),

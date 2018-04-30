@@ -11,8 +11,6 @@ import edu.gcc.keen.util.Area;
 
 /**
  * The base class for all in-game objects
- * 
- * @author DONMOYERLR17
  *
  */
 public abstract class GameObject
@@ -26,10 +24,10 @@ public abstract class GameObject
 	protected List<Area> areas = new LinkedList<>();
 
 	private int texture;
-	protected int index;
 	private int columns;
 	private int rows;
 	private int animationIndex;
+	protected int index;
 	protected int animationTick;
 
 	private boolean shouldDestroy;
@@ -40,7 +38,12 @@ public abstract class GameObject
 	 * Constructor
 	 * 
 	 * @param texture
+	 * @param columns
+	 * @param rows
+	 * @param index
 	 * @param position
+	 * @param scale
+	 * @param type
 	 */
 	public GameObject(int texture, int columns, int rows, int index, Vector3f position, Vector2f scale, ObjectType type)
 	{
@@ -59,20 +62,12 @@ public abstract class GameObject
 	public abstract void tick();
 
 	/**
-	 * Get the texture offset required for texture atlases
+	 * Add the given area to the list of areas that contain this object. Should only
+	 * be called if the area does indeed contain this object
 	 * 
-	 * @return the offset positions in a vector2f object
+	 * @param area
+	 * @return true if the area was added, false otherwise
 	 */
-	public Vector2f getTextureOffset()
-	{
-		return new Vector2f((float) (index % columns) / columns, (float) (index / columns) / rows);
-	}
-
-	public Vector3f getPosition()
-	{
-		return new Vector3f(position.x, position.y, position.z);
-	}
-
 	public boolean addArea(Area area)
 	{
 		if (!areas.contains(area))
@@ -86,13 +81,49 @@ public abstract class GameObject
 		return false;
 	}
 
+	/**
+	 * Remove specified area from the area list
+	 * 
+	 * @param area
+	 */
 	public void removeArea(Area area)
 	{
 		this.updateArea = true;
 		this.areas.remove(area);
 	}
 
-	public int numAreas()
+	/**
+	 * Remove this object from all areas and set the should destroy flag to true so
+	 * this object will be destroyed next level tick
+	 */
+	public void destroy()
+	{
+		shouldDestroy = true;
+
+		for (Area area : areas)
+		{
+			area.removeObject(this);
+		}
+	}
+
+	/**
+	 * Get the texture offset required for texture atlases
+	 * 
+	 * @return the offset positions in a vector2f object
+	 */
+	public Vector2f getTextureOffset()
+	{
+		return new Vector2f((float) (index % columns) / columns, (float) Math.floorDiv(index, columns) / rows);
+	}
+
+	// Additional getters and setters from private and protected variables
+
+	public Vector3f getPosition()
+	{
+		return new Vector3f(position.x, position.y, position.z);
+	}
+
+	public int getNumAreas()
 	{
 		return this.areas.size();
 	}
@@ -120,16 +151,6 @@ public abstract class GameObject
 	public boolean shouldDestroy()
 	{
 		return this.shouldDestroy;
-	}
-
-	public void destroy()
-	{
-		shouldDestroy = true;
-
-		for (Area area : areas)
-		{
-			area.removeObject(this);
-		}
 	}
 
 	public void setIndex(int index)

@@ -1,10 +1,7 @@
 package edu.gcc.keen.graphics;
 
 /**
- * A small class representing vertexes required for renedering
- * 
- * @author DONMOYERLR17
- *
+ * A small class representing vertexes required for rendering
  */
 public class Mesh
 {
@@ -22,6 +19,8 @@ public class Mesh
 		this.vaoID = vaoID;
 		this.vertexCount = vertexCount;
 	}
+
+	// Getters
 
 	public int getVaoID()
 	{

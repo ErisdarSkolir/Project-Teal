@@ -1,5 +1,8 @@
 package edu.gcc.keen.animations;
 
+/**
+ * Animations related to the player
+ */
 public enum KeenAnimation implements Animation
 {
 	STATIONARY_LEFT(0),

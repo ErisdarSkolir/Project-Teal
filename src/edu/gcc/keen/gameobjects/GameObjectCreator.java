@@ -16,14 +16,11 @@ import edu.gcc.keen.entities.Entity;
 /**
  * A factory class for creating gameObjects based on configuration from the
  * given data files.
- * 
- * @author DONMOYERLR17
  *
  */
 public class GameObjectCreator
 {
 	private static final Logger LOGGER = Logger.getLogger("Logger");
-
 	private static final String DATA_PATH = "res/data/";
 
 	private static Map<Integer, boolean[]> tileData;

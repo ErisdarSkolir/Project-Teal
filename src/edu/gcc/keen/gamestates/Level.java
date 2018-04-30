@@ -27,9 +27,6 @@ import edu.gcc.keen.util.BoundingBox;
 /**
  * A level contains a list of all entites, tiles, and items. Also contains the
  * collision detect grid system
- * 
- * @author DONMOYERLR17
- *
  */
 public class Level extends GameState
 {
@@ -40,9 +37,6 @@ public class Level extends GameState
 	private List<Area> areas = new ArrayList<>();
 	private List<GameObject> gameObjects = new ArrayList<>();
 	private List<GameObject> backgroundTiles = new ArrayList<>();
-
-	private int width;
-	private int height;
 
 	/**
 	 * Constructor
@@ -111,6 +105,11 @@ public class Level extends GameState
 		renderer.render(gameObjects, backgroundTiles, camera);
 	}
 
+	/**
+	 * Add an object to the current level. Can be called statically
+	 * 
+	 * @param object
+	 */
 	public static void addObject(GameObject object)
 	{
 		addObjects.add(object);

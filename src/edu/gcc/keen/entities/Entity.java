@@ -10,9 +10,6 @@ import edu.gcc.keen.gameobjects.ObjectType;
 
 /**
  * An entity is any game object that moves or has more complex logic.
- * 
- * @author DONMOYERLR17
- *
  */
 public abstract class Entity extends GameObject
 {
@@ -38,11 +35,16 @@ public abstract class Entity extends GameObject
 	public abstract void move();
 
 	/**
-	 * Called when another gameObject collides with this entity
+	 * Called when another gameObject collides with this entity on the X axis
 	 * 
 	 * @param object
 	 */
 	public abstract void onCollideX(List<GameObject> collidingObjects);
 
+	/**
+	 * Called when another gameObject collides with this entity on the Y axis
+	 * 
+	 * @param object
+	 */
 	public abstract void onCollideY(List<GameObject> collidingObjects);
 }

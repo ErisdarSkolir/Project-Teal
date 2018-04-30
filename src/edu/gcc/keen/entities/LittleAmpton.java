@@ -1,7 +1,6 @@
 package edu.gcc.keen.entities;
 
 import java.util.List;
-import java.util.Random;
 
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -20,8 +19,6 @@ import edu.gcc.keen.util.BoundingBox;
  */
 public class LittleAmpton extends Entity implements Animateable
 {
-	private Random random = new Random();
-
 	private boolean direction;
 	private boolean onPole;
 

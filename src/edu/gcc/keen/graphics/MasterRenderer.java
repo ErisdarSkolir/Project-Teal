@@ -1,3 +1,4 @@
+
 package edu.gcc.keen.graphics;
 
 import java.nio.FloatBuffer;
@@ -28,10 +29,8 @@ import edu.gcc.keen.input.Input;
 import edu.gcc.keen.util.BufferUtils;
 
 /**
- * The master renderer handles window creation and listeners.
- * 
- * @author DONMOYERLR17
- *
+ * The master renderer handles window creation, opengl initialization, resource
+ * acquisition, and renderingS
  */
 public class MasterRenderer
 {
@@ -302,6 +301,7 @@ public class MasterRenderer
 	public void cleanup()
 	{
 		Textures.cleanup();
+		shader.cleanup();
 
 		for (int i : vaos)
 		{

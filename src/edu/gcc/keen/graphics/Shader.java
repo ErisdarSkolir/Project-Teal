@@ -3,6 +3,7 @@ package edu.gcc.keen.graphics;
 import java.nio.FloatBuffer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -15,12 +16,11 @@ import edu.gcc.keen.util.FileUtils;
 /**
  * A class representing an OpenGL shader. Some details will have to be provided
  * by implementation since this object is abstract
- * 
- * @author DONMOYERLR17
- *
  */
 public abstract class Shader
 {
+	private static final Logger LOGGER = Logger.getLogger("Logger");
+
 	private FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
 	private Map<String, Integer> uniforms = new HashMap<>();
 
@@ -97,7 +97,8 @@ public abstract class Shader
 		GL20.glCompileShader(vertID);
 		if (GL20.glGetShaderi(vertID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE)
 		{
-			System.err.println(GL20.glGetShaderInfoLog(vertID));
+			String error = GL20.glGetShaderInfoLog(vertID);
+			LOGGER.log(java.util.logging.Level.SEVERE, error);
 		}
 		GL20.glAttachShader(program, vertID);
 		GL20.glDeleteShader(vertID);
@@ -106,7 +107,8 @@ public abstract class Shader
 		GL20.glCompileShader(fragID);
 		if (GL20.glGetShaderi(fragID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE)
 		{
-			System.err.println(GL20.glGetShaderInfoLog(fragID));
+			String error = GL20.glGetShaderInfoLog(fragID);
+			LOGGER.log(java.util.logging.Level.SEVERE, error);
 		}
 		GL20.glAttachShader(program, fragID);
 		GL20.glDeleteShader(fragID);

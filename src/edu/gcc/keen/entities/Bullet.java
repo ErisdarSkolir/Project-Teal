@@ -14,9 +14,6 @@ import edu.gcc.keen.util.Area;
 
 /**
  * Represents a bullet fired by keen's blaster
- * 
- * @author DONMOYERLR17
- *
  */
 public class Bullet extends Entity implements Animateable
 {

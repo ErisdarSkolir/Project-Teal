@@ -5,10 +5,8 @@ import org.joml.Vector3f;
 import edu.gcc.keen.gameobjects.GameObject;
 
 /**
- * The 2d camera
- * 
- * @author DONMOYERLR17
- *
+ * The 2d camera. This allows the world to have a realistic world positioning
+ * while still being able to render objects on screen in the correct position
  */
 public class Camera
 {
@@ -49,6 +47,8 @@ public class Camera
 	{
 		this.boundObject = object;
 	}
+
+	// Getters
 
 	public Vector3f getPosition()
 	{

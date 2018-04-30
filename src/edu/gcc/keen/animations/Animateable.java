@@ -2,8 +2,17 @@ package edu.gcc.keen.animations;
 
 import edu.gcc.keen.gameobjects.GameObject;
 
+/**
+ * This interface contains default implementation of methods used to animate
+ * objects
+ */
 public interface Animateable
 {
+	/**
+	 * Set the texture index of the given object to the next frame
+	 * 
+	 * @param object
+	 */
 	public default void nextAnimationFrame(GameObject object)
 	{
 		Animation animation = object.getCurrentAnimation();
@@ -16,6 +25,12 @@ public interface Animateable
 		object.setAnimationTick(0);
 	}
 
+	/**
+	 * Set the current animation of the given object to the given animation
+	 * 
+	 * @param animation
+	 * @param object
+	 */
 	public default void setAnimation(Animation animation, GameObject object)
 	{
 		if (!object.getCurrentAnimation().equals(animation))

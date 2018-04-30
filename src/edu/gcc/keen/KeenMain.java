@@ -9,9 +9,7 @@ import edu.gcc.keen.gamestates.Level;
 import edu.gcc.keen.graphics.MasterRenderer;
 
 /**
- * The main game object. Includes the main game loop and the current game state.
- * 
- * @author DONMOYERLR17
+ * The main game class. Includes the main game loop and the current game state.
  *
  */
 public class KeenMain

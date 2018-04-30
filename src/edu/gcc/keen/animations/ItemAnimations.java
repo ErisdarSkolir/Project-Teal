@@ -1,5 +1,8 @@
 package edu.gcc.keen.animations;
 
+/**
+ * Animations related to items
+ */
 public enum ItemAnimations implements Animation
 {
 	RED_KEYSTONE(6, 7),

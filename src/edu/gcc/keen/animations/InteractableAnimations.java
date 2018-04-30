@@ -1,5 +1,8 @@
 package edu.gcc.keen.animations;
 
+/**
+ * Animations related to interactables
+ */
 public enum InteractableAnimations implements Animation
 {
 	KEYSTONE_HOLDER_RED(1196, 1214),
