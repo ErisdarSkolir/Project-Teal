@@ -1,8 +1,6 @@
 package edu.gcc.keen.util;
 
-import org.joml.Vector2d;
 import org.joml.Vector2f;
-import org.joml.Vector3d;
 import org.joml.Vector3f;
 
 import edu.gcc.keen.gameobjects.GameObject;
@@ -96,13 +94,13 @@ public class BoundingBox
 	 */
 	public static float minY(GameObject object1, GameObject object2)
 	{
-		Vector3d position1 = new Vector3d(object1.getPosition());
-		Vector2d scale1 = new Vector2d(object1.getScale().mul(2.0f).add(object1.getAabbOffset()));
-		Vector3d position2 = new Vector3d(object2.getPosition());
-		Vector2d scale2 = new Vector2d(object2.getScale().mul(2.0f).add(object2.getAabbOffset()));
+		Vector3f position1 = object1.getPosition();
+		Vector2f scale1 = object1.getScale().mul(2.0f).add(object1.getAabbOffset());
+		Vector3f position2 = object2.getPosition();
+		Vector2f scale2 = object2.getScale().mul(2.0f).add(object2.getAabbOffset());
 
-		double amountY = Math.min(Math.abs((position1.y + scale1.y / 2.0) - (position2.y - scale2.y / 2.0)), Math.abs((position1.y - scale1.y / 2.0) - (position2.y + scale2.y / 2.0)));
+		float amountY = (float) Math.min(Math.abs((position1.y + scale1.y / 2.0) - (position2.y - scale2.y / 2.0)), Math.abs((position1.y - scale1.y / 2.0) - (position2.y + scale2.y / 2.0)));
 
-		return (float) (position1.y - position2.y <= 0 ? -amountY : amountY);
+		return position1.y - position2.y <= 0 ? -amountY : amountY;
 	}
 }
