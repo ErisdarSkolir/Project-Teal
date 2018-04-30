@@ -2,8 +2,8 @@ package edu.gcc.keen.util;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import org.joml.Vector2f;
 
@@ -17,7 +17,7 @@ import edu.gcc.keen.gameobjects.GameObject;
  */
 public class Area
 {
-	private List<GameObject> objects = new LinkedList<>();
+	private Set<GameObject> objects = new LinkedHashSet<>();
 
 	private Vector2f position;
 	private Vector2f scale;

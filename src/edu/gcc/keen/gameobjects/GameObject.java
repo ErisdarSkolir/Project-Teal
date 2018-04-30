@@ -1,7 +1,7 @@
 package edu.gcc.keen.gameobjects;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -21,7 +21,7 @@ public abstract class GameObject
 	protected Vector3f position;
 	protected Vector2f scale;
 	private Vector2f aabbOffset = new Vector2f(0.0f, 0.0f);
-	protected List<Area> areas = new LinkedList<>();
+	protected Set<Area> areas = new LinkedHashSet<>();
 
 	private int texture;
 	private int columns;

@@ -27,6 +27,7 @@ public class Sparky extends Entity implements Animateable
 		super(Textures.getTexture("enemy"), 14, 10, 0, position, new Vector2f(1.625f, 1.625f));
 		this.canKill = true;
 		this.currentAnimation = EntityAnimations.SPARKY_WALK_LEFT;
+		this.canBeStunned = true;
 	}
 
 	@Override
@@ -47,24 +48,36 @@ public class Sparky extends Entity implements Animateable
 			}
 		}
 
-		if (direction)
+		if (!stunned)
 		{
-			horizontalVelocity = -0.2f;
-			setAnimation(EntityAnimations.SPARKY_WALK_LEFT, this);
-		}
-		else
-		{
-			horizontalVelocity = 0.2f;
-			setAnimation(EntityAnimations.SPARKY_WALK_RIGHT, this);
+			if (direction)
+			{
+				horizontalVelocity = -0.2f;
+				setAnimation(EntityAnimations.SPARKY_WALK_LEFT, this);
+			}
+			else
+			{
+				horizontalVelocity = 0.2f;
+				setAnimation(EntityAnimations.SPARKY_WALK_RIGHT, this);
+			}
 		}
 
 		verticalVelocity = -0.4f;
+
 	}
 
 	@Override
 	public void tick()
 	{
 		move();
+
+		if (stunned && canBeStunned)
+		{
+			setAnimation(EntityAnimations.SPARKY_STUNNED, this);
+			verticalVelocity = 0.6f;
+			horizontalVelocity = 0.0f;
+			canBeStunned = false;
+		}
 
 		if (animationTick > 9)
 			nextAnimationFrame(this);

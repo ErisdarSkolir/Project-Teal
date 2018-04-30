@@ -12,7 +12,8 @@ public enum EntityAnimations implements Animation
 	AMPTON_ON_POLE(15),
 	AMPTON_STUNNED(17),
 	SPARKY_WALK_LEFT(0, 1, 2, 3),
-	SPARKY_WALK_RIGHT(10, 9, 8, 7);
+	SPARKY_WALK_RIGHT(10, 9, 8, 7),
+	SPARKY_STUNNED(11);
 
 	private int[] animation;
 

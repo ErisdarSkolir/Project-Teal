@@ -336,7 +336,7 @@ public class Keen extends Entity implements Animateable
 	{
 		move();
 
-		if (animationTick > (onGround ? 15 : 9))
+		if (animationTick > ((onGround || onPogo) ? 15 : 9))
 			nextAnimationFrame(this);
 
 		animationTick++;

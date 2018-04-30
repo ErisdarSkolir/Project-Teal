@@ -28,7 +28,7 @@ public class KeenMain
 		if (!renderer.init())
 			terminate();
 
-		currentState = new Level("csvtest");
+		currentState = new Level("level1");
 
 		long lastTime = System.nanoTime();
 		long updateCounter = System.currentTimeMillis();
