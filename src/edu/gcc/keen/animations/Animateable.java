@@ -21,7 +21,7 @@ public interface Animateable
 		if (!object.getCurrentAnimation().equals(animation))
 		{
 			object.setCurrentAnimation(animation);
-			object.setAnimationIndex(0);
+			object.setAnimationIndex(1);
 			object.setAnimationTick(0);
 			object.setIndex(animation.getAnimation()[0]);
 		}

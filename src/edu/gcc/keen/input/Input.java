@@ -10,14 +10,12 @@ import org.lwjgl.glfw.GLFW;
  * @author DONMOYERLR17
  *
  */
-public class Input
-{
+public class Input {
 	private static boolean[] keys = new boolean[600];
 	private static boolean[] buttons = new boolean[10];
 	private static Vector2d mousePosition = new Vector2d();
 
-	public Input()
-	{
+	public Input() {
 		// Default constructor
 	}
 
@@ -27,8 +25,7 @@ public class Input
 	 * @param keycode
 	 * @return true if key is pressed
 	 */
-	public static boolean isKeyDown(int keycode)
-	{
+	public static boolean isKeyDown(int keycode) {
 		return keys[keycode];
 	}
 
@@ -38,10 +35,8 @@ public class Input
 	 * @param keycode
 	 * @return true if key is pressed
 	 */
-	public static boolean isKeyDownOnce(int keycode)
-	{
-		if (keys[keycode])
-		{
+	public static boolean isKeyDownOnce(int keycode) {
+		if (keys[keycode]) {
 			keys[keycode] = false;
 			return true;
 		}
@@ -55,19 +50,8 @@ public class Input
 	 * @param keycode
 	 * @return true if button is pressed
 	 */
-	public static boolean isButtonDown(int keycode)
-	{
+	public static boolean isButtonDown(int keycode) {
 		return buttons[keycode];
-	}
-	
-	public static boolean isKeyDownOnce(int keycode)
-	{
-		if (keys[keycode])
-		{
-			keys[keycode] = false;
-			return true;
-		}
-		return keys[keycode];
 	}
 
 	/**
@@ -75,8 +59,7 @@ public class Input
 	 * 
 	 * @return the x and y position of the mouse cursor in a Vector2d
 	 */
-	public static Vector2d getMousePosition()
-	{
+	public static Vector2d getMousePosition() {
 		return new Vector2d(mousePosition);
 	}
 
@@ -85,21 +68,18 @@ public class Input
 	 * 
 	 * @param WINDOW
 	 */
-	public static void createCallbacks(final long WINDOW)
-	{
-		GLFW.glfwSetKeyCallback(WINDOW, (long window, int key, int scancode, int action, int mods) ->
-		{
-			keys[key] = action != GLFW.GLFW_RELEASE;
+	public static void createCallbacks(final long WINDOW) {
+		GLFW.glfwSetKeyCallback(WINDOW, (long window, int key, int scancode, int action, int mods) -> {
+			if (action != GLFW.GLFW_REPEAT)
+				keys[key] = action != GLFW.GLFW_RELEASE;
 		});
 
-		GLFW.glfwSetMouseButtonCallback(WINDOW, (long window, int button, int action, int mod) ->
-		{
+		GLFW.glfwSetMouseButtonCallback(WINDOW, (long window, int button, int action, int mod) -> {
 			buttons[button] = (action != GLFW.GLFW_RELEASE);
 
 		});
 
-		GLFW.glfwSetCursorPosCallback(WINDOW, (long window, double posx, double posy) ->
-		{
+		GLFW.glfwSetCursorPosCallback(WINDOW, (long window, double posx, double posy) -> {
 			mousePosition.set(posx, posy);
 		});
 	}
