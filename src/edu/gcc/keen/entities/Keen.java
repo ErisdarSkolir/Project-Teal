@@ -322,12 +322,13 @@ public class Keen extends Entity implements Animateable
 					}
 				}
 			}
+			/*
 			else if (onPole)
 			{
 				if (true) {
 					
 				}
-			}
+			}*/
 
 			shootCooldown = 10;
 			ammo--;
