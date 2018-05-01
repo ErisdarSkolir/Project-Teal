@@ -103,7 +103,7 @@ public class KeenMain
 		LOGGER.setLevel(java.util.logging.Level.FINE);
 		try
 		{
-			FileHandler fileHandler = new FileHandler("log.log");
+			FileHandler fileHandler = new FileHandler("keen.log");
 			fileHandler.setFormatter(new SimpleFormatter());
 			LOGGER.addHandler(fileHandler);
 		}

@@ -57,7 +57,7 @@ public class GameObjectCreator
 		else if (itemData.containsKey(id))
 			return createItem(id, position);
 		else if (id != -1)
-			LOGGER.log(java.util.logging.Level.INFO, "No infoplane data for {0}", id);
+			LOGGER.log(java.util.logging.Level.SEVERE, "No infoplane data for {0}", id);
 
 		return null;
 	}
@@ -84,7 +84,7 @@ public class GameObjectCreator
 			}
 		}
 		else if (id != -1)
-			LOGGER.log(java.util.logging.Level.INFO, "No enemy data for {0}", id);
+			LOGGER.log(java.util.logging.Level.SEVERE, "No enemy data for {0}", id);
 
 		return null;
 	}
@@ -102,7 +102,7 @@ public class GameObjectCreator
 		if (id != -1 && itemData.containsKey(id))
 			return new Item(id, itemData.get(id), new Vector3f(position, 0.0f));
 		else if (id != -1)
-			LOGGER.log(java.util.logging.Level.INFO, "No item data for {0}", id);
+			LOGGER.log(java.util.logging.Level.SEVERE, "No item data for {0}", id);
 
 		return null;
 	}
@@ -123,7 +123,7 @@ public class GameObjectCreator
 			return new Tile(id, data, new Vector3f(position, data[4] ? 0.9f : -0.9f));
 		}
 		else if (id != -1)
-			LOGGER.log(java.util.logging.Level.INFO, "No tile data for {0}", id);
+			LOGGER.log(java.util.logging.Level.SEVERE, "No tile data for {0}", id);
 
 		return null;
 	}
